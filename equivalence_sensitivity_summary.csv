@@ -1,0 +1,37 @@
+Variable,BoundSet,Bound_deg,PctEquivalent,PctNotEquivalent,PctInconclusive
+Pelvis Anterior Tilt,MDC,4.068,46.53,0.0,53.47
+Pelvis Anterior Tilt,fixed2,2.0,0.0,0.0,100.0
+Pelvis Anterior Tilt,fixed5,5.0,64.36,0.0,35.64
+Pelvis Obliquity,MDC,1.941,31.68,25.74,42.57
+Pelvis Obliquity,fixed2,2.0,33.66,25.74,40.59
+Pelvis Obliquity,fixed5,5.0,90.1,0.0,9.9
+Pelvis Rotation,MDC,6.299,93.07,0.0,6.93
+Pelvis Rotation,fixed2,2.0,5.94,15.84,78.22
+Pelvis Rotation,fixed5,5.0,85.15,0.0,14.85
+Hip Flexion,MDC,6.146,71.29,0.0,28.71
+Hip Flexion,fixed2,2.0,0.0,4.95,95.05
+Hip Flexion,fixed5,5.0,57.43,0.0,42.57
+Hip Adduction,MDC,3.162,19.8,13.86,66.34
+Hip Adduction,fixed2,2.0,6.93,23.76,69.31
+Hip Adduction,fixed5,5.0,72.28,0.0,27.72
+Hip Rotation,MDC,7.538,59.41,0.0,40.59
+Hip Rotation,fixed2,2.0,0.0,16.83,83.17
+Hip Rotation,fixed5,5.0,14.85,0.0,85.15
+Knee Flexion,MDC,6.665,92.08,0.0,7.92
+Knee Flexion,fixed2,2.0,23.76,19.8,56.44
+Knee Flexion,fixed5,5.0,77.23,0.0,22.77
+Knee Varus,MDC,3.987,57.43,0.0,42.57
+Knee Varus,fixed2,2.0,23.76,13.86,62.38
+Knee Varus,fixed5,5.0,81.19,0.0,18.81
+Foot Progression,MDC,5.0,0.0,18.81,81.19
+Foot Progression,fixed2,2.0,0.0,97.03,2.97
+Foot Progression,fixed5,5.0,0.0,18.81,81.19
+Ankle Dorsiflexion,MDC,5.102,62.38,5.94,31.68
+Ankle Dorsiflexion,fixed2,2.0,0.0,47.52,52.48
+Ankle Dorsiflexion,fixed5,5.0,62.38,6.93,30.69
+Ankle Inversion,MDC,5.547,8.91,59.41,31.68
+Ankle Inversion,fixed2,2.0,0.0,74.26,25.74
+Ankle Inversion,fixed5,5.0,6.93,63.37,29.7
+Ankle Rotation,MDC,4.171,8.91,41.58,49.5
+Ankle Rotation,fixed2,2.0,0.0,51.49,48.51
+Ankle Rotation,fixed5,5.0,17.82,37.62,44.55
