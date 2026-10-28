@@ -29,7 +29,10 @@ bounds = [float(np.squeeze(m['ci_data'][j, 1])) for j in range(12)]  # foot prog
 ylim_max = [10] * 10 + [20, 20]
 ylim_min = [-v for v in ylim_max]
 
-C_EQ, C_NE, C_INC = '#2ca25f', '#de5a3c', '#d9d9d9'
+# CI band colours (light = within-CI band, dark = part of the CI beyond a bound)
+C_EQ, C_NE, C_INC = '#a6dcbd', '#f08f82', '#f7d58b'
+C_NE_D, C_INC_D = '#d62f2f', '#f0a020'
+C_BASE = '#d9d9d9'
 x = np.arange(101)
 
 def runs(mask):
@@ -64,24 +67,29 @@ for jj in range(12):
     inc = ~eq & ~ne
     pct_eq = 100 * eq.mean()
 
-    # classification shading (each node spans +/-0.5)
-    for mask, col in ((eq, C_EQ), (ne, C_NE), (inc, C_INC)):
-        for s, e in runs(mask):
-            ax.axvspan(s - 0.5, e + 0.5, color=col, alpha=0.35, lw=0)
-
-    ax.fill_between(x, lo, hi, color='k', alpha=0.25, lw=0)
-    ax.plot(x, md, 'k', lw=1)
+    # CI band coloured by outcome (conceptual-figure style); masks are dilated by one
+    # node so neighbouring segments join without gaps (colours are opaque).
+    def grow(mask):
+        return mask | np.r_[mask[1:], False] | np.r_[False, mask[:-1]]
+    ax.fill_between(x, lo, hi, color=C_BASE, lw=0)
+    for mask, col in ((inc, C_INC), (eq, C_EQ), (ne, C_NE)):
+        ax.fill_between(x, lo, hi, where=grow(mask), color=col, lw=0)
+    # darker patches where the CI extends beyond a bound
+    for mask, col in ((inc, C_INC_D), (ne, C_NE_D)):
+        ax.fill_between(x, np.maximum(lo, b), hi, where=grow(mask) & (hi > b), color=col, lw=0)
+        ax.fill_between(x, lo, np.minimum(hi, -b), where=grow(mask) & (lo < -b), color=col, lw=0)
+    ax.plot(x, md, 'k', lw=2.2)
     ax.axhline(0, color='k', lw=0.5, ls=':')
-    ax.axhline(b, color='g', ls='--', lw=1.3)
-    ax.axhline(-b, color='g', ls='--', lw=1.3)
+    ax.axhline(b, color='#33ee33', ls='--', lw=1.6)
+    ax.axhline(-b, color='#33ee33', ls='--', lw=1.6)
     ax.set_xlim(0, 100)
     ax.set_ylim(ylim_min[jj], ylim_max[jj] + 5)
-    ax.set_title(titles[jj], fontsize=9)
+    ax.set_title(titles[jj], fontsize=9, fontweight='bold')
     ax.text(0.98, 0.97, f'{round(pct_eq)}% Equiv.', transform=ax.transAxes,
-            ha='right', va='top', fontsize=8, color='#00682f', fontweight='bold')
+            ha='right', va='top', fontsize=8, color='#1fbf3a', fontweight='bold')
     ax.tick_params(labelsize=7, labelbottom=False)
     if c == 0:
-        ax.set_ylabel('Difference MB − ML (°)', fontsize=8)
+        ax.set_ylabel('Angle (°)', fontsize=8)
 
     # SPM{t} paired t-test, markerbased vs markerless
     t = spm1d.stats.ttest_paired(yA, yB).inference(ALPHA_T, two_tailed=True, interp=True)
@@ -102,10 +110,10 @@ for jj in range(12):
 
     rows.append((titles[jj], b, pct_eq, 100 * ne.mean(), 100 * inc.mean(), 100 * sig.mean()))
 
-handles = [Patch(color=C_EQ, alpha=0.35, label='Equivalent (CI inside bounds)'),
-           Patch(color=C_NE, alpha=0.35, label='Not equivalent (CI outside bounds)'),
-           Patch(color=C_INC, alpha=0.35, label='Inconclusive (CI crosses bound)'),
-           Line2D([0], [0], color='g', ls='--', label='MDC bounds'),
+handles = [Patch(color=C_EQ, label='Equivalent (CI inside bounds)'),
+           Patch(color=C_NE_D, label='Not equivalent (CI beyond bound)'),
+           Patch(color=C_INC_D, label='Inconclusive (CI crosses bound)'),
+           Line2D([0], [0], color='#33ee33', ls='--', label='MDC bounds'),
            Patch(color='k', label='SPM paired t-test p<0.05')]
 fig.legend(handles=handles, loc='upper center', ncol=3, fontsize=7.5, frameon=False,
            bbox_to_anchor=(0.5, 0.995))
