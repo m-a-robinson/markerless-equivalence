@@ -1,0 +1,13 @@
+subject,trial,level,system,variables
+P011,4,stride,MB,AnkDF;AnkInv;AnkRot
+P013,1,stride,MB,HipRot;KneeVar
+P013,8,stride,MB,HipRot;KneeVar
+P021,3,stride,MB,KneeFlex;FootProg;AnkDF;AnkInv;AnkRot
+P024,1,stride,MB,FootProg;AnkDF;AnkRot
+P024,2,stride,MB,FootProg;AnkRot
+P024,3,stride,MB,FootProg;AnkRot
+P024,4,stride,MB,AnkDF
+P024,5,stride,MB,FootProg;AnkDF;AnkRot
+P024,6,stride,MB,AnkDF;AnkRot
+P024,8,stride,MB,AnkDF
+P024,all,subject,MB,FootProg (1 clean strides)
