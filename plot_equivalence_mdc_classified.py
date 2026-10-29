@@ -4,8 +4,12 @@ Python counterpart of the 'mlmb_equivalence_mdc_feb2026_percent.jpg' figure in
 ML_MB_EquivalenceAnalysis_MDC.m (uses the spm1d python port; reproduces the
 saved MATLAB ci_data percentages).
 
-Usage: python3 plot_equivalence_mdc_classified.py
+Usage: python3 plot_equivalence_mdc_classified.py [mdc|<degrees>]
+   mdc  (default) -> per-variable ML MDC bounds
+   5              -> fixed +/-5 deg bounds for every variable
+Writes the figure (.jpg) and Table 1 (.csv, .docx).
 """
+import sys
 import numpy as np
 import scipy.io as sio
 import spm1d
@@ -25,7 +29,13 @@ titles = ['Pelvis Anterior Tilt', 'Pelvis Obliquity', 'Pelvis Rotation',
           'Hip Flexion', 'Hip Adduction', 'Hip Rotation',
           'Knee Flexion', 'Knee Varus', 'Foot Progression',
           'Ankle Dorsiflexion', 'Ankle Inversion', 'Ankle Rotation']
-bounds = [float(np.squeeze(m['ci_data'][j, 1])) for j in range(12)]  # foot progression = 5 default
+MODE = sys.argv[1] if len(sys.argv) > 1 else 'mdc'
+if MODE == 'mdc':
+    bounds = [float(np.squeeze(m['ci_data'][j, 1])) for j in range(12)]  # foot progression = 5 default
+    TAG, BLAB = 'mdc_feb2026_percent_classified', 'MDC bounds'
+else:
+    bounds = [float(MODE)] * 12
+    TAG, BLAB = f'{MODE}deg_classified', f'±{MODE}° bounds'
 ylim_max = [10] * 10 + [20, 20]
 ylim_min = [-v for v in ylim_max]
 
@@ -108,17 +118,34 @@ for jj in range(12):
     if c == 0:
         axb.set_ylabel('SPM', fontsize=7, rotation=0, ha='right', va='center')
 
-    rows.append((titles[jj], b, pct_eq, 100 * ne.mean(), 100 * inc.mean(), 100 * sig.mean()))
+    rows.append((titles[jj], b, pct_eq, 100 * ne.mean(), 100 * inc.mean(), 100 * sig.mean(),
+                 '; '.join(f'{a}–{e_}' for a, e_ in runs(eq)) or '–', bool(eq.all())))
 
 handles = [Patch(color=C_EQ, label='Equivalent (CI inside bounds)'),
            Patch(color=C_NE_D, label='Not equivalent (CI beyond bound)'),
            Patch(color=C_INC_D, label='Inconclusive (CI crosses bound)'),
-           Line2D([0], [0], color='#33ee33', ls='--', label='MDC bounds'),
+           Line2D([0], [0], color='#33ee33', ls='--', label=BLAB),
            Patch(color='k', label='SPM paired t-test p<0.05')]
 fig.legend(handles=handles, loc='upper center', ncol=3, fontsize=7.5, frameon=False,
            bbox_to_anchor=(0.5, 0.995))
-fig.savefig('mlmb_equivalence_mdc_feb2026_percent_classified.jpg', dpi=300)
+fig.savefig(f'mlmb_equivalence_{TAG}.jpg', dpi=300)
 
 print(f"{'Variable':22s}{'bound':>6s}{'%Eq':>6s}{'%NotEq':>8s}{'%Inc':>6s}{'%SPMsig':>9s}")
-for n, b, e, ne_, i, s in rows:
-    print(f'{n:22s}{b:6.2f}{e:6.0f}{ne_:8.0f}{i:6.0f}{s:9.0f}')
+for n, b, e, ne_, i, sg, iv, full in rows:
+    print(f'{n:22s}{b:6.2f}{e:6.0f}{ne_:8.0f}{i:6.0f}{sg:9.0f}  {iv}')
+
+# ---- Table 1 (intervals are gait-cycle % = node index, 0-100) ----
+import csv
+hdr = ['Joint variable', 'Bound ±(°)', 'Fully equivalent', '% Equivalent', '% Not equivalent',
+       '% Inconclusive', '% SPM p<0.05', 'Equivalent gait cycle intervals (%)']
+body = [[n, f'{b:.2f}' if MODE == 'mdc' else f'{b:g}', 'Yes' if full else 'No', f'{e:.0f}', f'{ne_:.0f}',
+         f'{i:.0f}', f'{sg:.0f}', iv] for n, b, e, ne_, i, sg, iv, full in sorted(rows, key=lambda r: -r[2])]
+with open(f'table1_{TAG}.csv', 'w', newline='') as f:
+    csv.writer(f).writerows([hdr] + body)
+import docx
+d = docx.Document()
+t = d.add_table(rows=1, cols=len(hdr)); t.style = 'Table Grid'
+for c, h in zip(t.rows[0].cells, hdr): c.text = h
+for r_ in body:
+    for c, v in zip(t.add_row().cells, r_): c.text = v
+d.save(f'table1_{TAG}.docx')

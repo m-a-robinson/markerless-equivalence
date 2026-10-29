@@ -1,0 +1,13 @@
+Variable,N,MeanLoAWidth_deg,MinLoAWidth_deg,MaxLoAWidth_deg,PctGaitCycleLoAWithin5deg,MaxAbsMeanDiff_deg
+Pelvis Anterior Tilt,24,21.52,19.75,22.42,0.0,4.32
+Pelvis Obliquity,24,6.71,5.51,8.11,53.5,4.85
+Pelvis Rotation,24,11.05,9.34,12.97,0.0,5.07
+Hip Flexion,24,23.35,19.87,26.05,0.0,5.23
+Hip Adduction,24,11.24,8.18,12.82,4.0,6.29
+Hip Rotation,24,27.58,22.77,31.13,0.0,8.22
+Knee Flexion,24,11.39,9.17,15.32,2.0,5.52
+Knee Varus,24,12.27,5.88,23.48,22.8,4.93
+Foot Progression,23,11.61,9.48,19.75,0.0,7.12
+Ankle Dorsiflexion,24,9.4,7.34,19.87,0.0,8.36
+Ankle Inversion,24,16.63,4.27,70.84,0.0,11.85
+Ankle Rotation,24,26.31,16.7,41.46,0.0,11.71
