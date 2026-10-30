@@ -94,6 +94,6 @@ Equivalent / not equivalent / inconclusive (% of gait cycle); LoA widths are mea
   approximately Gaussian differences, and its coverage has only been checked by leave-one-out on n = 24
   (`03_loa_analysis.py --coverage`: roughly 92-100 % whole-curve coverage against 50-92 % for the pointwise LoA).
 * **Independence of the difference and the average** (a requirement of the conventional LoA) fails for most
-  variables because MB is more variable between participants than ML; the regression-based LoA and independence
-  test are in the repository root (`plot_floa.py`, `plot_floa_regression.py`) and are not part of this folder.
+  variables because MB is more variable between participants than ML.  The independence test and the
+  regression-based LoA are not implemented in this folder.
 * Equivalence intervals are reported in gait-cycle % (node index 0-100).
