@@ -1,0 +1,5 @@
+numpy
+scipy
+matplotlib
+spm1d
+python-docx   # optional: Table 1 as .docx
