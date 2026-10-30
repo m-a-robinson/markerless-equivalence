@@ -19,14 +19,34 @@ Any other cell can be added with ``--exclude SUBJECT:TRIAL:VARIABLE``.
 
 Presets (``--preset``)
 ----------------------
+manuscript     THE FINAL DECISION (default): every flagged stride below is excluded and P024 is excluded from
+               ankle dorsiflexion, ankle rotation and foot progression - see "Manuscript selection" below
 as_published   nothing excluded except P024 foot progression (reproduces the grand means saved in the .mat file)
 include_all    everything included, even P024 foot progression
-user_flagged   all 26 flagged strides + P024 foot progression participant
+user_flagged   all 26 flagged strides + P024 foot progression participant (P024 ankle DF/rotation strides only)
 recommended    P011 stride 4, P021 stride 3 and P024's ankle/foot variables excluded; P013 strides 1 and 8 kept
                (they look like a set-up change, not noise - check the lab notes before removing them)
 
+Manuscript selection (record of the decision and the evidence, from ``../flagged_trials_visual_check.jpg``)
+----------------------------------------------------------------------------------------------------------
+Stride numbers are the column of ``s2data.subj{ii,1}.mb{jj,1}`` (101 x 8).  Peak deviations are from the cohort mean.
+
+* P011 stride 4 (AnkDF, AnkInv, AnkRot): spike at ~70 % of the gait cycle (69-110 deg), ML unaffected.
+* P013 strides 1 and 8 (HipRot, KneeVar): ~15 deg (hip rotation) / ~6 deg (knee varus) away from the participant's
+  other six strides, which agree closely with each other.  Excluded as flagged; this may reflect a set-up change in the
+  session, so the lab notes should be checked.
+* P021 stride 3 (AnkDF, AnkInv, AnkRot, FootProg, KneeFlex): spikes of up to ~80 deg near 68 % of the cycle in the
+  ankle variables and constant offsets in foot progression and knee flexion; the other 7 strides agree.
+* P024 flagged strides (FootProg, AnkDF, AnkRot) and P024 excluded from AnkDF, AnkRot and FootProg for both systems:
+  large spikes at 55-75 % of the cycle in nearly every stride (foot progression 8/8 strides, 60-119 deg from the
+  cohort; ankle rotation 6/8; ankle dorsiflexion 5/8), so no reliable participant mean can be formed.
+
+Result: 26 strides from four participants excluded, and n = 23 for ankle dorsiflexion, ankle rotation and foot
+progression.  The reasons are written to the ``note`` column of ``outlier_selection.csv``.
+
 Examples
 --------
+    python select_outliers.py --preset manuscript          # the final decision (also the default if no file exists)
     python select_outliers.py --list                       # show the current choice with deviation metrics
     python select_outliers.py --preset recommended
     python select_outliers.py --preset user_flagged --include P013:*:HipRot --include P013:*:KneeVar
@@ -70,11 +90,24 @@ def build_catalogue():
 
 CATALOGUE = build_catalogue()
 
+# reason written to the ``note`` column for every excluded cell (see the docstring for the evidence)
+RATIONALE = {
+    'P011': 'stride 4: spike at ~70% of the cycle (69-110 deg from cohort); other strides agree, ML unaffected',
+    'P013': 'strides 1 and 8: offset from the participant\'s other six strides (possible set-up change); '
+            'excluded as flagged',
+    'P021': 'stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree',
+    'P024': 'large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; '
+            'participant excluded for AnkDF, AnkRot and FootProg',
+}
+
 
 def preset(name):
     """Return {(subject, trial, variable): 'include' | 'exclude'} for a named preset."""
     sel = {(s, t, v): 'include' for s, t, v, _ in CATALOGUE}
-    if name == 'as_published':
+    if name == 'manuscript':
+        for s, t, v, src in CATALOGUE:                 # all 26 flagged strides + P024 participant-level options
+            sel[(s, t, v)] = 'exclude'
+    elif name == 'as_published':
         sel[('P024', 'all', 'FootProg')] = 'exclude'
     elif name == 'include_all':
         pass
@@ -107,9 +140,10 @@ def write_selection(sel, path):
     rows = sorted(sel, key=lambda k: (k[0], list(VAR_BY_CODE).index(k[2]), 0 if k[1] == 'all' else k[1]))
     with open(path, 'w', newline='') as f:
         w = csv.writer(f)
-        w.writerow(['subject', 'trial', 'variable', 'action', 'source'])
+        w.writerow(['subject', 'trial', 'variable', 'action', 'source', 'note'])
         for k in rows:
-            w.writerow([k[0], k[1], k[2], sel[k], src.get(k, 'user added')])
+            w.writerow([k[0], k[1], k[2], sel[k], src.get(k, 'user added'),
+                        RATIONALE.get(k[0], '') if sel[k] == 'exclude' and k in src else ''])
     n_x = sum(a == 'exclude' for a in sel.values())
     print(f'Wrote {path}  ({n_x} exclusions, {len(sel) - n_x} kept)')
 
@@ -205,7 +239,7 @@ def interactive(sel):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('--preset', choices=['as_published', 'include_all', 'user_flagged', 'recommended'],
+    ap.add_argument('--preset', choices=['manuscript', 'as_published', 'include_all', 'user_flagged', 'recommended'],
                     help='start from a preset (replaces the current selection)')
     ap.add_argument('--include', action='append', default=[], metavar='S:T:V', help='keep this cell (repeatable)')
     ap.add_argument('--exclude', action='append', default=[], metavar='S:T:V', help='exclude this cell (repeatable)')
@@ -223,7 +257,7 @@ def main():
         for s, t, v, _ in CATALOGUE:                       # add catalogue cells missing from an older file
             sel.setdefault((s, t, v), 'include')
     else:
-        sel = preset('as_published')
+        sel = preset('manuscript')
 
     if args.list and not (args.include or args.exclude or args.interactive or args.preset):
         show(sel, ds)
