@@ -30,7 +30,7 @@ from matplotlib.patches import Patch
 
 from common import FIGURES_DIR, RESULTS_DIR
 
-GREEN, RED, AMBER = '#33ee33', '#b00020', '#f7d58b'
+GREEN, RED, AMBER = '#33ee33', '#b00020', '#d6e6f5'
 
 
 def main():

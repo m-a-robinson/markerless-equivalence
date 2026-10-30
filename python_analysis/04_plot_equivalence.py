@@ -51,13 +51,18 @@ def main():
     x = np.arange(101)
     fixed = len(set(meta['bounds'])) == 1
     bound_label = f"±{meta['bounds'][0]:g}° bounds" if fixed else 'MDC bounds'
+    # layout knobs
+    BAR_RATIO = 0.6          # SPM bar height relative to the panel (panel = 10)
+    GAP_PANEL_BAR = 0.15     # gap between a panel and its own SPM bar
+    GAP_BETWEEN_ROWS = 0.25  # gap between an SPM bar and the title of the next row
 
     fig = plt.figure(figsize=(8, 10))
-    gs = fig.add_gridspec(8, 3, height_ratios=[10, 1.1] * 4, hspace=0.35, wspace=0.22,
-                          left=0.08, right=0.98, top=0.93, bottom=0.06)
+    outer = fig.add_gridspec(4, 3, hspace=GAP_BETWEEN_ROWS, wspace=0.22,
+                             left=0.08, right=0.98, top=0.93, bottom=0.06)
     for k, (code, title, b) in enumerate(zip(meta['variables'], meta['titles'], meta['bounds'])):
         r, c = divmod(k, 3)
-        ax, axb = fig.add_subplot(gs[2 * r, c]), fig.add_subplot(gs[2 * r + 1, c])
+        inner = outer[r, c].subgridspec(2, 1, height_ratios=[10, BAR_RATIO], hspace=GAP_PANEL_BAR)
+        ax, axb = fig.add_subplot(inner[0]), fig.add_subplot(inner[1])
         lo, hi, md = z[f'{code}_lo'], z[f'{code}_hi'], z[f'{code}_md']
         cls, sig = z[f'{code}_cls'], z[f'{code}_spm_sig']
 
@@ -96,10 +101,11 @@ def main():
             axb.set_ylabel('SPM', fontsize=7, rotation=0, ha='right', va='center')
 
     fig.legend(handles=[Patch(color=C_BAND[EQUIVALENT], label='Equivalent (CI inside bounds)'),
-                        Patch(color=C_BEYOND[NOT_EQUIVALENT], label='Not equivalent (CI beyond bound)'),
                         Patch(color=C_BEYOND[INCONCLUSIVE], label='Inconclusive (CI crosses bound)'),
-                        Line2D([0], [0], color=C_BOUND, ls='--', label=bound_label),
-                        Patch(color='k', label='SPM paired t-test p<0.05')],
+                        Patch(color=C_BEYOND[NOT_EQUIVALENT], label='Not equivalent (CI beyond bound)'),
+                        #Line2D([0], [0], color=C_BOUND, ls='--', label=bound_label),
+                        #Patch(color='k', label='SPM paired t-test p<0.05')
+                        ],
                loc='upper center', ncol=3, fontsize=7.5, frameon=False, bbox_to_anchor=(0.5, 0.995))
     out = args.out or FIGURES_DIR / f'equivalence_{args.tag}.jpg'
     out.parent.mkdir(parents=True, exist_ok=True)
