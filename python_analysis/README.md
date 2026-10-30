@@ -17,6 +17,7 @@ python 02_equivalence_analysis.py      # equivalence tests, +/-5 deg bounds
 python 03_loa_analysis.py              # pointwise + simultaneous LoA bands
 python 04_plot_equivalence.py          # figures/equivalence_5deg.jpg
 python 05_plot_loa.py                  # figures/loa_5deg.jpg
+python 06_plot_means.py                # figures/means_sd.jpg (grand mean +/- SD, as in the manuscript)
 ```
 
 Each script has a full docstring (`python <script> --help`).  Analysis scripts read `outlier_selection.csv`, so
@@ -32,6 +33,7 @@ re-run `02`, `03` and the plots after changing the selection.  Results are writt
 | `03_loa_analysis.py` | pointwise functional LoA and simultaneous prediction band, optional leave-one-out coverage |
 | `04_plot_equivalence.py` | equivalence figure (CI coloured by outcome, SPM bar) |
 | `05_plot_loa.py` | LoA figure (pointwise + simultaneous bands, +/-5 deg bounds, width annotations) |
+| `06_plot_means.py` | grand mean +/- SD figure of MB and ML (Python version of the manuscript means figure) |
 
 ## Data format (`data/study2_gait_data.npz`)
 
@@ -52,17 +54,20 @@ contain NaNs; they are not analysed.
 
 ## Outlier selection
 
-`outlier_selection.csv` (columns `subject, trial, variable, action, source`).  `action = exclude` is applied:
+`outlier_selection.csv` (columns `subject, trial, variable, action, source, note`).  `action = exclude` is applied:
 
 * `trial = 1-8`: that MB stride is left out of the participant's MB mean for that variable (ML always uses all strides);
 * `trial = all`: the participant is dropped from that variable for both systems (paired analyses).
 
-The default (`as_published`) reproduces the saved grand means: only P024 foot progression is excluded.  Other
-presets: `include_all`, `user_flagged` (all 26 supplied strides + P024 foot progression) and `recommended`
-(P011 stride 4, P021 stride 3, P024 ankle/foot variables; P013 strides 1 and 8 kept).  See
-`../flagged_trials_visual_check.jpg` for the evidence behind the recommendation, and `select_outliers.py --help`.
+The shipped file is the **`manuscript` selection**: all 26 flagged strides (P011 stride 4, P013 strides 1 and 8,
+P021 stride 3 and the flagged P024 strides) are excluded, and P024 is excluded from ankle dorsiflexion, ankle
+rotation and foot progression, giving n = 23 for those three variables.  The `note` column and the docstring of
+`select_outliers.py` record the reason for each exclusion (evidence in `../flagged_trials_visual_check.jpg`).
+Other presets: `as_published` (only P024 foot progression excluded, reproducing the grand means saved in the .mat
+file), `include_all`, `user_flagged` and `recommended` (P013 strides kept).  Switch with, for example,
+`python select_outliers.py --preset as_published`, then rerun `02`-`06`.
 
-## Default results (`as_published`, +/-5 deg)
+## Default results (`manuscript` selection, +/-5 deg)
 
 Equivalent / not equivalent / inconclusive (% of gait cycle); LoA widths are mean widths of the bands (deg).
 
@@ -73,13 +78,13 @@ Equivalent / not equivalent / inconclusive (% of gait cycle); LoA widths are mea
 | Pelvis Rotation | 24 | 85 | 0 | 15 | 57 | 11.0 | 17.7 |
 | Hip Flexion | 24 | 57 | 0 | 43 | 26 | 23.4 | 33.8 |
 | Hip Adduction | 24 | 72 | 0 | 28 | 84 | 11.2 | 17.7 |
-| Hip Rotation | 24 | 15 | 0 | 85 | 28 | 27.6 | 45.1 |
-| Knee Flexion | 24 | 77 | 0 | 23 | 45 | 11.4 | 18.3 |
-| Knee Varus | 24 | 81 | 0 | 19 | 30 | 12.3 | 20.8 |
-| Foot Progression | 23 | 0 | 19 | 81 | 100 | 11.6 | 18.1 |
-| Ankle Dorsiflexion | 24 | 62 | 7 | 31 | 83 | 9.4 | 15.9 |
-| Ankle Inversion | 24 | 7 | 63 | 30 | 81 | 16.6 | 29.3 |
-| Ankle Rotation | 24 | 18 | 38 | 45 | 61 | 26.3 | 42.5 |
+| Hip Rotation | 24 | 14 | 0 | 86 | 26 | 28.5 | 46.4 |
+| Knee Flexion | 24 | 77 | 0 | 23 | 45 | 11.3 | 18.3 |
+| Knee Varus | 24 | 81 | 0 | 19 | 29 | 12.8 | 21.7 |
+| Foot Progression | 23 | 0 | 17 | 83 | 100 | 11.2 | 17.5 |
+| Ankle Dorsiflexion | 23 | 63 | 7 | 30 | 85 | 8.6 | 14.5 |
+| Ankle Inversion | 24 | 7 | 63 | 30 | 84 | 15.7 | 27.7 |
+| Ankle Rotation | 23 | 15 | 38 | 48 | 64 | 23.6 | 38.3 |
 
 ## Methods and caveats
 
@@ -92,7 +97,7 @@ Equivalent / not equivalent / inconclusive (% of gait cycle); LoA widths are mea
   one-sample t field of the differences.  It is a *prediction band* for a new participant's whole curve (not the
   Bland-Altman LoA, and not a CI of the LoA limits).  It is a pragmatic construction: it assumes smooth,
   approximately Gaussian differences, and its coverage has only been checked by leave-one-out on n = 24
-  (`03_loa_analysis.py --coverage`: roughly 92-100 % whole-curve coverage against 50-92 % for the pointwise LoA).
+  (`03_loa_analysis.py --coverage`: roughly 92-100 % whole-curve coverage (mean about 95 %) against 46-92 % for the pointwise LoA).
 * **Independence of the difference and the average** (a requirement of the conventional LoA) fails for most
   variables because MB is more variable between participants than ML.  The independence test and the
   regression-based LoA are not implemented in this folder.
