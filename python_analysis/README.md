@@ -33,7 +33,7 @@ re-run `02`, `03` and the plots after changing the selection.  Results are writt
 | `02_equivalence_analysis.py` | 90 % spm1d CI of MB - ML, three-way classification, SPM paired t-test, Table 1 |
 | `03_loa_analysis.py` | pointwise functional LoA and simultaneous prediction band, optional leave-one-out coverage |
 | `04_plot_equivalence.py` | equivalence figure (CI coloured by outcome, SPM bar) |
-| `05_plot_loa.py` | LoA figure (pointwise + simultaneous bands, +/-5 deg bounds, width annotations) |
+| `05_plot_loa.py` | LoA figure (pointwise + simultaneous bands, +/-5 deg bounds, width annotations; green shading marks where the LoA lie inside the bounds, i.e. acceptable agreement) |
 | `06_plot_means.py` | grand mean +/- SD figure of MB and ML (Python version of the manuscript means figure) |
 | `07_plot_conceptual_figure.py` | conceptual figure of the possible equivalence and LoA outcomes (synthetic data; no results needed) |
 

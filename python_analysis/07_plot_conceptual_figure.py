@@ -22,14 +22,17 @@ a  One point of the gait cycle: five example 90 % CIs of the mean difference MB 
 b  Across the gait cycle: the mean difference and its CI band coloured by outcome (the part of the band beyond a bound
    drawn darker), the share of the cycle that is equivalent, and an SPM bar underneath.
 c  One point of the gait cycle: distribution of individual differences with the LoA (mean +/- 1.96 SD) against the
-   bounds - interchangeable, equivalent for group means only, or not interchangeable.
+   bounds - acceptable (LoA inside +/-Delta) or not acceptable (LoA exceed +/-Delta), the latter either with the group
+   mean inside the bounds or with a systematic bias.
 d  Across the gait cycle: smooth individual difference curves, pointwise LoA, the simultaneous prediction band
    (a schematic multiplier of 3.0 stands in for the random-field-theory threshold) and the bounds, with bars showing
    where each band lies inside +/-Delta.
 
-Colours match the results figures: green = equivalent / interchangeable, amber = inconclusive / group-level only and
-the simultaneous prediction band, red = not equivalent / not interchangeable.  The equivalence classification uses the
-same function as the analysis (``common.classify_equivalence``).
+Colours match the results figures.  Equivalence outcomes (panels a, b): green = equivalent, amber = inconclusive,
+red = not equivalent.  Agreement (panels c, d): green marks ACCEPTABLE agreement (LoA inside +/-Delta; the lighter green is
+the pointwise LoA, the darker green also the simultaneous band) and the simultaneous band itself is light blue, so no
+verdict is implied where the LoA exceed the bounds.  The equivalence classification uses the same function as the analysis
+(``common.classify_equivalence``).
 
 Usage
 -----
@@ -58,13 +61,15 @@ OUT.parent.mkdir(parents=True, exist_ok=True)
 D = 5.0                                                     # equivalence bound (schematic, "Delta")
 C_EQ, C_INC, C_NE = '#2ca25f', '#f0a020', '#d62728'          # strong colours: equivalent / inconclusive / not equivalent
 L_EQ, L_INC, L_NE = '#a6dcbd', '#f7d58b', '#f08f82'          # light band colours
-C_BOUND, C_BAND = '#33ee33', L_INC                           # bounds; simultaneous prediction band (amber, as in 05)
+C_BOUND, C_BAND = '#33ee33', '#d6e6f5'                       # bounds; simultaneous prediction band (light blue, as in 05)
+OK_PW, OK_SIM = '#8fd1ae', '#2f9e63'                         # acceptable agreement: pointwise LoA / simultaneous band inside
+C_NOTOK = '#6b6b6b'                                          # LoA exceed the bounds (no verdict colour)
 x = np.arange(101)
 rng = np.random.default_rng(args.seed)
 
 fig = plt.figure(figsize=(12.5, 10.4))
 gs = fig.add_gridspec(2, 2, width_ratios=[1, 1.2], height_ratios=[1, 1.08], left=0.135, right=0.985, top=0.875,
-                      bottom=0.115, hspace=0.36, wspace=0.34)
+                      bottom=0.135, hspace=0.36, wspace=0.34)
 
 
 def panel_letter(ax, s):
@@ -160,9 +165,9 @@ bar.text(-0.015, 0.5, 'SPM', transform=bar.transAxes, ha='right', va='center', f
 
 # ------------------------------------------------------------------ c: LoA at one point
 sc = [  # mean, sd, outcome text, colour
-    (0.6, 1.1, 'Interchangeable (individual level)', C_EQ, 'LoA inside ±Δ: individual differences are expected to be acceptable'),
-    (0.8, 3.5, 'Equivalent for group means only', C_INC, 'mean inside ±Δ, but LoA exceed ±Δ: individuals may differ too much'),
-    (6.6, 1.5, 'Not interchangeable', C_NE, 'the mean difference itself exceeds ±Δ (systematic bias)'),
+    (0.6, 1.1, 'Acceptable agreement (individual level)', OK_SIM, 'LoA inside ±Δ: individual differences are expected to be acceptable'),
+    (0.8, 3.5, 'Not acceptable: LoA exceed ±Δ', C_NOTOK, 'mean inside ±Δ (group means equivalent), but individual differences are too large'),
+    (6.6, 1.5, 'Not acceptable: LoA exceed ±Δ', C_NOTOK, 'the mean difference itself exceeds ±Δ (systematic bias)'),
 ]
 sub = gs[1, 0].subgridspec(3, 1, hspace=0.55)
 xs = np.linspace(-14, 14, 400)
@@ -213,6 +218,9 @@ plo, phi = m_s - 1.96 * sd_s, m_s + 1.96 * sd_s
 zstar = 3.0                                                       # schematic random-field-theory threshold
 slo, shi = m_s - zstar * sd_s * np.sqrt(1 + 1 / n), m_s + zstar * sd_s * np.sqrt(1 + 1 / n)
 axd.fill_between(x, slo, shi, color=C_BAND, lw=0, zorder=1)
+for mask_, col_, alpha_ in (((plo >= -D) & (phi <= D), OK_PW, 0.40), ((slo >= -D) & (shi <= D), OK_SIM, 0.30)):
+    for s0_, e0_ in runs(mask_):
+        axd.axvspan(s0_ - 0.5, e0_ + 0.5, color=col_, alpha=alpha_, lw=0, zorder=2)      # acceptable agreement
 axd.plot(x, curves.T, color='0.55', lw=0.6, alpha=0.7, zorder=3)
 axd.plot(x, plo, 'k--', lw=1.3, zorder=4); axd.plot(x, phi, 'k--', lw=1.3, zorder=4)
 axd.plot(x, m_s, 'k', lw=2.4, zorder=5)
@@ -227,8 +235,8 @@ axd.set_title('Limits of agreement across the gait cycle (individual level)', fo
 in_p = (plo >= -D) & (phi <= D)
 in_s = (slo >= -D) & (shi <= D)
 axd.text(99, 13.8, "Simultaneous band is wider than the pointwise LoA:\nit covers a new participant's whole curve with 95% probability", ha='right', va='top',
-         fontsize=7.8, color='#a35f00')
-for j, (mask, label, c) in enumerate(((in_p, 'Pointwise LoA\ninside ±Δ', '#333333'), (in_s, 'Simultaneous band\ninside ±Δ', C_INC))):
+         fontsize=7.8, color='#2c5f8f')
+for j, (mask, label, c) in enumerate(((in_p, 'Pointwise LoA\ninside ±Δ', OK_PW), (in_s, 'Simultaneous band\ninside ±Δ', OK_SIM))):
     b2 = fig.add_subplot(subd[1 + j])
     b2.set_xlim(0, 100); b2.set_ylim(0, 1); b2.set_yticks([])
     for sp in ('top', 'right', 'left'):
@@ -245,12 +253,14 @@ for j, (mask, label, c) in enumerate(((in_p, 'Pointwise LoA\ninside ±Δ', '#333
 # ------------------------------------------------------------------ legends / reading guide
 fig.legend(handles=[Patch(color=L_EQ, label='Equivalent: CI inside ±Δ'), Patch(color=C_INC, label='Inconclusive: CI crosses a bound'),
                     Patch(color=C_NE, label='Not equivalent: CI beyond a bound'),
-                    Line2D([0], [0], color=C_BOUND, ls='--', lw=1.8, label='Equivalence bounds ±Δ (e.g. MDC or ±5°)'),
+                    Line2D([0], [0], color=C_BOUND, ls='--', lw=1.8, label='Bounds ±Δ (e.g. MDC or ±5°)'),
                     Line2D([0], [0], color='k', lw=2, label='Mean difference'),
                     Line2D([0], [0], color='k', ls='--', lw=1.3, label='Pointwise LoA (±1.96 SD)'),
                     Patch(color=C_BAND, label='Simultaneous prediction band (RFT)'),
-                    Line2D([0], [0], color='0.55', lw=1, label='Individual participants')],
-           loc='lower center', ncol=4, fontsize=8.2, frameon=False, bbox_to_anchor=(0.5, 0.004))
+                    Line2D([0], [0], color='0.55', lw=1, label='Individual participants'),
+                    Patch(color=OK_PW, alpha=0.7, label='LoA inside ±Δ: acceptable'),
+                    Patch(color=OK_SIM, alpha=0.7, label='Simultaneous band also inside ±Δ')],
+           loc='lower center', ncol=4, fontsize=8, frameon=False, bbox_to_anchor=(0.5, 0.004))
 fig.text(0.5, 0.975, 'Group equivalence and individual agreement: possible outcomes (schematic, synthetic data)',
          ha='center', fontsize=13, fontweight='bold')
 # panel letters: one baseline per row, one left edge per column (figure coordinates)

@@ -6,9 +6,13 @@ Reads ``results/loa_<tag>.npz`` written by ``03_loa_analysis.py`` and draws one 
 * thin grey lines   - each participant's difference curve MB - ML;
 * black line        - mean difference;
 * dashed black      - pointwise functional LoA, mean +/- 1.96 SD (Roislien et al. 2012);
-* amber band        - simultaneous 95 % prediction band, mean +/- z* SD sqrt(1+1/n) (spm1d random-field theory);
+* light-blue band   - simultaneous 95 % prediction band, mean +/- z* SD sqrt(1+1/n) (spm1d random-field theory);
 * green dashed      - the +/-5 degree equivalence bounds;
-* red double arrow  - width of the pointwise LoA where it is largest (degrees).
+* red double arrow  - width of the pointwise LoA where it is largest (degrees);
+* green shading     - where the agreement is ACCEPTABLE: light green where the pointwise LoA lie inside the bounds,
+                      darker green where the simultaneous band does too (a new participant's whole curve is then
+                      expected inside).  Nowhere else is a verdict implied: amber and red are reserved for the
+                      equivalence outcomes (``04_plot_equivalence.py``).
 
 The text in each panel gives the mean width of both bands and the percentage of the gait cycle for which the
 band lies inside the bounds.
@@ -28,9 +32,10 @@ import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
-from common import FIGURES_DIR, RESULTS_DIR
+from common import FIGURES_DIR, RESULTS_DIR, runs
 
-GREEN, RED, AMBER = '#33ee33', '#b00020', '#f7d58b'
+GREEN, RED, BAND = '#33ee33', '#b00020', '#d6e6f5'
+OK_PW, OK_SIM = '#8fd1ae', '#2f9e63'        # acceptable agreement: pointwise LoA inside / simultaneous band inside
 
 
 def main():
@@ -47,13 +52,17 @@ def main():
     x = np.arange(101)
 
     fig, axes = plt.subplots(4, 3, figsize=(8, 9.8), sharex=True)
-    fig.subplots_adjust(left=0.08, right=0.98, top=0.915, bottom=0.06, hspace=0.3, wspace=0.22)
+    fig.subplots_adjust(left=0.08, right=0.98, top=0.905, bottom=0.06, hspace=0.3, wspace=0.22)
     for ax, code, title in zip(axes.ravel(), meta['variables'], meta['titles']):
         d, md = z[f'{code}_d'], z[f'{code}_md']
         lo, hi, slo, shi = z[f'{code}_lo'], z[f'{code}_hi'], z[f'{code}_slo'], z[f'{code}_shi']
         w = hi - lo
 
-        ax.fill_between(x, slo, shi, color=AMBER, lw=0, zorder=1)
+        ax.fill_between(x, slo, shi, color=BAND, lw=0, zorder=1)
+        for mask, col, alpha in (((lo >= -bound) & (hi <= bound), OK_PW, 0.40),
+                                 ((slo >= -bound) & (shi <= bound), OK_SIM, 0.30)):   # acceptable agreement
+            for s0, e0 in runs(mask):
+                ax.axvspan(s0 - 0.5, e0 + 0.5, color=col, alpha=alpha, lw=0, zorder=2)
         ax.plot(x, d.T, color='0.55', lw=0.5, alpha=0.6, zorder=3)          # drawn above the band
         ax.plot(x, lo, '--', color='k', lw=1.2, zorder=4)
         ax.plot(x, hi, '--', color='k', lw=1.2, zorder=4)
@@ -85,12 +94,14 @@ def main():
 
     fig.legend(handles=[Line2D([0], [0], color='k', lw=2, label='Mean difference'),
                         Line2D([0], [0], color='k', ls='--', lw=1.2, label='Pointwise LoA (± 1.96 SD)'),
-                        Patch(color=AMBER, label='Simultaneous 95% prediction band (RFT)'),
+                        Patch(color=BAND, label='Simultaneous 95% prediction band (RFT)'),
                         Line2D([0], [0], color=GREEN, ls='--', lw=1.6, label=f'±{bound:g}° bounds'),
                         Line2D([0], [0], color='0.55', lw=1, label='Individual participants'),
                         Line2D([0], [0], color=RED, marker='$\\leftrightarrow$', ls='', ms=9,
-                               label='Max pointwise LoA width')],
-               loc='upper center', ncol=3, fontsize=7.5, frameon=False, bbox_to_anchor=(0.5, 0.995))
+                               label='Max pointwise LoA width'),
+                        Patch(color=OK_PW, alpha=0.6, label=f'Pointwise LoA inside ±{bound:g}° (acceptable)'),
+                        Patch(color=OK_SIM, alpha=0.5, label=f'Simultaneous band also inside ±{bound:g}°')],
+               loc='upper center', ncol=3, fontsize=7.5, frameon=False, bbox_to_anchor=(0.5, 0.997))
     out = args.out or FIGURES_DIR / f'loa_{args.tag}.jpg'
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, dpi=args.dpi)
