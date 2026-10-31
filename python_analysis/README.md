@@ -19,6 +19,8 @@ python 04_plot_equivalence.py          # figures/equivalence_5deg.jpg
 python 05_plot_loa.py                  # figures/loa_5deg.jpg
 python 06_plot_means.py                # figures/means_sd.jpg (grand mean +/- SD, as in the manuscript)
 python 07_plot_conceptual_figure.py    # figures/conceptual_outcomes.png (schematic of the equivalence and LoA outcomes)
+python 08_summary_table.py             # results/table_equivalence_vs_spm_5deg.docx/.csv (outcomes vs SPM, % of the gait cycle)
+python 09_loa_summary_table.py         # results/table_loa_5deg.docx/.csv (LoA width, mean difference, LoA outcomes)
 ```
 
 Each script has a full docstring (`python <script> --help`).  Analysis scripts read `outlier_selection.csv`, so
@@ -33,9 +35,11 @@ re-run `02`, `03` and the plots after changing the selection.  Results are writt
 | `02_equivalence_analysis.py` | 90 % spm1d CI of MB - ML, three-way classification, SPM paired t-test, Table 1 |
 | `03_loa_analysis.py` | pointwise functional LoA and simultaneous prediction band, optional leave-one-out coverage |
 | `04_plot_equivalence.py` | equivalence figure (CI coloured by outcome, SPM bar) |
-| `05_plot_loa.py` | LoA figure (pointwise + simultaneous bands, +/-5 deg bounds, width annotations) |
+| `05_plot_loa.py` | LoA figure: the region between the pointwise LoA is coloured by outcome against the +/-5 deg bounds (green acceptable, amber group level only, red systematic bias) with an outcome bar under each panel |
 | `06_plot_means.py` | grand mean +/- SD figure of MB and ML (Python version of the manuscript means figure) |
 | `07_plot_conceptual_figure.py` | conceptual figure of the possible equivalence and LoA outcomes (synthetic data; no results needed) |
+| `08_summary_table.py` | manuscript table: the three equivalence outcomes against the SPM result, as % of the gait cycle (csv + docx) |
+| `09_loa_summary_table.py` | manuscript table: LoA summary per variable (mean difference, LoA width, % of the cycle acceptable / group level only / systematic bias) (csv + docx) |
 
 ## Data format (`data/study2_gait_data.npz`)
 
@@ -80,22 +84,24 @@ After changing the selection rerun `02`-`06` and, if needed, `python ../variance
 
 ## Default results (`manuscript` selection, scope all, +/-5 deg)
 
-Equivalent / not equivalent / inconclusive (% of gait cycle); LoA widths are mean widths of the bands (deg).
+Equivalence outcomes are % of the gait cycle; the LoA columns give the mean LoA width (deg) and the % of the cycle in
+each LoA outcome (acceptable / group level only / systematic bias).  The full cross-tabulation of the outcomes with the
+SPM result is in `results/table_equivalence_vs_spm_5deg.*`.
 
-| variable | n | equiv. | not equiv. | inconcl. | SPM sig. | pointwise LoA | simultaneous band |
+| variable | n | equiv. | inconcl. | not equiv. | SPM sig. | LoA width | LoA acceptable / group only / bias |
 |---|---|---|---|---|---|---|---|
-| Pelvis Anterior Tilt | 23 | 66 | 0 | 34 | 26 | 21.6 | 29.7 |
-| Pelvis Obliquity | 23 | 90 | 0 | 10 | 64 | 6.7 | 11.1 |
-| Pelvis Rotation | 23 | 82 | 0 | 18 | 58 | 11.2 | 18.2 |
-| Hip Flexion | 23 | 55 | 0 | 45 | 28 | 23.2 | 33.9 |
-| Hip Adduction | 23 | 70 | 0 | 30 | 83 | 11.4 | 18.0 |
-| Hip Rotation | 23 | 11 | 4 | 85 | 21 | 28.8 | 47.2 |
-| Knee Flexion | 23 | 76 | 0 | 24 | 45 | 11.4 | 18.6 |
-| Knee Varus | 23 | 77 | 0 | 23 | 30 | 12.9 | 22.0 |
-| Foot Progression | 23 | 0 | 17 | 83 | 100 | 11.2 | 17.5 |
-| Ankle Dorsiflexion | 23 | 63 | 7 | 30 | 86 | 8.6 | 14.5 |
-| Ankle Inversion | 23 | 7 | 63 | 30 | 84 | 14.4 | 25.4 |
-| Ankle Rotation | 23 | 15 | 38 | 48 | 64 | 23.6 | 38.4 |
+| Pelvis Anterior Tilt | 23 | 66 | 34 | 0 | 26 | 21.6 | 0 / 100 / 0 |
+| Pelvis Obliquity | 23 | 90 | 10 | 0 | 64 | 6.7 | 50 / 50 / 0 |
+| Pelvis Rotation | 23 | 82 | 18 | 0 | 58 | 11.2 | 0 / 99 / 1 |
+| Hip Flexion | 23 | 55 | 45 | 0 | 28 | 23.2 | 0 / 98 / 2 |
+| Hip Adduction | 23 | 70 | 30 | 0 | 83 | 11.4 | 3 / 82 / 15 |
+| Hip Rotation | 23 | 11 | 85 | 4 | 21 | 28.8 | 0 / 76 / 24 |
+| Knee Flexion | 23 | 76 | 24 | 0 | 45 | 11.4 | 1 / 89 / 10 |
+| Knee Varus | 23 | 77 | 23 | 0 | 30 | 12.9 | 22 / 74 / 4 |
+| Foot Progression | 23 | 0 | 83 | 17 | 100 | 11.2 | 0 / 40 / 60 |
+| Ankle Dorsiflexion | 23 | 63 | 30 | 7 | 86 | 8.6 | 0 / 82 / 18 |
+| Ankle Inversion | 23 | 7 | 30 | 63 | 84 | 14.4 | 0 / 18 / 82 |
+| Ankle Rotation | 23 | 15 | 48 | 38 | 64 | 23.6 | 0 / 45 / 55 |
 
 ## Methods and caveats
 
@@ -104,7 +110,7 @@ Equivalent / not equivalent / inconclusive (% of gait cycle); LoA widths are mea
   Use `--bound mdc` in `02_equivalence_analysis.py` for the Study 1 MDC bounds instead.
 * **SPM**: `spm1d.stats.ttest_paired`, two-tailed, family-wise p < 0.05.
 * **Pointwise LoA** (Roislien et al. 2012, Gait & Posture 36:495): mean difference +/- 1.96 SD at each node.
-* **Simultaneous band**: mean +/- z* SD sqrt(1 + 1/n) with z* the spm1d random-field-theory threshold of the
+* **Simultaneous band** (still computed by `03_loa_analysis.py` and stored in the results, but not plotted in the manuscript figures): mean +/- z* SD sqrt(1 + 1/n) with z* the spm1d random-field-theory threshold of the
   one-sample t field of the differences.  It is a *prediction band* for a new participant's whole curve (not the
   Bland-Altman LoA, and not a CI of the LoA limits).  It is a pragmatic construction: it assumes smooth,
   approximately Gaussian differences, and its coverage has only been checked by leave-one-out on n = 24

@@ -10,6 +10,7 @@ Contents
 * ``spm_paired_ttest``       - spm1d paired t-test (statistical difference between systems)
 * ``classify_equivalence``   - equivalent / not equivalent / inconclusive for each gait-cycle node
 * ``functional_loa``         - pointwise functional limits of agreement (Roislien et al. 2012)
+* ``classify_loa``           - LoA outcome at each node: acceptable / group-level only / systematic bias
 * ``rft_prediction_band``    - simultaneous prediction band using the spm1d random-field-theory threshold
 
 Conventions
@@ -35,6 +36,7 @@ FIGURES_DIR = HERE / 'figures'
 
 N_NODES = 101
 EQUIVALENT, NOT_EQUIVALENT, INCONCLUSIVE = 1, 2, 3
+LOA_ACCEPTABLE, LOA_GROUP_ONLY, LOA_BIAS = 1, 2, 3     # LoA outcome codes (green / amber / red)
 CLASS_LABELS = {EQUIVALENT: 'Equivalent', NOT_EQUIVALENT: 'Not equivalent', INCONCLUSIVE: 'Inconclusive'}
 
 # code      short name used in the outlier lists and in all result tables
@@ -264,3 +266,19 @@ def rft_prediction_band(d: np.ndarray, alpha: float = 0.05):
     md, sd = d.mean(0), d.std(0, ddof=1)
     h = zstar * sd * np.sqrt(1 + 1 / n)
     return md - h, md + h, zstar
+
+
+def classify_loa(md: np.ndarray, lo: np.ndarray, hi: np.ndarray, bound: float) -> np.ndarray:
+    """Outcome of the pointwise LoA at each node, judged against the bounds +/- ``bound``.
+
+    LOA_ACCEPTABLE   (1, green)  the LoA lie inside the bounds: individual differences are expected to be acceptable
+    LOA_GROUP_ONLY   (2, amber)  the LoA exceed a bound but the mean difference is inside: agreement at group level only
+    LOA_BIAS         (3, red)    the mean difference itself is beyond a bound: systematic bias
+
+    ``md``, ``lo``, ``hi`` are the mean difference and the lower/upper LoA (e.g. from ``functional_loa``).  The classes
+    are nested: LoA inside the bounds implies the mean is inside.
+    """
+    out = np.full(md.shape, LOA_GROUP_ONLY, dtype=int)
+    out[(lo >= -bound) & (hi <= bound)] = LOA_ACCEPTABLE
+    out[np.abs(md) > bound] = LOA_BIAS
+    return out

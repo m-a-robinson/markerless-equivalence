@@ -1,0 +1,14 @@
+Variable,n,Equivalent_total_pct,Equivalent_SPM_ns_pct,Equivalent_SPM_sig_pct,Inconclusive_total_pct,Inconclusive_SPM_ns_pct,Inconclusive_SPM_sig_pct,Not equivalent_total_pct,Not equivalent_SPM_ns_pct,Not equivalent_SPM_sig_pct,SPM_sig_total_pct
+Pelvis Obliquity,23,90.1,35.6,54.5,9.9,0.0,9.9,0.0,0.0,0.0,64.4
+Pelvis Rotation,23,82.2,41.6,40.6,17.8,0.0,17.8,0.0,0.0,0.0,58.4
+Knee Varus,23,77.2,58.4,18.8,22.8,11.9,10.9,0.0,0.0,0.0,29.7
+Knee Flexion,23,76.2,55.4,20.8,23.8,0.0,23.8,0.0,0.0,0.0,44.6
+Hip Adduction,23,70.3,16.8,53.5,29.7,0.0,29.7,0.0,0.0,0.0,83.2
+Pelvis Anterior Tilt,23,66.3,66.3,0.0,33.7,7.9,25.7,0.0,0.0,0.0,25.7
+Ankle Dorsiflexion,23,63.4,13.9,49.5,29.7,0.0,29.7,6.9,0.0,6.9,86.1
+Hip Flexion,23,55.4,55.4,0.0,44.6,16.8,27.7,0.0,0.0,0.0,27.7
+Ankle Rotation,23,14.9,14.9,0.0,47.5,20.8,26.7,37.6,0.0,37.6,64.4
+Hip Rotation,23,10.9,10.9,0.0,85.1,68.3,16.8,4.0,0.0,4.0,20.8
+Ankle Inversion,23,6.9,5.0,2.0,29.7,10.9,18.8,63.4,0.0,63.4,84.2
+Foot Progression,23,0.0,0.0,0.0,83.2,0.0,83.2,16.8,0.0,16.8,100.0
+Mean of the variables,,51.2,31.2,20.0,38.1,11.4,26.7,10.7,0.0,10.7,57.4
