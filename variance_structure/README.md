@@ -8,7 +8,7 @@ python variance_structure.py      # ~5 min; writes results/ and figures/
 ```
 
 * `load_data.py` reads `../stydy2data_20260226_withMDC.mat` into arrays (subject × variable × 101 × stride) for the 12 right-side variables, in manuscript order.
-* `variance_structure.py` runs everything twice: `primary_clean` (gross-error strides removed by a fixed rule; see `results/gross_error_log.csv`) and `sensitivity_all` (all data, as in the Chapter 5 equivalence analysis, whose Table 1 it reproduces).
+* `variance_structure.py` runs everything twice: `primary_clean` (flagged strides removed; by default the exclusions are read from the shared `../python_analysis/outlier_selection.csv`, so this analysis uses exactly the same trials as the ML-vs-MB equivalence and LoA analyses; the applied exclusions are logged in `results/gross_error_log.csv`; `--exclusions detect` re-derives them with the fixed gross-error rule instead) and `sensitivity_all` (all data, as in the Chapter 5 equivalence analysis, whose Table 1 it reproduces).
 
 | Output | Content |
 |---|---|

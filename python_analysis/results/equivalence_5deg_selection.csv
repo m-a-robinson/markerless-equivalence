@@ -1,30 +1,30 @@
-subject,trial,variable,action,source,note
-P011,4,AnkDF,exclude,flagged stride,"stride 4: spike at ~70% of the cycle (69-110 deg from cohort); other strides agree, ML unaffected"
-P011,4,AnkInv,exclude,flagged stride,"stride 4: spike at ~70% of the cycle (69-110 deg from cohort); other strides agree, ML unaffected"
-P011,4,AnkRot,exclude,flagged stride,"stride 4: spike at ~70% of the cycle (69-110 deg from cohort); other strides agree, ML unaffected"
-P013,1,HipRot,exclude,flagged stride,strides 1 and 8: offset from the participant's other six strides (possible set-up change); excluded as flagged
-P013,8,HipRot,exclude,flagged stride,strides 1 and 8: offset from the participant's other six strides (possible set-up change); excluded as flagged
-P013,1,KneeVar,exclude,flagged stride,strides 1 and 8: offset from the participant's other six strides (possible set-up change); excluded as flagged
-P013,8,KneeVar,exclude,flagged stride,strides 1 and 8: offset from the participant's other six strides (possible set-up change); excluded as flagged
-P021,3,KneeFlex,exclude,flagged stride,stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree
-P021,3,FootProg,exclude,flagged stride,stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree
-P021,3,AnkDF,exclude,flagged stride,stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree
-P021,3,AnkInv,exclude,flagged stride,stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree
-P021,3,AnkRot,exclude,flagged stride,stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree
-P024,all,FootProg,exclude,participant-level option,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,1,FootProg,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,2,FootProg,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,3,FootProg,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,5,FootProg,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,all,AnkDF,exclude,participant-level option,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,1,AnkDF,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,4,AnkDF,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,5,AnkDF,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,6,AnkDF,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,8,AnkDF,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,all,AnkRot,exclude,participant-level option,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,1,AnkRot,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,2,AnkRot,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,3,AnkRot,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,5,AnkRot,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
-P024,6,AnkRot,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg"
+subject,trial,variable,action,source,note,scope
+P011,4,AnkDF,exclude,flagged stride,"stride 4: spike at ~70% of the cycle (69-110 deg from cohort); other strides agree, ML unaffected",all
+P011,4,AnkInv,exclude,flagged stride,"stride 4: spike at ~70% of the cycle (69-110 deg from cohort); other strides agree, ML unaffected",all
+P011,4,AnkRot,exclude,flagged stride,"stride 4: spike at ~70% of the cycle (69-110 deg from cohort); other strides agree, ML unaffected",all
+P013,1,HipRot,exclude,flagged stride,strides 1 and 8: offset from the participant's other six strides (possible set-up change); excluded as flagged,all
+P013,8,HipRot,exclude,flagged stride,strides 1 and 8: offset from the participant's other six strides (possible set-up change); excluded as flagged,all
+P013,1,KneeVar,exclude,flagged stride,strides 1 and 8: offset from the participant's other six strides (possible set-up change); excluded as flagged,all
+P013,8,KneeVar,exclude,flagged stride,strides 1 and 8: offset from the participant's other six strides (possible set-up change); excluded as flagged,all
+P021,3,KneeFlex,exclude,flagged stride,stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree,all
+P021,3,FootProg,exclude,flagged stride,stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree,all
+P021,3,AnkDF,exclude,flagged stride,stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree,all
+P021,3,AnkInv,exclude,flagged stride,stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree,all
+P021,3,AnkRot,exclude,flagged stride,stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree,all
+P024,all,FootProg,exclude,participant-level option,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,1,FootProg,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,2,FootProg,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,3,FootProg,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,5,FootProg,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,all,AnkDF,exclude,participant-level option,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,1,AnkDF,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,4,AnkDF,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,5,AnkDF,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,6,AnkDF,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,8,AnkDF,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,all,AnkRot,exclude,participant-level option,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,1,AnkRot,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,2,AnkRot,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,3,AnkRot,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,5,AnkRot,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all
+P024,6,AnkRot,exclude,flagged stride,"large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; participant excluded for AnkDF, AnkRot and FootProg",all

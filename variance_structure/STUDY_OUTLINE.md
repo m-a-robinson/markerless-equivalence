@@ -43,7 +43,7 @@ The two systems recorded **the same strides at the same time**. Their cross-cova
 
 ## 3. Preliminary results (Study 2, existing data)
 
-**Code:** `variance_structure/variance_structure.py`. It reproduces the manuscript's Table 1 equivalence percentages exactly from the `.mat` file. **Primary analysis:** gross-error strides were removed with a fixed rule (§3.1), leaving 23 participants and 180 strides. **Sensitivity analysis:** all data, as in the manuscript. Results are in `results/primary_clean/` and `results/sensitivity_all/`, figures in `figures/`. 95% CIs come from a participant-cluster bootstrap (1,000 resamples). All results are exploratory and are not corrected for 12 variables; they are intended to generate hypotheses and to inform planning.
+**Code:** `variance_structure/variance_structure.py`. It reproduces the manuscript's Table 1 equivalence percentages exactly from the `.mat` file. **Primary analysis:** gross-error strides were removed (the exclusions come from the shared `python_analysis/outlier_selection.csv`, which reproduces the fixed rule of §3.1 exactly; `--exclusions detect` re-derives them), leaving 23 participants and 180 strides. **Sensitivity analysis:** all data, as in the manuscript. Results are in `results/primary_clean/` and `results/sensitivity_all/`, figures in `figures/`. 95% CIs come from a participant-cluster bootstrap (1,000 resamples). All results are exploratory and are not corrected for 12 variables; they are intended to generate hypotheses and to inform planning.
 
 ### 3.1 R0: MB has a gross-error class that ML does not
 

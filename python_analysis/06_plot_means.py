@@ -54,7 +54,7 @@ def main():
 
     ds = load_dataset()
     sel = load_selection(args.selection)
-    print(f'Outlier selection: {sel.source}  ({len(sel.strides)} strides, {len(sel.participants)} participants excluded)')
+    print(f'Outlier selection: {sel.describe()}')
     x = np.arange(101)
 
     fig, axes = plt.subplots(4, 3, figsize=(6, 6.9))
