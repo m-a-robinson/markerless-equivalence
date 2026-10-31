@@ -18,6 +18,7 @@ python 03_loa_analysis.py              # pointwise + simultaneous LoA bands
 python 04_plot_equivalence.py          # figures/equivalence_5deg.jpg
 python 05_plot_loa.py                  # figures/loa_5deg.jpg
 python 06_plot_means.py                # figures/means_sd.jpg (grand mean +/- SD, as in the manuscript)
+python 07_plot_conceptual_figure.py    # figures/conceptual_outcomes.png (schematic of the equivalence and LoA outcomes)
 ```
 
 Each script has a full docstring (`python <script> --help`).  Analysis scripts read `outlier_selection.csv`, so
@@ -34,6 +35,7 @@ re-run `02`, `03` and the plots after changing the selection.  Results are writt
 | `04_plot_equivalence.py` | equivalence figure (CI coloured by outcome, SPM bar) |
 | `05_plot_loa.py` | LoA figure (pointwise + simultaneous bands, +/-5 deg bounds, width annotations) |
 | `06_plot_means.py` | grand mean +/- SD figure of MB and ML (Python version of the manuscript means figure) |
+| `07_plot_conceptual_figure.py` | conceptual figure of the possible equivalence and LoA outcomes (synthetic data; no results needed) |
 
 ## Data format (`data/study2_gait_data.npz`)
 
