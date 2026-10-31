@@ -33,8 +33,8 @@ from pathlib import Path
 
 import numpy as np
 
-from common import (ANALYSED, RESULTS_DIR, SELECTION_FILE, functional_loa, load_dataset, load_selection,
-                    participant_means, rft_prediction_band)
+from common import (ANALYSED, LOA_ACCEPTABLE, LOA_BIAS, LOA_GROUP_ONLY, RESULTS_DIR, SELECTION_FILE, classify_loa,
+                    functional_loa, load_dataset, load_selection, participant_means, rft_prediction_band)
 
 
 def loo_coverage(d):
@@ -85,6 +85,11 @@ def main():
                    rft_zstar=zstar, simultaneous_width_mean=float(np.mean(shi - slo)),
                    pct_simultaneous_within=100 * float(np.mean((slo >= -args.bound) & (shi <= args.bound))),
                    max_abs_mean_difference=float(np.abs(md).max()))
+        loa_cls = classify_loa(md, lo, hi, args.bound)       # green / amber / red outcome of the LoA at each node
+        row.update(pct_loa_acceptable=100 * float(np.mean(loa_cls == LOA_ACCEPTABLE)),
+                   pct_loa_group_only=100 * float(np.mean(loa_cls == LOA_GROUP_ONLY)),
+                   pct_loa_bias=100 * float(np.mean(loa_cls == LOA_BIAS)))
+        arrays[f'{var.code}_loa_cls'] = loa_cls
         msg = (f'{var.title:20s} n={len(subs):2d}  pointwise width {row["pointwise_width_mean"]:5.1f} deg '
                f'({row["pct_pointwise_within"]:3.0f} % within ±{args.bound:g})  simultaneous width '
                f'{row["simultaneous_width_mean"]:5.1f} deg (z*={zstar:.2f}, {row["pct_simultaneous_within"]:3.0f} % within)')

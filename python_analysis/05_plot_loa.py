@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
-"""Figure: pointwise and simultaneous limits of agreement between markerless and marker-based kinematics.
+"""Figure: functional limits of agreement (LoA) between markerless and marker-based kinematics, judged against the bounds.
 
 Reads ``results/loa_<tag>.npz`` written by ``03_loa_analysis.py`` and draws one panel per variable:
 
 * thin grey lines   - each participant's difference curve MB - ML;
 * black line        - mean difference;
 * dashed black      - pointwise functional LoA, mean +/- 1.96 SD (Roislien et al. 2012);
-* light-blue band   - simultaneous 95 % prediction band, mean +/- z* SD sqrt(1+1/n) (spm1d random-field theory);
-* green dashed      - the +/-5 degree equivalence bounds;
-* red double arrow  - width of the pointwise LoA where it is largest (degrees);
-* green shading     - where the agreement is ACCEPTABLE: light green where the pointwise LoA lie inside the bounds,
-                      darker green where the simultaneous band does too (a new participant's whole curve is then
-                      expected inside).  Nowhere else is a verdict implied: amber and red are reserved for the
-                      equivalence outcomes (``04_plot_equivalence.py``).
+* green dashed      - the +/-5 degree bounds;
+* red double arrow  - width of the LoA where it is largest (degrees);
+* shaded region     - the area between the LoA, coloured at each point of the gait cycle by ``common.classify_loa``:
 
-The text in each panel gives the mean width of both bands and the percentage of the gait cycle for which the
-band lies inside the bounds.
+    green  the LoA lie inside the bounds                           -> acceptable agreement for individuals
+    amber  the LoA exceed a bound but the mean difference is inside -> agreement at group level only
+    red    the mean difference itself is beyond a bound              -> systematic bias
+
+* bar under each panel - the same outcome at every point of the gait cycle (solid colours), laid out like the SPM bar
+  of the equivalence figure.
+
+The text in each panel gives the mean LoA width and the percentage of the gait cycle in each outcome.
 
 Usage
 -----
@@ -32,10 +34,16 @@ import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
-from common import FIGURES_DIR, RESULTS_DIR, runs
+from common import (FIGURES_DIR, LOA_ACCEPTABLE, LOA_BIAS, LOA_GROUP_ONLY, RESULTS_DIR, classify_loa, runs)
 
-GREEN, RED, BAND = '#33ee33', '#b00020', '#d6e6f5'
-OK_PW, OK_SIM = '#8fd1ae', '#2f9e63'        # acceptable agreement: pointwise LoA inside / simultaneous band inside
+BOUND_C, ARROW_C = '#33ee33', '#b00020'
+FILL = {LOA_ACCEPTABLE: '#a6dcbd', LOA_GROUP_ONLY: '#f7d58b', LOA_BIAS: '#f08f82'}     # light fill of the LoA region
+SOLID = {LOA_ACCEPTABLE: '#2ca25f', LOA_GROUP_ONLY: '#f0a020', LOA_BIAS: '#d62728'}    # solid colours of the outcome bar
+
+
+def grow(mask):
+    """Widen a node mask by one node on each side so neighbouring colour segments join without gaps."""
+    return mask | np.r_[mask[1:], False] | np.r_[False, mask[:-1]]
 
 
 def main():
@@ -51,56 +59,70 @@ def main():
     bound = meta['bound']
     x = np.arange(101)
 
-    fig, axes = plt.subplots(4, 3, figsize=(8, 9.8), sharex=True)
-    fig.subplots_adjust(left=0.08, right=0.98, top=0.905, bottom=0.06, hspace=0.3, wspace=0.22)
-    for ax, code, title in zip(axes.ravel(), meta['variables'], meta['titles']):
-        d, md = z[f'{code}_d'], z[f'{code}_md']
-        lo, hi, slo, shi = z[f'{code}_lo'], z[f'{code}_hi'], z[f'{code}_slo'], z[f'{code}_shi']
-        w = hi - lo
+    # layout knobs (same as 04_plot_equivalence.py)
+    BAR_RATIO = 0.6          # outcome bar height relative to the panel (panel = 10)
+    GAP_PANEL_BAR = 0.15     # gap between a panel and its own outcome bar
+    GAP_BETWEEN_ROWS = 0.25  # gap between an outcome bar and the title of the next row
 
-        ax.fill_between(x, slo, shi, color=BAND, lw=0, zorder=1)
-        for mask, col, alpha in (((lo >= -bound) & (hi <= bound), OK_PW, 0.40),
-                                 ((slo >= -bound) & (shi <= bound), OK_SIM, 0.30)):   # acceptable agreement
-            for s0, e0 in runs(mask):
-                ax.axvspan(s0 - 0.5, e0 + 0.5, color=col, alpha=alpha, lw=0, zorder=2)
-        ax.plot(x, d.T, color='0.55', lw=0.5, alpha=0.6, zorder=3)          # drawn above the band
+    fig = plt.figure(figsize=(8, 10.4))
+    outer = fig.add_gridspec(4, 3, hspace=GAP_BETWEEN_ROWS, wspace=0.22, left=0.08, right=0.98, top=0.905, bottom=0.06)
+    for k, (code, title) in enumerate(zip(meta['variables'], meta['titles'])):
+        r, c = divmod(k, 3)
+        inner = outer[r, c].subgridspec(2, 1, height_ratios=[10, BAR_RATIO], hspace=GAP_PANEL_BAR)
+        ax, axb = fig.add_subplot(inner[0]), fig.add_subplot(inner[1])
+        d, md, lo, hi = z[f'{code}_d'], z[f'{code}_md'], z[f'{code}_lo'], z[f'{code}_hi']
+        w = hi - lo
+        cls = classify_loa(md, lo, hi, bound)
+
+        for cc in (LOA_ACCEPTABLE, LOA_GROUP_ONLY, LOA_BIAS):
+            ax.fill_between(x, lo, hi, where=grow(cls == cc), color=FILL[cc], lw=0, zorder=1)
+        ax.plot(x, d.T, color='0.55', lw=0.5, alpha=0.6, zorder=3)
         ax.plot(x, lo, '--', color='k', lw=1.2, zorder=4)
         ax.plot(x, hi, '--', color='k', lw=1.2, zorder=4)
         ax.plot(x, md, 'k', lw=2.2, zorder=5)
         ax.axhline(0, color='k', lw=0.5, ls=':')
         for s in (bound, -bound):
-            ax.axhline(s, color=GREEN, ls='--', lw=1.6, zorder=6)
+            ax.axhline(s, color=BOUND_C, ls='--', lw=1.6, zorder=6)
 
-        i = int(np.argmax(w))                                    # widest point of the pointwise LoA
+        i = int(np.argmax(w))                                    # widest point of the LoA
         ax.annotate('', xy=(i, lo[i]), xytext=(i, hi[i]), zorder=7,
-                    arrowprops=dict(arrowstyle='<->', color=RED, lw=1.4, shrinkA=0, shrinkB=0))
-        ax.text(i + (3 if i < 70 else -3), md[i], f'{w[i]:.0f}°', color=RED, fontsize=7.5, fontweight='bold',
+                    arrowprops=dict(arrowstyle='<->', color=ARROW_C, lw=1.4, shrinkA=0, shrinkB=0))
+        ax.text(i + (3 if i < 70 else -3), md[i], f'{w[i]:.0f}°', color=ARROW_C, fontsize=7.5, fontweight='bold',
                 ha='left' if i < 70 else 'right', va='center', zorder=7,
                 bbox=dict(fc='white', ec='none', pad=0.5, alpha=0.8))
+        pc = [100 * np.mean(cls == cc) for cc in (LOA_ACCEPTABLE, LOA_GROUP_ONLY, LOA_BIAS)]
+        ax.text(0.02, 0.97, f'width {w.mean():.1f}° (mean)\ngreen/amber/red: {pc[0]:.0f}/{pc[1]:.0f}/{pc[2]:.0f}%',
+                transform=ax.transAxes, ha='left', va='top', fontsize=6.5, color='#333',
+                bbox=dict(fc='white', ec='none', pad=0.8, alpha=0.75), zorder=8)
+        lim = max(10, 5 * np.ceil(max(np.abs(lo).max(), np.abs(hi).max(), bound) / 5))
+        ax.set_xlim(0, 100); ax.set_ylim(-lim, lim * 1.25); ax.set_xticks([0, 20, 40, 60, 80, 100])
+        ax.set_title(f'{title} (n={meta["n"][k]})', fontsize=9, fontweight='bold')
+        ax.tick_params(labelsize=7, labelbottom=False)
+        if c == 0:
+            ax.set_ylabel('MB − ML (°)', fontsize=8)
 
-        in_p = 100 * np.mean((lo >= -bound) & (hi <= bound))
-        in_s = 100 * np.mean((slo >= -bound) & (shi <= bound))
-        ax.text(0.02, 0.97, f'width {w.mean():.1f}° pointwise, {np.mean(shi - slo):.1f}° simult.\n'
-                            f'within ±{bound:g}°: {in_p:.0f}% / {in_s:.0f}%',
-                transform=ax.transAxes, ha='left', va='top', fontsize=6.5, color='#333')
-        lim = max(10, 5 * np.ceil(max(np.abs(slo).max(), np.abs(shi).max(), bound) / 5))
-        ax.set_xlim(0, 100); ax.set_ylim(-lim, lim * 1.25)
-        ax.set_title(f'{title} (n={meta["n"][meta["variables"].index(code)]})', fontsize=9, fontweight='bold')
-        ax.tick_params(labelsize=7)
-    for ax in axes[:, 0]:
-        ax.set_ylabel('MB − ML (°)', fontsize=8)
-    for ax in axes[-1]:
-        ax.set_xlabel('Gait Cycle (%)', fontsize=8)
+        # outcome bar (like the SPM bar in the equivalence figure)
+        axb.set_xlim(0, 100); axb.set_ylim(0, 1); axb.set_yticks([])
+        for cc in (LOA_ACCEPTABLE, LOA_GROUP_ONLY, LOA_BIAS):
+            for s0, e0 in runs(cls == cc):
+                axb.axvspan(s0 - 0.5, e0 + 0.5, color=SOLID[cc], lw=0)
+        for sp in ('top', 'right', 'left'):
+            axb.spines[sp].set_visible(False)
+        axb.set_xticks([0, 20, 40, 60, 80, 100])
+        axb.tick_params(labelsize=7, length=2, labelbottom=(r == 3))
+        if r == 3:
+            axb.set_xlabel('Gait Cycle (%)', fontsize=8)
+        if c == 0:
+            axb.set_ylabel('LoA', fontsize=7, rotation=0, ha='right', va='center')
 
-    fig.legend(handles=[Line2D([0], [0], color='k', lw=2, label='Mean difference'),
+    fig.legend(handles=[Patch(color=FILL[LOA_ACCEPTABLE], label=f'LoA inside ±{bound:g}°: acceptable'),
+                        Patch(color=FILL[LOA_GROUP_ONLY], label=f'LoA exceed ±{bound:g}°, mean inside'),
+                        Patch(color=FILL[LOA_BIAS], label=f'Mean difference beyond ±{bound:g}°'),
+                        Line2D([0], [0], color='k', lw=2, label='Mean difference'),
                         Line2D([0], [0], color='k', ls='--', lw=1.2, label='Pointwise LoA (± 1.96 SD)'),
-                        Patch(color=BAND, label='Simultaneous 95% prediction band (RFT)'),
-                        Line2D([0], [0], color=GREEN, ls='--', lw=1.6, label=f'±{bound:g}° bounds'),
+                        Line2D([0], [0], color=BOUND_C, ls='--', lw=1.6, label=f'±{bound:g}° bounds'),
                         Line2D([0], [0], color='0.55', lw=1, label='Individual participants'),
-                        Line2D([0], [0], color=RED, marker='$\\leftrightarrow$', ls='', ms=9,
-                               label='Max pointwise LoA width'),
-                        Patch(color=OK_PW, alpha=0.6, label=f'Pointwise LoA inside ±{bound:g}° (acceptable)'),
-                        Patch(color=OK_SIM, alpha=0.5, label=f'Simultaneous band also inside ±{bound:g}°')],
+                        Line2D([0], [0], color=ARROW_C, marker='$\\leftrightarrow$', ls='', ms=9, label='Max LoA width')],
                loc='upper center', ncol=3, fontsize=7.5, frameon=False, bbox_to_anchor=(0.5, 0.997))
     out = args.out or FIGURES_DIR / f'loa_{args.tag}.jpg'
     out.parent.mkdir(parents=True, exist_ok=True)
