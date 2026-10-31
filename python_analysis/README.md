@@ -20,6 +20,7 @@ python 05_plot_loa.py                  # figures/loa_5deg.jpg
 python 06_plot_means.py                # figures/means_sd.jpg (grand mean +/- SD, as in the manuscript)
 python 07_plot_conceptual_figure.py    # figures/conceptual_outcomes.png (schematic of the equivalence and LoA outcomes)
 python 08_summary_table.py             # results/table_equivalence_vs_spm_5deg.docx/.csv (outcomes vs SPM, % of the gait cycle)
+python 09_loa_summary_table.py         # results/table_loa_5deg.docx/.csv (LoA width, mean difference, LoA outcomes)
 ```
 
 Each script has a full docstring (`python <script> --help`).  Analysis scripts read `outlier_selection.csv`, so
@@ -38,6 +39,7 @@ re-run `02`, `03` and the plots after changing the selection.  Results are writt
 | `06_plot_means.py` | grand mean +/- SD figure of MB and ML (Python version of the manuscript means figure) |
 | `07_plot_conceptual_figure.py` | conceptual figure of the possible equivalence and LoA outcomes (synthetic data; no results needed) |
 | `08_summary_table.py` | manuscript table: the three equivalence outcomes against the SPM result, as % of the gait cycle (csv + docx) |
+| `09_loa_summary_table.py` | manuscript table: LoA summary per variable (mean difference, LoA width, % of the cycle acceptable / group level only / systematic bias) (csv + docx) |
 
 ## Data format (`data/study2_gait_data.npz`)
 
