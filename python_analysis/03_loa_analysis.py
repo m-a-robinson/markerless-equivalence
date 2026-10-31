@@ -65,7 +65,7 @@ def main():
     tag = args.tag or f'{args.bound:g}deg'
     ds = load_dataset()
     sel = load_selection(args.selection)
-    print(f'Outlier selection: {sel.source}  ({len(sel.strides)} strides, {len(sel.participants)} participants excluded)')
+    print(f'Outlier selection: {sel.describe()}')
 
     arrays = {}
     meta = {'tag': tag, 'bound': args.bound, 'alpha': args.alpha, 'variables': [], 'titles': [], 'n': []}

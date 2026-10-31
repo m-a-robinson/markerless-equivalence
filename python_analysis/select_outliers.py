@@ -6,10 +6,21 @@ that file, so run this script *before* them whenever you change your mind.
 
 What can be excluded
 --------------------
-* a **stride** (``trial`` = 1-8): one MB stride is left out of that participant's MB mean for one variable
-  (the ML mean always uses all ML strides);
-* a **participant** (``trial`` = ``all``): the participant is left out of that variable for both systems,
-  because the equivalence and LoA analyses are paired.
+* a **stride** (``trial`` = 1-8) of one participant;
+* a **participant** (``trial`` = ``all``).
+
+Scope (``--scope``) - how far an exclusion reaches
+--------------------------------------------------
+all        (default) a flagged stride is removed from EVERY variable and from BOTH systems (MB and ML), and an
+           excluded participant is dropped from EVERY variable.  This is the rule the variance-structure analysis
+           (``../variance_structure``) requires - it needs identical strides across variables and systems - and it
+           reads this same file, so the ML-vs-MB comparison, the LoA analysis and the variance analysis all use
+           exactly the same data.
+variable   an exclusion applies to the named variable only; a stride is left out of the MB mean only (the ML mean
+           keeps all its strides) and a participant is dropped from that variable only.  The variance analysis cannot
+           use this scope and stops with an explanation.  The ``as_published`` preset always uses it.
+
+The scope is stored in the ``scope`` column of ``outlier_selection.csv``.
 
 Catalogue
 ---------
@@ -19,14 +30,38 @@ Any other cell can be added with ``--exclude SUBJECT:TRIAL:VARIABLE``.
 
 Presets (``--preset``)
 ----------------------
+manuscript     THE FINAL DECISION (default): every flagged stride below is excluded and P024 is excluded from
+               ankle dorsiflexion, ankle rotation and foot progression - see "Manuscript selection" below
 as_published   nothing excluded except P024 foot progression (reproduces the grand means saved in the .mat file)
 include_all    everything included, even P024 foot progression
-user_flagged   all 26 flagged strides + P024 foot progression participant
+user_flagged   all 26 flagged strides + P024 foot progression participant (P024 ankle DF/rotation strides only)
 recommended    P011 stride 4, P021 stride 3 and P024's ankle/foot variables excluded; P013 strides 1 and 8 kept
                (they look like a set-up change, not noise - check the lab notes before removing them)
 
+Manuscript selection (record of the decision and the evidence, from ``../flagged_trials_visual_check.jpg``)
+----------------------------------------------------------------------------------------------------------
+Stride numbers are the column of ``s2data.subj{ii,1}.mb{jj,1}`` (101 x 8).  Peak deviations are from the cohort mean.
+
+* P011 stride 4 (AnkDF, AnkInv, AnkRot): spike at ~70 % of the gait cycle (69-110 deg), ML unaffected.
+* P013 strides 1 and 8 (HipRot, KneeVar): ~15 deg (hip rotation) / ~6 deg (knee varus) away from the participant's
+  other six strides, which agree closely with each other.  Excluded as flagged; this may reflect a set-up change in the
+  session, so the lab notes should be checked.
+* P021 stride 3 (AnkDF, AnkInv, AnkRot, FootProg, KneeFlex): spikes of up to ~80 deg near 68 % of the cycle in the
+  ankle variables and constant offsets in foot progression and knee flexion; the other 7 strides agree.
+* P024 flagged strides (FootProg, AnkDF, AnkRot) and P024 excluded from AnkDF, AnkRot and FootProg for both systems:
+  large spikes at 55-75 % of the cycle in nearly every stride (foot progression 8/8 strides, 60-119 deg from the
+  cohort; ankle rotation 6/8; ankle dorsiflexion 5/8), so no reliable participant mean can be formed.
+
+Result with the default scope (all): strides 4 (P011), 1 and 8 (P013) and 3 (P021) are removed from every variable
+and both systems, and P024 is dropped from every variable, so n = 23 throughout (P024's own flagged strides are then
+moot).  With ``--scope variable``: the 26 flagged strides are removed from the MB mean of the flagged variable only, and
+n = 23 only for ankle dorsiflexion, ankle rotation and foot progression.  The reasons are written to the ``note``
+column of ``outlier_selection.csv``.
+
 Examples
 --------
+    python select_outliers.py --preset manuscript          # the final decision, scope all (also the default)
+    python select_outliers.py --preset manuscript --scope variable   # same cells, per-variable MB-only exclusions
     python select_outliers.py --list                       # show the current choice with deviation metrics
     python select_outliers.py --preset recommended
     python select_outliers.py --preset user_flagged --include P013:*:HipRot --include P013:*:KneeVar
@@ -56,6 +91,7 @@ P024,5,FootProg;AnkDF;AnkRot
 P024,6,AnkDF;AnkRot
 P024,8,AnkDF"""
 P024_PARTICIPANT_VARS = ('AnkDF', 'AnkRot', 'FootProg')   # participant-level options for P024
+PRESET_SCOPE = {'as_published': 'variable'}               # every other preset defaults to scope 'all'
 
 
 def build_catalogue():
@@ -70,11 +106,24 @@ def build_catalogue():
 
 CATALOGUE = build_catalogue()
 
+# reason written to the ``note`` column for every excluded cell (see the docstring for the evidence)
+RATIONALE = {
+    'P011': 'stride 4: spike at ~70% of the cycle (69-110 deg from cohort); other strides agree, ML unaffected',
+    'P013': 'strides 1 and 8: offset from the participant\'s other six strides (possible set-up change); '
+            'excluded as flagged',
+    'P021': 'stride 3: spikes up to ~80 deg near 68% of the cycle plus constant offsets; other strides agree',
+    'P024': 'large spike at 55-75% of the cycle in nearly all strides of the ankle/foot variables; '
+            'participant excluded for AnkDF, AnkRot and FootProg',
+}
+
 
 def preset(name):
     """Return {(subject, trial, variable): 'include' | 'exclude'} for a named preset."""
     sel = {(s, t, v): 'include' for s, t, v, _ in CATALOGUE}
-    if name == 'as_published':
+    if name == 'manuscript':
+        for s, t, v, src in CATALOGUE:                 # all 26 flagged strides + P024 participant-level options
+            sel[(s, t, v)] = 'exclude'
+    elif name == 'as_published':
         sel[('P024', 'all', 'FootProg')] = 'exclude'
     elif name == 'include_all':
         pass
@@ -93,25 +142,30 @@ def preset(name):
 
 
 def read_selection(path):
-    sel = {}
+    """Return ``({(subject, trial, variable): action}, scope)``; ``scope`` is taken from the exclusion rows
+    ('all', 'variable', 'mixed' or None when nothing is excluded; files without a scope column are 'variable')."""
+    sel, scopes = {}, set()
     with open(path, newline='') as f:
         for r in csv.DictReader(f):
             t = r['trial'].strip()
-            sel[(r['subject'].strip(), 'all' if t.lower() == 'all' else int(t), r['variable'].strip())] = \
-                r['action'].strip().lower()
-    return sel
+            key = (r['subject'].strip(), 'all' if t.lower() == 'all' else int(t), r['variable'].strip())
+            sel[key] = r['action'].strip().lower()
+            if sel[key] == 'exclude':
+                scopes.add((r.get('scope') or 'variable').strip().lower())
+    return sel, (scopes.pop() if len(scopes) == 1 else 'mixed' if scopes else None)
 
 
-def write_selection(sel, path):
+def write_selection(sel, path, scope):
     src = {(s, t, v): k for s, t, v, k in CATALOGUE}
     rows = sorted(sel, key=lambda k: (k[0], list(VAR_BY_CODE).index(k[2]), 0 if k[1] == 'all' else k[1]))
     with open(path, 'w', newline='') as f:
         w = csv.writer(f)
-        w.writerow(['subject', 'trial', 'variable', 'action', 'source'])
+        w.writerow(['subject', 'trial', 'variable', 'action', 'source', 'note', 'scope'])
         for k in rows:
-            w.writerow([k[0], k[1], k[2], sel[k], src.get(k, 'user added')])
+            w.writerow([k[0], k[1], k[2], sel[k], src.get(k, 'user added'),
+                        RATIONALE.get(k[0], '') if sel[k] == 'exclude' and k in src else '', scope])
     n_x = sum(a == 'exclude' for a in sel.values())
-    print(f'Wrote {path}  ({n_x} exclusions, {len(sel) - n_x} kept)')
+    print(f'Wrote {path}  ({n_x} exclusions, {len(sel) - n_x} kept; scope = {scope})')
 
 
 def expand(token, subjects):
@@ -154,7 +208,7 @@ def metrics(ds):
     return out
 
 
-def show(sel, ds=None):
+def show(sel, ds=None, scope=None):
     m = metrics(ds) if ds is not None else {}
     print(f"{'subject':8s}{'trial':>6s}{'variable':>10s}  {'action':8s}{'peak dev. from cohort (deg)':>29s}{'RMS vs own median (deg)':>26s}")
     for k in sorted(sel, key=lambda k: (k[0], list(VAR_BY_CODE).index(k[2]), 0 if k[1] == 'all' else k[1])):
@@ -162,7 +216,7 @@ def show(sel, ds=None):
         print(f'{k[0]:8s}{k[1]!s:>6s}{k[2]:>10s}  {sel[k]:8s}' +
               (f'{pk:29.1f}{rms:26.1f}' if pk is not None else ''))
     n_x = sum(a == 'exclude' for a in sel.values())
-    print(f'\n{n_x} exclusions, {len(sel) - n_x} kept')
+    print(f'\n{n_x} exclusions, {len(sel) - n_x} kept' + (f'; scope = {scope}' if scope else ''))
 
 
 def ask(prompt):
@@ -205,28 +259,34 @@ def interactive(sel):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('--preset', choices=['as_published', 'include_all', 'user_flagged', 'recommended'],
+    ap.add_argument('--preset', choices=['manuscript', 'as_published', 'include_all', 'user_flagged', 'recommended'],
                     help='start from a preset (replaces the current selection)')
     ap.add_argument('--include', action='append', default=[], metavar='S:T:V', help='keep this cell (repeatable)')
     ap.add_argument('--exclude', action='append', default=[], metavar='S:T:V', help='exclude this cell (repeatable)')
     ap.add_argument('--interactive', action='store_true', help='answer questions group by group')
     ap.add_argument('--list', action='store_true', help='print the selection (no changes are written)')
+    ap.add_argument('--scope', choices=['all', 'variable'],
+                    help="reach of the exclusions: 'all' = every variable and both systems (default, matches the "
+                         "variance analysis), 'variable' = named variable, MB only")
     ap.add_argument('--selection', type=Path, default=SELECTION_FILE, help='selection file to read/write')
     args = ap.parse_args()
 
     ds = load_dataset() if DATA_FILE.exists() else None
     subjects = ds.subjects if ds else sorted({c[0] for c in CATALOGUE})
+    scope = None
     if args.preset:
         sel = preset(args.preset)
+        scope = PRESET_SCOPE.get(args.preset, 'all')
     elif args.selection.exists():
-        sel = read_selection(args.selection)
+        sel, scope = read_selection(args.selection)
         for s, t, v, _ in CATALOGUE:                       # add catalogue cells missing from an older file
             sel.setdefault((s, t, v), 'include')
     else:
-        sel = preset('as_published')
+        sel = preset('manuscript')
+    scope = args.scope or (scope if scope in ('all', 'variable') else 'all')
 
-    if args.list and not (args.include or args.exclude or args.interactive or args.preset):
-        show(sel, ds)
+    if args.list and not (args.include or args.exclude or args.interactive or args.preset or args.scope):
+        show(sel, ds, scope)
         return
     for tok in args.include:
         for k in expand(tok, subjects):
@@ -236,9 +296,9 @@ def main():
             sel[k] = 'exclude'
     if args.interactive:
         sel = interactive(sel)
-    write_selection(sel, args.selection)
+    write_selection(sel, args.selection, scope)
     if args.list:
-        show(sel, ds)
+        show(sel, ds, scope)
 
 
 if __name__ == '__main__':

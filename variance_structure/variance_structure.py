@@ -8,12 +8,19 @@ level estimates the variance the systems share (true movement variation plus any
 common error); the remainder is system-specific (Grubbs 1948 two-instrument
 estimator, assuming unit scale and independent errors).
 
-Primary analysis: gross-error strides removed (rule in `gross_error_flags`).
+Primary analysis: flagged strides removed.  By default the exclusions are read from the shared file
+`../python_analysis/outlier_selection.csv` (edit it with `../python_analysis/select_outliers.py`), so this analysis uses
+exactly the same trials as the ML-vs-MB equivalence/LoA analyses.  The variance model needs identical strides in both
+systems and across variables, so only the `scope = all` selection is accepted (a flagged stride is removed from every
+variable and both systems; an excluded participant is dropped entirely).  `--exclusions detect` instead re-derives the
+flags with the fixed rule in `gross_error_flags` (the original behaviour).
 Sensitivity analysis: all data, as used in the equivalence manuscript.
 Outputs go to ./results/<tag>/ (CSV) and ./figures/<tag>/ (PNG).
 
-Usage:  python variance_structure.py          (both analyses, ~3 min)
+Usage:  python variance_structure.py [--exclusions selection|detect] [--selection FILE]   (both analyses, ~3 min)
 """
+import argparse
+import sys
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -27,6 +34,8 @@ import spm1d
 from load_data import load, TITLES, SHORT, PLANE
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent / "python_analysis"))      # shared outlier selection (single source of truth)
+from common import SELECTION_FILE, load_selection
 NBOOT = 1000
 NPERM = 1000
 T = np.arange(101)
@@ -77,6 +86,40 @@ def clean(MB, ML, ids):
         log.append(dict(subject=ids[i], trial="all", level="subject",
                         system="MB" if j_mb[i].any() else "ML",
                         variables=";".join(vs) + f" ({n_ok[i]} clean strides)"))
+    return mb[keep], ml[keep], [x for x, k in zip(ids, keep) if k], pd.DataFrame(log)
+
+
+def clean_from_selection(MB, ML, ids, sel):
+    """Apply the shared outlier selection (`python_analysis/outlier_selection.csv`, scope `all`): a selected stride is
+    removed from every variable in both systems, a selected participant is dropped. Returns the same objects as `clean`.
+    The log has the same layout as `gross_error_log.csv`; a participant row ends with the number of clean strides."""
+    if not sel.only_scope_all():
+        raise SystemExit(
+            "The variance analysis needs identical strides in both systems and across variables, so the selection must "
+            "have scope 'all'.\nThe current selection contains scope 'variable' exclusions "
+            f"({len(sel.strides)} strides, {len(sel.participants)} participant/variable cells).\n"
+            "Run:  python ../python_analysis/select_outliers.py --scope all   (or use --exclusions detect)")
+    unknown = [s_ for s_ in sel.participants_all if s_ not in ids] + [s_ for (s_, _) in sel.strides_all if s_ not in ids]
+    if unknown:
+        raise SystemExit(f"selection names participants that are not in the data: {sorted(set(unknown))}")
+    order = {v: k for k, v in enumerate(SHORT)}
+    log, bad_stride = [], np.zeros((len(ids), MB.shape[3]), bool)
+    for (sid, t), vs in sorted(sel.strides_all.items(), key=lambda kv: (kv[0][0], kv[0][1])):
+        if t > MB.shape[3]:
+            raise SystemExit(f"selection names stride {t} of {sid} but there are only {MB.shape[3]} strides")
+        bad_stride[ids.index(sid), t - 1] = True
+        log.append(dict(subject=sid, trial=t, level="stride", system="MB",
+                        variables=";".join(sorted(vs, key=order.get))))
+    mb, ml = MB.copy(), ML.copy()
+    mb[np.broadcast_to(bad_stride[:, None, None, :], mb.shape)] = np.nan
+    ml[np.broadcast_to(bad_stride[:, None, None, :], ml.shape)] = np.nan
+    n_ok = np.sum(~np.isnan(mb[:, 0, 0, :]), 1)
+    keep = np.array([sid not in sel.participants_all for sid in ids])
+    for i in np.where(~keep)[0]:
+        log.append(dict(subject=ids[i], trial="all", level="subject", system="MB",
+                        variables=";".join(sorted(sel.participants_all[ids[i]], key=order.get)) + f" ({n_ok[i]} clean strides)"))
+    if (n_ok[keep] < 2).any():
+        raise SystemExit("a retained participant has fewer than 2 clean strides; the within-subject variance is undefined")
     return mb[keep], ml[keep], [x for x, k in zip(ids, keep) if k], pd.DataFrame(log)
 
 
@@ -478,8 +521,20 @@ def fig0_gross_errors(MB, ML, ids, flags_log):
 
 
 if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--exclusions", choices=["selection", "detect"], default="selection",
+                    help="'selection' (default): shared python_analysis/outlier_selection.csv; "
+                         "'detect': re-derive gross-error flags with the fixed rule")
+    ap.add_argument("--selection", type=Path, default=SELECTION_FILE, help="selection file (default: shared file)")
+    args = ap.parse_args()
     MB, ML, IDS, MDC, _ = load()
-    MBc, MLc, IDSc, log = clean(MB, ML, IDS)
+    if args.exclusions == "selection":
+        sel = load_selection(args.selection)
+        print(f"Exclusions from the shared selection: {sel.describe()}")
+        MBc, MLc, IDSc, log = clean_from_selection(MB, ML, IDS, sel)
+    else:
+        print("Exclusions re-derived with the fixed gross-error rule (--exclusions detect)")
+        MBc, MLc, IDSc, log = clean(MB, ML, IDS)
     (HERE / "results").mkdir(exist_ok=True)
     (HERE / "figures").mkdir(exist_ok=True)
     log.to_csv(HERE / "results" / "gross_error_log.csv", index=False)

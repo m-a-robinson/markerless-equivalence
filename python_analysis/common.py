@@ -95,21 +95,47 @@ def load_dataset(path: Path = DATA_FILE) -> Dataset:
 # --------------------------------------------------------------------------------------------------
 @dataclass
 class Selection:
-    """Data to leave out.  Everything not listed is kept.
+    """Data to leave out.  Everything not listed is kept.  Each row of ``outlier_selection.csv`` has a ``scope``:
 
-    ``strides``      MB strides removed from one participant's mean: {(subject, trial 1-based, variable code)}
-    ``participants`` participants removed from one variable (both systems, paired design): {(subject, code)}
+    ``scope = variable`` (one variable only; the earlier behaviour)
+        ``strides``       MB strides removed from one participant's MB mean for one variable:
+                          {(subject, trial 1-based, variable code)}
+        ``participants``  participants removed from one variable, both systems: {(subject, variable code)}
+
+    ``scope = all`` (every variable and both systems; the rule the variance-structure analysis requires)
+        ``strides_all``       a stride is removed from every variable in MB *and* ML: {(subject, trial): variables}
+        ``participants_all``  a participant is removed from every variable: {subject: variables}
+
+    The dictionaries of the ``all`` scope remember which variables triggered the flag (used for logging only).
     """
     strides: set = field(default_factory=set)
     participants: set = field(default_factory=set)
+    strides_all: dict = field(default_factory=dict)
+    participants_all: dict = field(default_factory=dict)
     source: str = ''
+
+    def only_scope_all(self) -> bool:
+        """True if no exclusion is restricted to a single variable (required by the variance analysis)."""
+        return not (self.strides or self.participants)
+
+    def describe(self) -> str:
+        parts = []
+        if self.strides_all or self.participants_all:
+            parts.append(f'scope all: {len(self.strides_all)} strides removed from every variable and both systems, '
+                         f'{len(self.participants_all)} participants dropped entirely')
+        if self.strides or self.participants:
+            parts.append(f'scope variable: {len(self.strides)} MB strides, '
+                         f'{len(self.participants)} participant/variable cells')
+        return f'{self.source}  (' + ('; '.join(parts) or 'nothing excluded') + ')'
 
 
 def load_selection(path: Path = SELECTION_FILE) -> Selection:
-    """Read ``outlier_selection.csv`` (columns: subject, trial, variable, action, ...).
+    """Read ``outlier_selection.csv`` (columns: subject, trial, variable, action, ..., scope).
 
-    Rows with ``action == exclude`` are applied; ``trial == all`` excludes the participant for that variable.
-    If the file does not exist the published behaviour is used (only P024 foot progression is left out).
+    Rows with ``action == exclude`` are applied; ``trial == all`` excludes the participant.  ``scope`` (``variable``
+    or ``all``) says whether the exclusion applies to that variable only or to every variable (see ``Selection``);
+    files without a ``scope`` column are read as ``variable``.  If the file does not exist the published behaviour is
+    used (only P024 foot progression is left out).
     """
     sel = Selection(source=str(path))
     if not Path(path).exists():
@@ -120,32 +146,48 @@ def load_selection(path: Path = SELECTION_FILE) -> Selection:
         for row in csv.DictReader(f):
             if row['action'].strip().lower() != 'exclude':
                 continue
+            subj, var = row['subject'].strip(), row['variable'].strip()
+            scope = (row.get('scope') or 'variable').strip().lower()
+            if scope not in ('variable', 'all'):
+                raise ValueError(f"scope must be 'variable' or 'all', got {scope!r}")
             if row['trial'].strip().lower() == 'all':
-                sel.participants.add((row['subject'].strip(), row['variable'].strip()))
+                if scope == 'all':
+                    sel.participants_all.setdefault(subj, set()).add(var)
+                else:
+                    sel.participants.add((subj, var))
             else:
-                sel.strides.add((row['subject'].strip(), int(row['trial']), row['variable'].strip()))
+                t = int(row['trial'])
+                if scope == 'all':
+                    sel.strides_all.setdefault((subj, t), set()).add(var)
+                else:
+                    sel.strides.add((subj, t, var))
     return sel
 
 
 def participant_means(ds: Dataset, code: str, sel: Selection):
     """Participant mean curves for one variable after applying the selection.
 
-    Returns ``(mb, ml, subjects)`` with ``mb`` and ``ml`` of shape (n participants, 101).  The MB mean uses the
-    strides that remain after exclusions; the ML mean always uses all ML strides.  Participants listed in
-    ``sel.participants`` (or left with no MB strides) are dropped from both systems.
+    Returns ``(mb, ml, subjects)`` with ``mb`` and ``ml`` of shape (n participants, 101).  Rules:
+
+    * ``scope = variable`` strides are left out of the MB mean only (ML keeps all its strides);
+    * ``scope = all`` strides are left out of both the MB and the ML mean, for every variable;
+    * participants listed with either scope are dropped from both systems (``scope = all``: from every variable);
+    * a participant left with no strides is dropped with a warning.
     """
     jj = ds.var_index(code)
     mb_out, ml_out, subs = [], [], []
     for ii, s in enumerate(ds.subjects):
-        if (s, code) in sel.participants:
+        if s in sel.participants_all or (s, code) in sel.participants:
             continue
         nt = int(ds.n_trials[ii, jj])
-        keep = [t for t in range(nt) if (s, t + 1, code) not in sel.strides]
-        if not keep:
+        drop_all = {t for (ss, t) in sel.strides_all if ss == s}                  # every variable, both systems
+        keep_ml = [t for t in range(nt) if (t + 1) not in drop_all]
+        keep_mb = [t for t in keep_ml if (s, t + 1, code) not in sel.strides]
+        if not keep_mb or not keep_ml:
             print(f'  warning: all strides of {s} {code} excluded - participant dropped')
             continue
-        mb_out.append(np.nanmean(ds.mb[ii, jj, keep], axis=0))
-        ml_out.append(np.nanmean(ds.ml[ii, jj, :nt], axis=0))
+        mb_out.append(np.nanmean(ds.mb[ii, jj, keep_mb], axis=0))
+        ml_out.append(np.nanmean(ds.ml[ii, jj, keep_ml], axis=0))
         subs.append(s)
     return np.array(mb_out), np.array(ml_out), subs
 

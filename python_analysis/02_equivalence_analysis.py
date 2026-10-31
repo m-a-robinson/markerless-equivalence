@@ -55,7 +55,7 @@ def main():
     tag = args.tag or ('mdc' if use_mdc else f'{float(args.bound):g}deg')
     ds = load_dataset()
     sel = load_selection(args.selection)
-    print(f'Outlier selection: {sel.source}  ({len(sel.strides)} strides, {len(sel.participants)} participants excluded)')
+    print(f'Outlier selection: {sel.describe()}')
 
     arrays, meta, rows = {}, {'tag': tag, 'alpha_ci': args.alpha_ci, 'alpha_spm': args.alpha_spm,
                               'variables': [], 'titles': [], 'bounds': [], 'n': []}, []
