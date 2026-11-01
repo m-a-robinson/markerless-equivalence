@@ -96,7 +96,7 @@ def main():
                 bbox=dict(fc='white', ec='none', pad=0.8, alpha=0.75), zorder=8)
         lim = max(10, 5 * np.ceil(max(np.abs(lo).max(), np.abs(hi).max(), bound) / 5))
         ax.set_xlim(0, 100); ax.set_ylim(-lim, lim * 1.25); ax.set_xticks([0, 20, 40, 60, 80, 100])
-        ax.set_title(f'{title} (n={meta["n"][k]})', fontsize=9, fontweight='bold')
+        ax.set_title(title, fontsize=9, fontweight='bold')
         ax.tick_params(labelsize=7, labelbottom=False)
         if c == 0:
             ax.set_ylabel('MB − ML (°)', fontsize=8)

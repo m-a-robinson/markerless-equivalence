@@ -87,12 +87,12 @@ for i, (lab, m, lo, hi, c, sig) in enumerate(rows):
     ax.plot([lo, hi], [y, y], color=col[c], lw=3, solid_capstyle='butt')
     ax.plot([lo, lo], [y - 0.14, y + 0.14], color=col[c], lw=2); ax.plot([hi, hi], [y - 0.14, y + 0.14], color=col[c], lw=2)
     ax.plot(m, y, 's', color='k', ms=6, zorder=5)
-    ax.text(-13.2, y, lab, ha='right', va='center', fontsize=8.5)
+    ax.annotate(lab, xy=(-0.03, y), xycoords=('axes fraction', 'data'), ha='right', va='center', fontsize=8.5)
     ax.annotate(name[c], xy=(1.03, y), xycoords=('axes fraction', 'data'), fontsize=9.5, fontweight='bold',
                 color=col[c], va='center')
     ax.annotate('SPM: ' + ('different' if sig else 'n.s.'), xy=(1.03, y - 0.3), xycoords=('axes fraction', 'data'),
                 fontsize=7.5, color='0.35', va='center')
-ax.set_xlim(-12, 12); ax.set_ylim(0.3, len(rows) + 0.85)
+ax.set_xlim(-14, 14); ax.set_ylim(0.3, len(rows) + 0.85)       # same x-limits as panel c, so the axes align
 ax.set_yticks([]); ax.set_xticks([-10, -D, 0, D, 10]); ax.set_xticklabels(['−10', '−Δ', '0', '+Δ', '10'])
 ax.set_xlabel('Mean difference MB − ML (°)', fontsize=9)
 for sp in ('top', 'right', 'left'):
@@ -124,7 +124,7 @@ for cc, dc in ((INCONCLUSIVE, C_INC), (NOT_EQUIVALENT, C_NE)):
 axb.plot(x, md, 'k', lw=2.4)
 axb.axhline(0, color='k', lw=0.6, ls=':')
 bounds_lines(axb, horizontal=True)
-axb.set_xlim(0, 100); axb.set_ylim(-9.5, 21.8)
+axb.set_xlim(0, 100); axb.set_ylim(-9.5, 20.5)
 axb.set_xticks([]); axb.set_ylabel('Mean difference MB − ML (°)', fontsize=9)
 axb.text(1.5, D + 0.5, '+Δ', color='#1b7a45', fontsize=9, fontweight='bold'); axb.text(1.5, -D - 1.7, '−Δ', color='#1b7a45', fontsize=9, fontweight='bold')
 labpos = {EQUIVALENT: (None, 17.6), INCONCLUSIVE: (None, 17.6), NOT_EQUIVALENT: (None, 17.6)}
@@ -133,7 +133,9 @@ for cc in (EQUIVALENT, INCONCLUSIVE, NOT_EQUIVALENT):
     if r:
         s0, e0 = max(r, key=lambda t: t[1] - t[0])
         axb.plot([s0, e0], [16.3, 16.3], color=col[cc], lw=3.5, solid_capstyle='butt')
-        axb.text((s0 + e0) / 2 + (6 if cc == NOT_EQUIVALENT else 0), 17.7 + (2.0 if cc == NOT_EQUIVALENT else 0), name[cc], ha='center', va='bottom', fontsize=8.6, fontweight='bold', color=col[cc])
+        # all three labels share one baseline; the neighbouring labels are anchored to the facing ends of their runs
+        xl, ha_ = {EQUIVALENT: ((s0 + e0) / 2, 'center'), INCONCLUSIVE: (e0, 'right'), NOT_EQUIVALENT: (s0 + 1, 'left')}[cc]
+        axb.text(xl, 17.7, name[cc], ha=ha_, va='bottom', fontsize=8.2, fontweight='bold', color=col[cc])
 axb.text(99, -8.6, f'{100 * np.mean(cls == EQUIVALENT):.0f}% of the cycle equivalent', ha='right', fontsize=8.5, color='#1b7a45', fontweight='bold')
 for sp in ('top', 'right'):
     axb.spines[sp].set_visible(False)
