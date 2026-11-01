@@ -87,17 +87,17 @@ for i, (lab, m, lo, hi, c, sig) in enumerate(rows):
     ax.plot([lo, hi], [y, y], color=col[c], lw=3, solid_capstyle='butt')
     ax.plot([lo, lo], [y - 0.14, y + 0.14], color=col[c], lw=2); ax.plot([hi, hi], [y - 0.14, y + 0.14], color=col[c], lw=2)
     ax.plot(m, y, 's', color='k', ms=6, zorder=5)
-    ax.annotate(lab, xy=(-0.03, y), xycoords=('axes fraction', 'data'), ha='right', va='center', fontsize=8.5)
-    ax.annotate(name[c], xy=(1.03, y), xycoords=('axes fraction', 'data'), fontsize=9.5, fontweight='bold',
+    ax.annotate(lab, xy=(0.1, y), xycoords=('axes fraction', 'data'), ha='right', va='center', fontsize=8.5)
+    ax.annotate(name[c], xy=(0.95, y), xycoords=('axes fraction', 'data'), fontsize=9.5, fontweight='bold',
                 color=col[c], va='center')
     ax.annotate('SPM: ' + ('different' if sig else 'n.s.'), xy=(1.03, y - 0.3), xycoords=('axes fraction', 'data'),
                 fontsize=7.5, color='0.35', va='center')
 ax.set_xlim(-14, 14); ax.set_ylim(0.3, len(rows) + 0.85)       # same x-limits as panel c, so the axes align
 ax.set_yticks([]); ax.set_xticks([-10, -D, 0, D, 10]); ax.set_xticklabels(['−10', '−Δ', '0', '+Δ', '10'])
-ax.set_xlabel('Mean difference MB − ML (°)', fontsize=9)
+ax.set_xlabel('Mean difference (°)', fontsize=9)
 for sp in ('top', 'right', 'left'):
     ax.spines[sp].set_visible(False)
-ax.set_title('Equivalence test at one point of the gait cycle\n(90% CI of the mean difference vs ±Δ)', fontsize=10, fontweight='bold', pad=10)
+ax.set_title('Equivalence test examples - one point of the gait cycle', fontsize=10, fontweight='bold', pad=10)
 ax.text(0, len(rows) + 0.62, 'equivalence region', ha='center', fontsize=8, color='#1b7a45')
 axa = ax
 
@@ -125,7 +125,7 @@ axb.plot(x, md, 'k', lw=2.4)
 axb.axhline(0, color='k', lw=0.6, ls=':')
 bounds_lines(axb, horizontal=True)
 axb.set_xlim(0, 100); axb.set_ylim(-9.5, 20.5)
-axb.set_xticks([]); axb.set_ylabel('Mean difference MB − ML (°)', fontsize=9)
+axb.set_xticks([]); axb.set_ylabel('Mean difference (°)', fontsize=9)
 axb.text(1.5, D + 0.5, '+Δ', color='#1b7a45', fontsize=9, fontweight='bold'); axb.text(1.5, -D - 1.7, '−Δ', color='#1b7a45', fontsize=9, fontweight='bold')
 labpos = {EQUIVALENT: (None, 17.6), INCONCLUSIVE: (None, 17.6), NOT_EQUIVALENT: (None, 17.6)}
 for cc in (EQUIVALENT, INCONCLUSIVE, NOT_EQUIVALENT):
@@ -136,10 +136,10 @@ for cc in (EQUIVALENT, INCONCLUSIVE, NOT_EQUIVALENT):
         # all three labels share one baseline; the neighbouring labels are anchored to the facing ends of their runs
         xl, ha_ = {EQUIVALENT: ((s0 + e0) / 2, 'center'), INCONCLUSIVE: (e0, 'right'), NOT_EQUIVALENT: (s0 + 1, 'left')}[cc]
         axb.text(xl, 17.7, name[cc], ha=ha_, va='bottom', fontsize=8.2, fontweight='bold', color=col[cc])
-axb.text(99, -8.6, f'{100 * np.mean(cls == EQUIVALENT):.0f}% of the cycle equivalent', ha='right', fontsize=8.5, color='#1b7a45', fontweight='bold')
+axb.text(99, -8.6, f'{100 * np.mean(cls == EQUIVALENT):.0f}% of the gait cycle equivalent', ha='right', fontsize=8.5, color='#1b7a45', fontweight='bold')
 for sp in ('top', 'right'):
     axb.spines[sp].set_visible(False)
-axb.set_title('Equivalence across the gait cycle (group level)', fontsize=10, fontweight='bold', pad=14)
+axb.set_title('Equivalence test example - across the gait cycle', fontsize=10, fontweight='bold', pad=14)
 sig = (lo > 0) | (hi < 0)
 bar = fig.add_subplot(subb[1])
 bar.set_xlim(0, 100); bar.set_ylim(0, 1); bar.set_yticks([])
@@ -154,8 +154,8 @@ bar.text(-0.015, 0.5, 'SPM', transform=bar.transAxes, ha='right', va='center', f
 # ------------------------------------------------------------------ c: LoA at one point
 sc = [  # mean, sd, outcome text, colour, explanation
     (0.6, 1.1, 'Acceptable agreement (individual level)', C_EQ, 'LoA inside ±Δ: individual differences are expected to be acceptable'),
-    (0.8, 3.5, 'Equivalent for group means only', C_INC, 'mean inside ±Δ, but LoA exceed ±Δ: individuals may differ too much'),
-    (6.6, 1.5, 'Systematic bias', C_NE, 'the mean difference itself exceeds ±Δ'),
+    (0.8, 3.5, 'Agreement for group means only', C_INC, 'mean inside ±Δ, but LoA exceed ±Δ: individuals likely differ too much'),
+    (6.6, 1.5, 'Unacceptable systematic bias', C_NE, 'the mean difference itself exceeds ±Δ'),
 ]
 sub = gs[1, 0].subgridspec(3, 1, hspace=0.55)
 xs = np.linspace(-14, 14, 400)
@@ -178,11 +178,11 @@ for k, (m, s_, ttl, c, expl) in enumerate(sc):
         a.spines[sp].set_visible(False)
     a.set_xticks([-10, -D, 0, D, 10] if k == 2 else []); a.set_xticklabels(['−10', '−Δ', '0', '+Δ', '10'] if k == 2 else [])
     if k == 2:
-        a.set_xlabel('Individual differences MB − ML (°)', fontsize=9)
+        a.set_xlabel('Individual differences (°)', fontsize=9)
     a.text(-13.6, 0.985, ttl, transform=a.get_xaxis_transform(), fontsize=9.5, fontweight='bold', color=c, va='top', ha='left')
     a.text(-13.6, 0.815, expl, transform=a.get_xaxis_transform(), fontsize=7.6, color='0.3', va='top', ha='left')
     if k == 0:
-        a.set_title('Limits of agreement at one point of the gait cycle\n(distribution of individual differences; LoA = mean ± 1.96 SD)',
+        a.set_title('Limits of agreement examples - one point of the gait cycle',
                     fontsize=10, fontweight='bold', pad=14, loc='left')
 axc0 = fig.axes[-3]
 
@@ -211,11 +211,11 @@ axd.plot(x, m_s, 'k', lw=2.4, zorder=5)
 axd.axhline(0, color='k', lw=0.6, ls=':')
 bounds_lines(axd, horizontal=True)
 axd.set_xlim(0, 100); axd.set_ylim(-16, 16); axd.set_xticks([])
-axd.set_ylabel('Difference MB − ML (°)', fontsize=9)
+axd.set_ylabel('Difference (°)', fontsize=9)
 axd.text(1.5, D + 0.6, '+Δ', color='#1b7a45', fontsize=9, fontweight='bold'); axd.text(1.5, -D - 2.0, '−Δ', color='#1b7a45', fontsize=9, fontweight='bold')
 for sp in ('top', 'right'):
     axd.spines[sp].set_visible(False)
-axd.set_title('Limits of agreement across the gait cycle (individual level)', fontsize=10, fontweight='bold', pad=14)
+axd.set_title('Limits of agreement example - across the gait cycle', fontsize=10, fontweight='bold', pad=14)
 bar2 = fig.add_subplot(subd[1])
 bar2.set_xlim(0, 100); bar2.set_ylim(0, 1); bar2.set_yticks([])
 for cc, sc_ in ((LOA_ACCEPTABLE, C_EQ), (LOA_GROUP_ONLY, C_INC), (LOA_BIAS, C_NE)):
@@ -228,17 +228,17 @@ bar2.set_xlabel('Gait cycle (%)', fontsize=9)
 bar2.text(-0.015, 0.5, 'LoA\noutcome', transform=bar2.transAxes, ha='right', va='center', fontsize=7.3, linespacing=0.95)
 
 # ------------------------------------------------------------------ legends / reading guide
-fig.legend(handles=[Patch(color=L_EQ, label='Equivalent: CI inside ±Δ'), Patch(color=C_INC, label='Inconclusive: CI crosses a bound'),
-                    Patch(color=C_NE, label='Not equivalent: CI beyond a bound'),
-                    Patch(color=L_EQ, label='LoA inside ±Δ: acceptable'), Patch(color=C_INC, label='LoA exceed ±Δ, mean inside'),
-                    Patch(color=C_NE, label='Mean difference beyond ±Δ'),
-                    Line2D([0], [0], color=C_BOUND, ls='--', lw=1.8, label='Bounds ±Δ (e.g. MDC or ±5°)'),
+fig.legend(handles=[#Patch(color=L_EQ, label='Equivalent: CI inside ±Δ'), Patch(color=C_INC, label='Inconclusive: CI crosses a bound'),
+                    #Patch(color=C_NE, label='Not equivalent: CI beyond a bound'),
+                    #Patch(color=L_EQ, label='LoA inside ±Δ: acceptable'), Patch(color=C_INC, label='LoA exceed ±Δ, mean inside'),
+                    #Patch(color=C_NE, label='Mean difference beyond ±Δ'),
+                    Line2D([0], [0], color=C_BOUND, ls='--', lw=1.8, label='Equivalence bounds ±Δ'),
                     Line2D([0], [0], color='k', lw=2, label='Mean difference'),
                     Line2D([0], [0], color='k', ls='--', lw=1.3, label='Pointwise LoA (±1.96 SD)'),
                     Line2D([0], [0], color='0.55', lw=1, label='Individual participants')],
-           loc='lower center', ncol=5, fontsize=7.8, frameon=False, bbox_to_anchor=(0.5, 0.004))
-fig.text(0.5, 0.975, 'Group equivalence and individual agreement: possible outcomes (schematic, synthetic data)',
-         ha='center', fontsize=13, fontweight='bold')
+           loc='lower center', ncol=4, fontsize=7.8, frameon=False, bbox_to_anchor=(0.5, 0.004))
+#fig.text(0.5, 0.975, 'Group equivalence and individual agreement: possible outcomes (schematic, synthetic data)',
+#         ha='center', fontsize=13, fontweight='bold')
 # panel letters: one baseline per row, one left edge per column (figure coordinates)
 row1 = max(axa.get_position().y1, axb.get_position().y1) + 0.045
 row2 = max(axd.get_position().y1, axc0.get_position().y1) + 0.045

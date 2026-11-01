@@ -58,28 +58,28 @@ def main():
     x = np.arange(101)
 
     fig, axes = plt.subplots(4, 3, figsize=(6, 6.9))
-    fig.subplots_adjust(left=0.105, right=0.985, top=0.925, bottom=0.07, hspace=0.42, wspace=0.3)
+    fig.subplots_adjust(left=0.105, right=0.97, top=0.925, bottom=0.07, hspace=0.42, wspace=0.3)
     for k, (ax, var) in enumerate(zip(axes.ravel(), ANALYSED)):
         mb, ml, subs = participant_means(ds, var.code, sel)
         mean_sd_plot(ax, mb, COLOURS['mb'], x)
         mean_sd_plot(ax, ml, COLOURS['ml'], x)
         ax.axhline(0, color='0.35', lw=0.7, zorder=0)
-        ax.set_title(var.title, fontsize=9, fontweight='bold', pad=4)
+        ax.set_title(var.title, fontsize=7, fontweight='bold', pad=4)
         ax.set_xlim(0, 100); ax.set_xticks([0, 20, 40, 60, 80, 100])
         ax.set_ylim(YLIM_MIN[k], YLIM_MAX[k])
-        ax.tick_params(labelsize=7.5)
+        ax.tick_params(labelsize=7)
         for sp in ('top', 'right'):                          # "box off"
             ax.spines[sp].set_visible(False)
         if k % 3 == 0:
-            ax.set_ylabel('Angle (°)', fontsize=8.5)
+            ax.set_ylabel('Angle (°)', fontsize=7)
         if k >= 9:
-            ax.set_xlabel('Gait Cycle (%)', fontsize=8.5)
+            ax.set_xlabel('Gait Cycle (%)', fontsize=7)
         if len(subs) != ds.mb.shape[0]:
             print(f'  {var.title}: n = {len(subs)}')
 
     fig.legend(handles=[Line2D([0], [0], color=COLOURS['ml'], lw=2, label='Markerless'),
                         Line2D([0], [0], color=COLOURS['mb'], lw=2, label='Marker-based')],
-               loc='upper center', ncol=2, frameon=False, fontsize=7.5, bbox_to_anchor=(0.5, 1.0))   # as in the other figures
+               loc='upper center', ncol=2, frameon=False, fontsize=7, bbox_to_anchor=(0.5, 0.99))   # as in the other figures
     args.out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(args.out, dpi=args.dpi)
     print(f'Wrote {args.out}')

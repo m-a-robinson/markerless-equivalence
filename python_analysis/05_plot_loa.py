@@ -84,16 +84,17 @@ def main():
         for s in (bound, -bound):
             ax.axhline(s, color=BOUND_C, ls='--', lw=1.6, zorder=6)
 
-        i = int(np.argmax(w))                                    # widest point of the LoA
-        ax.annotate('', xy=(i, lo[i]), xytext=(i, hi[i]), zorder=7,
-                    arrowprops=dict(arrowstyle='<->', color=ARROW_C, lw=1.4, shrinkA=0, shrinkB=0))
-        ax.text(i + (3 if i < 70 else -3), md[i], f'{w[i]:.0f}°', color=ARROW_C, fontsize=7.5, fontweight='bold',
-                ha='left' if i < 70 else 'right', va='center', zorder=7,
-                bbox=dict(fc='white', ec='none', pad=0.5, alpha=0.8))
+        i = int(np.argmax(w))     # widest point of the LoA
+        # SECTION BELOW ADDS RED ARROW FOR MAX LOA DIFFERENCE
+        # ax.annotate('', xy=(i, lo[i]), xytext=(i, hi[i]), zorder=7,
+        #             arrowprops=dict(arrowstyle='<->', color=ARROW_C, lw=1.4, shrinkA=0, shrinkB=0))
+        # ax.text(i + (3 if i < 70 else -3), md[i], f'{w[i]:.0f}°', color=ARROW_C, fontsize=7.5, fontweight='bold',
+        #         ha='left' if i < 70 else 'right', va='center', zorder=7,
+        #         bbox=dict(fc='white', ec='none', pad=0.5, alpha=0.8))
         pc = [100 * np.mean(cls == cc) for cc in (LOA_ACCEPTABLE, LOA_GROUP_ONLY, LOA_BIAS)]
-        ax.text(0.02, 0.97, f'width {w.mean():.1f}° (mean)\ngreen/amber/red: {pc[0]:.0f}/{pc[1]:.0f}/{pc[2]:.0f}%',
-                transform=ax.transAxes, ha='left', va='top', fontsize=6.5, color='#333',
-                bbox=dict(fc='white', ec='none', pad=0.8, alpha=0.75), zorder=8)
+        # ax.text(0.02, 0.97, f'width {w.mean():.1f}° (mean)\ngreen/amber/red: {pc[0]:.0f}/{pc[1]:.0f}/{pc[2]:.0f}%',
+        #         transform=ax.transAxes, ha='left', va='top', fontsize=6.5, color='#333',
+        #         bbox=dict(fc='white', ec='none', pad=0.8, alpha=0.75), zorder=8)
         lim = max(10, 5 * np.ceil(max(np.abs(lo).max(), np.abs(hi).max(), bound) / 5))
         ax.set_xlim(0, 100); ax.set_ylim(-lim, lim * 1.25); ax.set_xticks([0, 20, 40, 60, 80, 100])
         ax.set_title(title, fontsize=9, fontweight='bold')
@@ -115,15 +116,15 @@ def main():
         if c == 0:
             axb.set_ylabel('LoA', fontsize=7, rotation=0, ha='right', va='center')
 
-    fig.legend(handles=[Patch(color=FILL[LOA_ACCEPTABLE], label=f'LoA inside ±{bound:g}°: acceptable'),
-                        Patch(color=FILL[LOA_GROUP_ONLY], label=f'LoA exceed ±{bound:g}°, mean inside'),
-                        Patch(color=FILL[LOA_BIAS], label=f'Mean difference beyond ±{bound:g}°'),
+    fig.legend(handles=[#Patch(color=FILL[LOA_ACCEPTABLE], label=f'LoA inside ±{bound:g}°: acceptable'),
+                        #Patch(color=FILL[LOA_GROUP_ONLY], label=f'LoA exceed ±{bound:g}°, mean inside'),
+                        #Patch(color=FILL[LOA_BIAS], label=f'Mean difference beyond ±{bound:g}°'),
                         Line2D([0], [0], color='k', lw=2, label='Mean difference'),
                         Line2D([0], [0], color='k', ls='--', lw=1.2, label='Pointwise LoA (± 1.96 SD)'),
                         Line2D([0], [0], color=BOUND_C, ls='--', lw=1.6, label=f'±{bound:g}° bounds'),
-                        Line2D([0], [0], color='0.55', lw=1, label='Individual participants'),
-                        Line2D([0], [0], color=ARROW_C, marker='$\\leftrightarrow$', ls='', ms=9, label='Max LoA width')],
-               loc='upper center', ncol=3, fontsize=7.5, frameon=False, bbox_to_anchor=(0.5, 0.997))
+                        Line2D([0], [0], color='0.55', lw=1, label='Individual participants')],
+                        #Line2D([0], [0], color=ARROW_C, marker='$\\leftrightarrow$', ls='', ms=9, label='Max LoA width')],
+               loc='upper center', ncol=4, fontsize=7.5, frameon=False, bbox_to_anchor=(0.5, 0.96))
     out = args.out or FIGURES_DIR / f'loa_{args.tag}.jpg'
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, dpi=args.dpi)
