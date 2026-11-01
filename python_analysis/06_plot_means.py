@@ -77,9 +77,9 @@ def main():
         if len(subs) != ds.mb.shape[0]:
             print(f'  {var.title}: n = {len(subs)}')
 
-    fig.legend(handles=[Line2D([0], [0], color=COLOURS['ml'], lw=2.5, label='Markerless'),
-                        Line2D([0], [0], color=COLOURS['mb'], lw=2.5, label='Marker-based')],
-               loc='upper center', ncol=2, frameon=False, fontsize=9, bbox_to_anchor=(0.5, 1.0))
+    fig.legend(handles=[Line2D([0], [0], color=COLOURS['ml'], lw=2, label='Markerless'),
+                        Line2D([0], [0], color=COLOURS['mb'], lw=2, label='Marker-based')],
+               loc='upper center', ncol=2, frameon=False, fontsize=7.5, bbox_to_anchor=(0.5, 1.0))   # as in the other figures
     args.out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(args.out, dpi=args.dpi)
     print(f'Wrote {args.out}')
