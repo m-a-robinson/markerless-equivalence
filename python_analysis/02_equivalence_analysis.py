@@ -13,7 +13,9 @@ For each of the 12 variables:
    * **not equivalent**  - the CI lies entirely beyond one bound,
    * **inconclusive**    - the CI crosses a bound;
 
-4. an spm1d paired t-test (two-tailed, p < 0.05) marks where the systems differ statistically.
+4. an spm1d paired t-test (two-tailed) marks where the systems differ statistically.  Its alpha is Bonferroni-corrected
+   for the 12 variables, 0.05 / 12 = 0.0042 (random-field theory already controls the family-wise error across the gait
+   cycle within each variable); use ``--alpha-spm 0.05`` for the uncorrected test.
 
 Outputs (in ``results/``)
 -------------------------
@@ -41,30 +43,37 @@ from common import (ANALYSED, CLASS_LABELS, EQUIVALENT, INCONCLUSIVE, NOT_EQUIVA
                     spm_paired_ttest)
 
 
+ALPHA_FAMILY = 0.05        # family-wise alpha shared by the SPM tests of all variables (Bonferroni: divided by their number)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--bound', default='5', help='equivalence bound in degrees (e.g. 5) or "mdc" (default 5)')
     ap.add_argument('--selection', type=Path, default=SELECTION_FILE, help='outlier selection file')
     ap.add_argument('--alpha-ci', type=float, default=0.1, help='alpha of the CI (0.1 -> 90 %% CI; default)')
-    ap.add_argument('--alpha-spm', type=float, default=0.05, help='alpha of the SPM paired t-test')
+    ap.add_argument('--alpha-spm', type=float, default=None,
+                    help='alpha of the SPM paired t-test (default: 0.05 divided by the number of variables, i.e. 0.05/12)')
     ap.add_argument('--tag', default=None, help='label used in output file names (default derived from the bound)')
     ap.add_argument('--out-dir', type=Path, default=RESULTS_DIR)
     args = ap.parse_args()
 
+    alpha_spm = args.alpha_spm if args.alpha_spm is not None else ALPHA_FAMILY / len(ANALYSED)
     use_mdc = args.bound.lower() == 'mdc'
     tag = args.tag or ('mdc' if use_mdc else f'{float(args.bound):g}deg')
     ds = load_dataset()
     sel = load_selection(args.selection)
     print(f'Outlier selection: {sel.describe()}')
+    print(f'SPM paired t-test: alpha = {alpha_spm:.4f}' + (f' (= {ALPHA_FAMILY:g}/{len(ANALYSED)}, Bonferroni across variables)'
+          if args.alpha_spm is None else ' (set with --alpha-spm)'))
 
-    arrays, meta, rows = {}, {'tag': tag, 'alpha_ci': args.alpha_ci, 'alpha_spm': args.alpha_spm,
+    arrays, meta, rows = {}, {'tag': tag, 'alpha_ci': args.alpha_ci, 'alpha_spm': alpha_spm,
                               'variables': [], 'titles': [], 'bounds': [], 'n': []}, []
     for k, var in enumerate(ANALYSED):
         bound = float(ds.mdc_bounds[k]) if use_mdc else float(args.bound)
         mb, ml, subs = participant_means(ds, var.code, sel)
         lo, hi, md = paired_ci(mb, ml, args.alpha_ci)
         cls = classify_equivalence(lo, hi, bound)
-        sig, tstat, zstar = spm_paired_ttest(mb, ml, args.alpha_spm)
+        sig, tstat, zstar = spm_paired_ttest(mb, ml, alpha_spm)
 
         for name, arr in (('lo', lo), ('hi', hi), ('md', md), ('cls', cls), ('spm_sig', sig), ('spm_t', tstat)):
             arrays[f'{var.code}_{name}'] = arr
@@ -77,7 +86,7 @@ def main():
                          pct_inconclusive=pct[INCONCLUSIVE], pct_spm_significant=100 * sig.mean(),
                          fully_equivalent=bool(np.all(cls == EQUIVALENT)),
                          equivalent_intervals='; '.join(f'{a}-{b}' for a, b in runs(cls == EQUIVALENT)) or '-',
-                         spm_threshold=zstar))
+                         spm_alpha=alpha_spm, spm_threshold=zstar))
         print(f'{var.title:20s} n={len(subs):2d} bound={bound:5.2f}  E/NE/I = '
               f'{pct[EQUIVALENT]:3.0f}/{pct[NOT_EQUIVALENT]:3.0f}/{pct[INCONCLUSIVE]:3.0f} %   SPM sig. {100 * sig.mean():3.0f} %')
 
@@ -92,7 +101,7 @@ def main():
 
     # ---- Table 1 (intervals are gait-cycle %, node index 0-100) ----
     hdr = ['Joint variable', 'Bound ±(°)', 'n', 'Fully equivalent', '% Equivalent', '% Not equivalent',
-           '% Inconclusive', '% SPM p<0.05', 'Equivalent gait cycle intervals (%)']
+           '% Inconclusive', f'% SPM p<{alpha_spm:.4f}', 'Equivalent gait cycle intervals (%)']
     body = [[r['title'], f"{r['bound']:.2f}" if use_mdc else f"{r['bound']:g}", r['n'],
              'Yes' if r['fully_equivalent'] else 'No', f"{r['pct_equivalent']:.0f}", f"{r['pct_not_equivalent']:.0f}",
              f"{r['pct_inconclusive']:.0f}", f"{r['pct_spm_significant']:.0f}",
