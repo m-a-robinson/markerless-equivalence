@@ -15,7 +15,8 @@ finds no difference (c), or a clear difference beyond the bound (f).  Rows are o
 the mean over the variables.
 
 Outcomes: equivalent = 90 % CI of the mean difference MB - ML inside the bounds; not equivalent = CI entirely beyond a bound;
-inconclusive = CI crosses a bound.  SPM = spm1d paired t-test, two-tailed, p < 0.05 (see ``02_equivalence_analysis.py``).
+inconclusive = CI crosses a bound.  SPM = spm1d paired t-test, two-tailed, with the alpha Bonferroni-corrected for the 12 variables
+(0.05 / 12 = 0.0042; see ``02_equivalence_analysis.py``).
 
 Outputs (``results/``): ``table_equivalence_vs_spm_<tag>.csv`` (all numbers) and, if python-docx is installed,
 ``table_equivalence_vs_spm_<tag>.docx`` (landscape, with merged headers and a footnote).
@@ -78,9 +79,14 @@ def main():
             w.writerow([r['variable'], r['n']] + [f"{r[f'{o}_{s}']:.1f}" for o, _ in OUTCOMES for s in ('total', 'ns', 'sig')]
                        + [f"{r['spm_total']:.1f}"])
 
+    alpha_spm = meta.get('alpha_spm', 0.05)
+    nvar = len(meta['variables'])
+    alpha_txt = (f'{alpha_spm:.4f} (0.05/{nvar}, Bonferroni-corrected for the variables)'
+                 if abs(alpha_spm * nvar - 0.05) < 1e-9 else f'{alpha_spm:g}')
     footnote = (f'Values are the percentage of the gait cycle (101 points). Equivalent: 90% CI of the mean difference '
                 f'(marker-based − markerless) inside {bound_txt}; not equivalent: CI entirely beyond a bound; inconclusive: CI '
-                f'crosses a bound. SPM: spm1d paired t-test, two-tailed, p < 0.05; n.s. = not significant, sig. = significant. '
+                f'crosses a bound. SPM: spm1d paired t-test, two-tailed, alpha = {alpha_txt}, with random-field-theory control across the gait cycle; '
+                f'n.s. = not significant, sig. = significant. '
                 f'Percentages are rounded, so rows may not sum to 100.')
     print(f'Equivalence outcomes (% of the gait cycle) against the SPM result, bound {bound_txt}')
     head = f"{'Variable':22s}{'n':>3s} | {'Equivalent':>16s} | {'Inconclusive':>16s} | {'Not equivalent':>16s} | SPM sig."

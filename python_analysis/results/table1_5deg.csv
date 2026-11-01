@@ -1,13 +1,13 @@
-Joint variable,Bound ±(°),n,Fully equivalent,% Equivalent,% Not equivalent,% Inconclusive,% SPM p<0.05,Equivalent gait cycle intervals (%)
-Pelvis Obliquity,5,23,No,90,0,10,64,0–90
-Pelvis Rotation,5,23,No,82,0,18,58,0–19; 35–75; 79–100
-Knee Varus,5,23,No,77,0,23,30,0–7; 10–60; 82–100
-Knee Flexion,5,23,No,76,0,24,45,0–56; 71–84; 95–100
-Hip Adduction,5,23,No,70,0,30,83,7–77
-Pelvis Anterior Tilt,5,23,No,66,0,34,26,5–36; 54–88
-Ankle Dorsiflexion,5,23,No,63,7,30,86,8–51; 67–86
-Hip Flexion,5,23,No,55,0,45,28,0–33; 54–59; 85–100
-Ankle Rotation,5,23,No,15,38,48,64,12–23; 52–54
-Hip Rotation,5,23,No,11,4,85,21,26–27; 59–59; 79–84; 89–90
-Ankle Inversion,5,23,No,7,63,30,84,81–87
+Joint variable,Bound ±(°),n,Fully equivalent,% Equivalent,% Not equivalent,% Inconclusive,% SPM p<0.0042,Equivalent gait cycle intervals (%)
+Pelvis Obliquity,5,23,No,90,0,10,53,0–90
+Pelvis Rotation,5,23,No,82,0,18,31,0–19; 35–75; 79–100
+Knee Varus,5,23,No,77,0,23,19,0–7; 10–60; 82–100
+Knee Flexion,5,23,No,76,0,24,29,0–56; 71–84; 95–100
+Hip Adduction,5,23,No,70,0,30,56,7–77
+Pelvis Anterior Tilt,5,23,No,66,0,34,0,5–36; 54–88
+Ankle Dorsiflexion,5,23,No,63,7,30,73,8–51; 67–86
+Hip Flexion,5,23,No,55,0,45,6,0–33; 54–59; 85–100
+Ankle Rotation,5,23,No,15,38,48,50,12–23; 52–54
+Hip Rotation,5,23,No,11,4,85,17,26–27; 59–59; 79–84; 89–90
+Ankle Inversion,5,23,No,7,63,30,75,81–87
 Foot Progression,5,23,No,0,17,83,100,–

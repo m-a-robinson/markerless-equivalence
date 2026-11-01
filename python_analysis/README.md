@@ -84,31 +84,33 @@ After changing the selection rerun `02`-`06` and, if needed, `python ../variance
 
 ## Default results (`manuscript` selection, scope all, +/-5 deg)
 
-Equivalence outcomes are % of the gait cycle; the LoA columns give the mean LoA width (deg) and the % of the cycle in
+Equivalence outcomes are % of the gait cycle (SPM significant at the corrected alpha 0.05/12); the LoA columns give the mean LoA width (deg) and the % of the cycle in
 each LoA outcome (acceptable / group level only / systematic bias).  The full cross-tabulation of the outcomes with the
 SPM result is in `results/table_equivalence_vs_spm_5deg.*`.
 
 | variable | n | equiv. | inconcl. | not equiv. | SPM sig. | LoA width | LoA acceptable / group only / bias |
 |---|---|---|---|---|---|---|---|
-| Pelvis Anterior Tilt | 23 | 66 | 34 | 0 | 26 | 21.6 | 0 / 100 / 0 |
-| Pelvis Obliquity | 23 | 90 | 10 | 0 | 64 | 6.7 | 50 / 50 / 0 |
-| Pelvis Rotation | 23 | 82 | 18 | 0 | 58 | 11.2 | 0 / 99 / 1 |
-| Hip Flexion | 23 | 55 | 45 | 0 | 28 | 23.2 | 0 / 98 / 2 |
-| Hip Adduction | 23 | 70 | 30 | 0 | 83 | 11.4 | 3 / 82 / 15 |
-| Hip Rotation | 23 | 11 | 85 | 4 | 21 | 28.8 | 0 / 76 / 24 |
-| Knee Flexion | 23 | 76 | 24 | 0 | 45 | 11.4 | 1 / 89 / 10 |
-| Knee Varus | 23 | 77 | 23 | 0 | 30 | 12.9 | 22 / 74 / 4 |
+| Pelvis Anterior Tilt | 23 | 66 | 34 | 0 | 0 | 21.6 | 0 / 100 / 0 |
+| Pelvis Obliquity | 23 | 90 | 10 | 0 | 53 | 6.7 | 50 / 50 / 0 |
+| Pelvis Rotation | 23 | 82 | 18 | 0 | 31 | 11.2 | 0 / 99 / 1 |
+| Hip Flexion | 23 | 55 | 45 | 0 | 6 | 23.2 | 0 / 98 / 2 |
+| Hip Adduction | 23 | 70 | 30 | 0 | 56 | 11.4 | 3 / 82 / 15 |
+| Hip Rotation | 23 | 11 | 85 | 4 | 17 | 28.8 | 0 / 76 / 24 |
+| Knee Flexion | 23 | 76 | 24 | 0 | 29 | 11.4 | 1 / 89 / 10 |
+| Knee Varus | 23 | 77 | 23 | 0 | 19 | 12.9 | 22 / 74 / 4 |
 | Foot Progression | 23 | 0 | 83 | 17 | 100 | 11.2 | 0 / 40 / 60 |
-| Ankle Dorsiflexion | 23 | 63 | 30 | 7 | 86 | 8.6 | 0 / 82 / 18 |
-| Ankle Inversion | 23 | 7 | 30 | 63 | 84 | 14.4 | 0 / 18 / 82 |
-| Ankle Rotation | 23 | 15 | 48 | 38 | 64 | 23.6 | 0 / 45 / 55 |
+| Ankle Dorsiflexion | 23 | 63 | 30 | 7 | 73 | 8.6 | 0 / 82 / 18 |
+| Ankle Inversion | 23 | 7 | 30 | 63 | 75 | 14.4 | 0 / 18 / 82 |
+| Ankle Rotation | 23 | 15 | 48 | 38 | 50 | 23.6 | 0 / 45 / 55 |
 
 ## Methods and caveats
 
 * **Equivalence**: 90 % simultaneous paired CI (spm1d, random-field theory) of MB - ML, equivalent to two one-sided
   tests at 5 % (Dixon et al. 2018).  Not equivalent = CI entirely beyond a bound; inconclusive = CI crosses a bound.
   Use `--bound mdc` in `02_equivalence_analysis.py` for the Study 1 MDC bounds instead.
-* **SPM**: `spm1d.stats.ttest_paired`, two-tailed, family-wise p < 0.05.
+* **SPM**: `spm1d.stats.ttest_paired`, two-tailed, with the alpha Bonferroni-corrected for the 12 variables, 0.05 / 12 = 0.0042
+  (random-field theory controls the family-wise error across the gait cycle within each variable). The equivalence CIs are
+  not corrected. Use `02_equivalence_analysis.py --alpha-spm 0.05` for the uncorrected test.
 * **Pointwise LoA** (Roislien et al. 2012, Gait & Posture 36:495): mean difference +/- 1.96 SD at each node.
 * **Simultaneous band** (still computed by `03_loa_analysis.py` and stored in the results, but not plotted in the manuscript figures): mean +/- z* SD sqrt(1 + 1/n) with z* the spm1d random-field-theory threshold of the
   one-sample t field of the differences.  It is a *prediction band* for a new participant's whole curve (not the

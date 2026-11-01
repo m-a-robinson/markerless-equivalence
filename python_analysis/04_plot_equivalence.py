@@ -8,7 +8,8 @@ Reads ``results/equivalence_<tag>.npz`` written by ``02_equivalence_analysis.py`
   bound), red = not equivalent (CI entirely beyond a bound); the part of the band that extends past a bound is
   drawn darker;
 * the equivalence bounds (green dashed lines) and the percentage of the gait cycle that is equivalent;
-* a bar under each panel: black where the spm1d paired t-test (p < 0.05) indicates a statistical difference.
+* a bar under each panel: black where the spm1d paired t-test indicates a statistical difference (alpha Bonferroni-corrected for the
+  12 variables, 0.05/12; see ``02_equivalence_analysis.py``).
 
 Usage
 -----
@@ -104,7 +105,7 @@ def main():
                         Patch(color=C_BEYOND[INCONCLUSIVE], label='Inconclusive (CI crosses bound)'),
                         Patch(color=C_BEYOND[NOT_EQUIVALENT], label='Not equivalent (CI beyond bound)'),
                         #Line2D([0], [0], color=C_BOUND, ls='--', label=bound_label),
-                        #Patch(color='k', label='SPM paired t-test p<0.05')
+                        #Patch(color='k', label='SPM paired t-test, alpha = 0.05/12')
                         ],
                loc='upper center', ncol=3, fontsize=7.5, frameon=False, bbox_to_anchor=(0.5, 0.995))
     out = args.out or FIGURES_DIR / f'equivalence_{args.tag}.jpg'
