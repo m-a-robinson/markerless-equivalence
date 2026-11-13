@@ -1,0 +1,496 @@
+condition,subject,side,stride,n_strides,n_variables_flagged,n_major,worst_rmsd,variables,recommendation
+WU,P005,left,10,26,2,0,5.6,Foot Progression (L) (4.9); Knee Rotation (L) (5.6),inspect
+WU,P005,right,15,26,1,0,5.8,Knee Rotation (R) (5.8),inspect
+WU,P006,left,9,24,2,0,5.4,Hip Flexion (L) (5.4); Hip Adduction (L) (5.1),inspect
+WU,P006,left,23,24,1,0,6.2,Foot Progression (L) (6.2),inspect
+WU,P006,right,1,24,1,0,4.6,Hip Adduction (R) (4.6),inspect
+WU,P006,right,9,24,2,0,7.0,Hip Flexion (R) (7.0); Hip Adduction (R) (6.4),inspect
+WU,P006,right,16,24,1,0,4.9,Hip Adduction (R) (4.9),inspect
+WU,P006,right,20,24,1,0,4.7,Hip Adduction (R) (4.7),inspect
+WU,P006,pelvis,9,24,2,0,6.0,Pelvis Anterior Tilt (4.6); Pelvis Obliquity (6.0),inspect
+WU,P006,pelvis,16,24,2,0,4.2,Pelvis Anterior Tilt (3.4); Pelvis Obliquity (4.2),inspect
+WU,P006,pelvis,20,24,1,0,3.3,Pelvis Anterior Tilt (3.3),inspect
+WU,P007,left,1,35,3,1,8.3,Hip Flexion (L) (8.3); Hip Adduction (L) (6.0); Knee Flexion (L) (5.3),REMOVE stride from all variables
+WU,P007,left,7,35,1,0,5.8,Foot Progression (L) (5.8),inspect
+WU,P007,left,10,35,4,2,10.0,Ankle Inversion (L) (3.0); Hip Flexion (L) (8.4); Hip Adduction (L) (10.0); Knee Flexion (L) (5.7),REMOVE stride from all variables
+WU,P007,left,11,35,1,0,4.4,Hip Adduction (L) (4.4),inspect
+WU,P007,left,18,35,1,0,4.7,Hip Adduction (L) (4.7),inspect
+WU,P007,left,28,35,1,0,3.7,Knee Varus (L) (3.7),inspect
+WU,P007,left,32,35,1,0,5.0,Hip Adduction (L) (5.0),inspect
+WU,P007,right,1,35,1,0,6.3,Hip Flexion (R) (6.3),inspect
+WU,P007,right,2,35,1,0,6.0,Hip Flexion (R) (6.0),inspect
+WU,P007,right,6,35,1,1,8.4,Hip Flexion (R) (8.4),remove from flagged variable(s) / inspect
+WU,P007,right,10,35,2,0,7.4,Hip Flexion (R) (7.4); Hip Adduction (R) (7.1),inspect
+WU,P007,right,14,35,2,1,8.5,Hip Flexion (R) (8.5); Knee Flexion (R) (5.2),remove from flagged variable(s) / inspect
+WU,P007,right,18,35,1,1,8.3,Hip Flexion (R) (8.3),remove from flagged variable(s) / inspect
+WU,P007,right,30,35,1,0,5.1,Ankle Rotation (R) (5.1),inspect
+WU,P007,right,32,35,1,0,6.1,Hip Flexion (R) (6.1),inspect
+WU,P007,pelvis,1,35,1,0,4.4,Pelvis Obliquity (4.4),inspect
+WU,P007,pelvis,6,35,2,0,5.1,Pelvis Anterior Tilt (4.4); Pelvis Obliquity (5.1),inspect
+WU,P007,pelvis,10,35,1,0,6.0,Pelvis Obliquity (6.0),inspect
+WU,P007,pelvis,14,35,1,0,5.7,Pelvis Obliquity (5.7),inspect
+WU,P007,pelvis,18,35,1,0,5.5,Pelvis Obliquity (5.5),inspect
+WU,P008,left,11,48,2,0,7.3,Foot Progression (L) (7.3); Hip Rotation (L) (5.4),inspect
+WU,P008,left,12,48,2,1,12.4,Foot Progression (L) (12.4); Hip Rotation (L) (7.5),remove from flagged variable(s) / inspect
+WU,P008,left,26,48,1,0,6.8,Ankle Rotation (L) (6.8),inspect
+WU,P008,right,1,49,3,0,5.7,Ankle Dorsiflexion (R) (5.7); Hip Flexion (R) (4.5); Hip Adduction (R) (5.3),REMOVE stride from all variables
+WU,P008,right,9,49,6,4,21.6,Ankle Dorsiflexion (R) (14.8); Ankle Inversion (R) (3.8); Ankle Rotation (R) (9.5); Hip Flexion (R) (19.5); Hip Rotation (R) (7.0); Knee Flexion (R) (21.6),REMOVE stride from all variables
+WU,P008,right,12,49,2,1,10.8,Foot Progression (R) (10.8); Hip Rotation (R) (6.5),remove from flagged variable(s) / inspect
+WU,P008,right,22,49,2,0,7.1,Ankle Dorsiflexion (R) (7.1); Hip Flexion (R) (6.7),inspect
+WU,P008,right,35,49,1,0,5.5,Knee Flexion (R) (5.5),inspect
+WU,P008,right,36,49,4,1,9.2,Ankle Dorsiflexion (R) (6.8); Hip Flexion (R) (9.2); Hip Rotation (R) (5.5); Knee Flexion (R) (4.9),REMOVE stride from all variables
+WU,P008,right,43,49,1,0,4.6,Hip Flexion (R) (4.6),inspect
+WU,P008,pelvis,8,49,1,0,3.9,Pelvis Anterior Tilt (3.9),inspect
+WU,P008,pelvis,12,49,1,1,17.4,Pelvis Rotation (17.4),REMOVE stride from all variables
+WU,P008,pelvis,16,49,1,1,12.3,Pelvis Rotation (12.3),remove from flagged variable(s) / inspect
+WU,P008,pelvis,22,49,1,0,3.5,Pelvis Anterior Tilt (3.5),inspect
+WU,P008,pelvis,36,49,2,0,4.9,Pelvis Anterior Tilt (4.9); Pelvis Obliquity (4.5),inspect
+WU,P009,left,1,43,1,0,4.1,Hip Flexion (L) (4.1),inspect
+WU,P009,left,4,43,2,0,5.8,Hip Flexion (L) (4.3); Knee Flexion (L) (5.8),inspect
+WU,P009,left,7,43,2,1,9.7,Ankle Inversion (L) (4.0); Hip Flexion (L) (9.7),remove from flagged variable(s) / inspect
+WU,P009,right,4,43,1,1,10.0,Knee Flexion (R) (10.0),remove from flagged variable(s) / inspect
+WU,P009,right,7,43,2,0,5.2,Hip Flexion (R) (5.2); Hip Adduction (R) (4.9),inspect
+WU,P009,pelvis,7,43,1,0,3.4,Pelvis Anterior Tilt (3.4),inspect
+WU,P009,pelvis,22,43,1,0,3.1,Pelvis Anterior Tilt (3.1),inspect
+WU,P009,pelvis,37,43,1,0,3.8,Pelvis Anterior Tilt (3.8),inspect
+WU,P009,pelvis,38,43,1,0,3.2,Pelvis Anterior Tilt (3.2),inspect
+WU,P010,left,4,36,2,2,9.6,Ankle Rotation (L) (9.5); Foot Progression (L) (9.6),remove from flagged variable(s) / inspect
+WU,P010,left,9,36,1,0,5.8,Hip Adduction (L) (5.8),inspect
+WU,P010,left,29,36,1,1,9.4,Foot Progression (L) (9.4),remove from flagged variable(s) / inspect
+WU,P010,left,36,36,5,2,11.3,Ankle Rotation (L) (11.3); Hip Flexion (L) (9.9); Hip Adduction (L) (6.5); Hip Rotation (L) (7.4); Knee Varus (L) (6.6),REMOVE stride from all variables
+WU,P010,right,5,36,1,0,4.6,Hip Adduction (R) (4.6),inspect
+WU,P010,right,9,36,5,2,10.9,Ankle Dorsiflexion (R) (7.3); Foot Progression (R) (10.9); Hip Flexion (R) (6.0); Hip Rotation (R) (7.2); Knee Flexion (R) (9.2),REMOVE stride from all variables
+WU,P010,right,19,36,3,0,6.0,Hip Flexion (R) (6.0); Hip Adduction (R) (4.9); Hip Rotation (R) (4.7),REMOVE stride from all variables
+WU,P010,right,24,36,1,0,3.9,Knee Varus (R) (3.9),inspect
+WU,P010,right,25,36,3,0,7.3,Ankle Inversion (R) (3.2); Hip Rotation (R) (7.3); Knee Varus (R) (5.0),REMOVE stride from all variables
+WU,P010,right,26,36,1,0,4.5,Hip Rotation (R) (4.5),inspect
+WU,P010,right,36,36,4,0,6.6,Ankle Inversion (R) (3.6); Hip Flexion (R) (5.5); Hip Rotation (R) (6.6); Knee Varus (R) (3.6),REMOVE stride from all variables
+WU,P010,pelvis,5,36,1,0,3.3,Pelvis Obliquity (3.3),inspect
+WU,P010,pelvis,9,36,2,0,7.9,Pelvis Obliquity (3.9); Pelvis Rotation (7.9),inspect
+WU,P010,pelvis,19,36,2,0,4.6,Pelvis Anterior Tilt (3.6); Pelvis Obliquity (4.6),inspect
+WU,P010,pelvis,25,36,3,1,9.0,Pelvis Anterior Tilt (5.8); Pelvis Obliquity (3.6); Pelvis Rotation (9.0),REMOVE stride from all variables
+WU,P010,pelvis,26,36,1,1,8.6,Pelvis Rotation (8.6),remove from flagged variable(s) / inspect
+WU,P010,pelvis,35,36,1,0,3.5,Pelvis Anterior Tilt (3.5),inspect
+WU,P010,pelvis,36,36,1,0,5.7,Pelvis Anterior Tilt (5.7),inspect
+WU,P011,left,6,46,2,1,9.4,Hip Flexion (L) (9.4); Knee Flexion (L) (6.0),remove from flagged variable(s) / inspect
+WU,P011,left,8,46,1,0,4.8,Foot Progression (L) (4.8),inspect
+WU,P011,left,25,46,2,1,9.2,Hip Flexion (L) (9.2); Knee Flexion (L) (7.3),remove from flagged variable(s) / inspect
+WU,P011,left,37,46,1,0,5.8,Hip Flexion (L) (5.8),inspect
+WU,P011,right,6,48,5,0,7.5,Foot Progression (R) (5.3); Hip Flexion (R) (7.5); Hip Adduction (R) (4.5); Hip Rotation (R) (5.6); Knee Flexion (R) (5.2),REMOVE stride from all variables
+WU,P011,right,24,48,1,0,4.1,Hip Adduction (R) (4.1),inspect
+WU,P011,right,26,48,4,0,7.5,Ankle Inversion (R) (7.5); Hip Adduction (R) (5.1); Hip Rotation (R) (5.8); Knee Varus (R) (6.0),REMOVE stride from all variables
+WU,P011,right,27,48,3,1,8.1,Foot Progression (R) (6.3); Hip Flexion (R) (8.1); Hip Adduction (R) (5.4),REMOVE stride from all variables
+WU,P011,right,46,48,1,0,4.2,Hip Adduction (R) (4.2),inspect
+WU,P011,pelvis,21,42,2,0,4.9,Pelvis Anterior Tilt (4.9); Pelvis Obliquity (4.9),inspect
+WU,P012,left,3,38,2,0,6.8,Ankle Rotation (L) (6.8); Foot Progression (L) (6.8),inspect
+WU,P012,left,4,38,2,0,7.7,Hip Adduction (L) (7.7); Hip Rotation (L) (3.4),inspect
+WU,P012,left,8,38,2,0,6.8,Hip Adduction (L) (6.8); Hip Rotation (L) (5.4),inspect
+WU,P012,left,14,38,2,2,9.5,Hip Flexion (L) (9.5); Hip Adduction (L) (8.5),remove from flagged variable(s) / inspect
+WU,P012,left,19,38,5,2,10.1,Ankle Rotation (L) (7.8); Hip Flexion (L) (9.6); Hip Adduction (L) (6.5); Hip Rotation (L) (10.1); Knee Varus (L) (5.4),REMOVE stride from all variables
+WU,P012,left,20,38,3,2,12.0,Hip Flexion (L) (12.0); Hip Adduction (L) (9.4); Knee Flexion (L) (6.5),REMOVE stride from all variables
+WU,P012,left,26,38,2,0,7.1,Hip Adduction (L) (5.6); Hip Rotation (L) (7.1),inspect
+WU,P012,left,34,38,2,1,8.4,Hip Flexion (L) (8.4); Hip Adduction (L) (5.4),remove from flagged variable(s) / inspect
+WU,P012,left,38,38,1,0,4.1,Ankle Inversion (L) (4.1),inspect
+WU,P012,right,4,38,1,0,5.3,Hip Adduction (R) (5.3),inspect
+WU,P012,right,19,38,3,0,6.2,Ankle Rotation (R) (4.8); Hip Rotation (R) (6.2); Knee Varus (R) (4.6),REMOVE stride from all variables
+WU,P012,right,20,38,1,0,5.5,Hip Adduction (R) (5.5),inspect
+WU,P012,right,22,38,2,0,6.1,Ankle Rotation (R) (5.8); Foot Progression (R) (6.1),inspect
+WU,P012,right,30,38,1,0,5.8,Hip Adduction (R) (5.8),inspect
+WU,P012,right,34,38,4,2,11.6,Foot Progression (R) (6.8); Hip Flexion (R) (11.6); Hip Adduction (R) (9.7); Hip Rotation (R) (6.1),REMOVE stride from all variables
+WU,P012,right,38,38,1,0,3.9,Ankle Inversion (R) (3.9),inspect
+WU,P012,pelvis,4,38,1,0,4.6,Pelvis Obliquity (4.6),inspect
+WU,P012,pelvis,14,38,1,0,4.4,Pelvis Obliquity (4.4),inspect
+WU,P012,pelvis,19,38,3,0,6.0,Pelvis Anterior Tilt (6.0); Pelvis Obliquity (4.2); Pelvis Rotation (5.3),REMOVE stride from all variables
+WU,P012,pelvis,20,38,1,0,4.7,Pelvis Obliquity (4.7),inspect
+WU,P012,pelvis,30,38,1,0,5.6,Pelvis Obliquity (5.6),inspect
+WU,P012,pelvis,34,38,2,1,8.8,Pelvis Anterior Tilt (5.2); Pelvis Obliquity (8.8),remove from flagged variable(s) / inspect
+WU,P012,pelvis,38,38,1,0,3.1,Pelvis Anterior Tilt (3.1),inspect
+WU,P013,left,1,55,5,2,10.7,Ankle Inversion (L) (6.5); Ankle Rotation (L) (8.2); Foot Progression (L) (10.7); Hip Flexion (L) (5.7); Knee Flexion (L) (7.5),REMOVE stride from all variables
+WU,P013,left,4,55,1,0,5.2,Ankle Dorsiflexion (L) (5.2),inspect
+WU,P013,left,8,55,1,0,5.5,Ankle Dorsiflexion (L) (5.5),inspect
+WU,P013,left,16,55,2,0,6.3,Hip Flexion (L) (5.2); Hip Adduction (L) (6.3),inspect
+WU,P013,left,28,55,2,1,8.9,Hip Flexion (L) (6.6); Hip Adduction (L) (8.9),remove from flagged variable(s) / inspect
+WU,P013,left,32,55,2,0,6.9,Hip Flexion (L) (6.2); Hip Adduction (L) (6.9),inspect
+WU,P013,left,36,55,2,2,9.0,Hip Flexion (L) (9.0); Hip Adduction (L) (8.4),remove from flagged variable(s) / inspect
+WU,P013,left,40,55,2,0,6.6,Hip Flexion (L) (5.5); Hip Adduction (L) (6.6),inspect
+WU,P013,left,47,55,6,1,9.1,Ankle Dorsiflexion (L) (5.2); Ankle Inversion (L) (3.2); Ankle Rotation (L) (7.8); Hip Flexion (L) (5.5); Hip Adduction (L) (7.2); Hip Rotation (L) (9.1),REMOVE stride from all variables
+WU,P013,left,54,55,1,0,4.8,Hip Rotation (L) (4.8),inspect
+WU,P013,left,55,55,6,0,7.8,Ankle Dorsiflexion (L) (6.9); Ankle Inversion (L) (3.3); Ankle Rotation (L) (6.4); Hip Flexion (L) (5.1); Hip Adduction (L) (7.6); Hip Rotation (L) (7.8),REMOVE stride from all variables
+WU,P013,right,1,55,3,0,7.6,Ankle Dorsiflexion (R) (5.7); Ankle Inversion (R) (3.2); Knee Flexion (R) (7.6),REMOVE stride from all variables
+WU,P013,right,3,55,1,0,3.1,Ankle Inversion (R) (3.1),inspect
+WU,P013,right,4,55,4,1,12.0,Ankle Inversion (R) (5.0); Ankle Rotation (R) (12.0); Foot Progression (R) (7.6); Hip Rotation (R) (5.7),REMOVE stride from all variables
+WU,P013,right,16,55,4,2,10.8,Ankle Dorsiflexion (R) (5.5); Hip Flexion (R) (10.8); Hip Adduction (R) (8.2); Hip Rotation (R) (5.2),REMOVE stride from all variables
+WU,P013,right,23,55,2,0,6.5,Ankle Rotation (R) (6.5); Hip Flexion (R) (4.7),inspect
+WU,P013,right,32,55,5,2,10.1,Hip Flexion (R) (10.1); Hip Adduction (R) (9.7); Hip Rotation (R) (5.7); Knee Flexion (R) (6.5); Knee Varus (R) (3.6),REMOVE stride from all variables
+WU,P013,right,47,55,2,0,6.6,Hip Rotation (R) (6.6); Knee Varus (R) (3.9),inspect
+WU,P013,right,55,55,6,2,13.0,Ankle Dorsiflexion (R) (7.5); Ankle Rotation (R) (10.9); Hip Flexion (R) (4.4); Hip Adduction (R) (6.4); Hip Rotation (R) (13.0); Knee Varus (R) (4.9),REMOVE stride from all variables
+WU,P013,pelvis,16,55,1,0,7.2,Pelvis Obliquity (7.2),inspect
+WU,P013,pelvis,20,55,1,1,8.3,Pelvis Rotation (8.3),remove from flagged variable(s) / inspect
+WU,P013,pelvis,23,55,1,0,5.1,Pelvis Anterior Tilt (5.1),inspect
+WU,P013,pelvis,32,55,1,0,7.4,Pelvis Obliquity (7.4),inspect
+WU,P013,pelvis,47,55,1,0,4.7,Pelvis Anterior Tilt (4.7),inspect
+WU,P013,pelvis,55,55,2,0,6.3,Pelvis Anterior Tilt (6.3); Pelvis Obliquity (4.8),inspect
+WU,P014,left,1,59,4,1,13.4,Ankle Rotation (L) (6.1); Hip Flexion (L) (13.4); Hip Adduction (L) (6.7); Hip Rotation (L) (6.8),REMOVE stride from all variables
+WU,P014,left,2,59,3,1,8.7,Hip Flexion (L) (8.7); Hip Adduction (L) (4.7); Hip Rotation (L) (4.7),REMOVE stride from all variables
+WU,P014,left,8,59,4,1,12.9,Ankle Rotation (L) (5.9); Hip Flexion (L) (12.9); Hip Adduction (L) (7.8); Hip Rotation (L) (6.1),REMOVE stride from all variables
+WU,P014,left,21,59,4,1,11.6,Foot Progression (L) (7.0); Hip Flexion (L) (11.6); Hip Adduction (L) (4.9); Hip Rotation (L) (5.9),REMOVE stride from all variables
+WU,P014,left,28,59,1,0,6.8,Hip Flexion (L) (6.8),inspect
+WU,P014,left,31,59,1,0,7.3,Knee Flexion (L) (7.3),inspect
+WU,P014,left,32,59,1,0,5.6,Ankle Dorsiflexion (L) (5.6),inspect
+WU,P014,left,43,59,3,0,7.2,Hip Flexion (L) (7.2); Hip Adduction (L) (6.1); Hip Rotation (L) (5.5),REMOVE stride from all variables
+WU,P014,left,49,59,2,0,4.9,Hip Rotation (L) (4.9); Knee Varus (L) (3.2),inspect
+WU,P014,left,52,59,2,0,6.1,Ankle Rotation (L) (6.1); Foot Progression (L) (5.7),inspect
+WU,P014,right,1,58,3,1,12.3,Ankle Dorsiflexion (R) (4.7); Hip Flexion (R) (12.3); Hip Adduction (R) (7.2),REMOVE stride from all variables
+WU,P014,right,8,58,3,0,7.4,Ankle Dorsiflexion (R) (4.3); Hip Flexion (R) (7.4); Hip Adduction (R) (5.5),REMOVE stride from all variables
+WU,P014,right,19,58,1,0,5.7,Hip Flexion (R) (5.7),inspect
+WU,P014,right,21,58,4,0,7.9,Ankle Rotation (R) (6.4); Foot Progression (R) (6.6); Hip Flexion (R) (7.9); Hip Adduction (R) (4.7),REMOVE stride from all variables
+WU,P014,right,28,58,3,1,10.0,Hip Flexion (R) (10.0); Hip Adduction (R) (6.1); Hip Rotation (R) (4.4),REMOVE stride from all variables
+WU,P014,right,32,58,1,0,4.3,Ankle Dorsiflexion (R) (4.3),inspect
+WU,P014,right,52,58,3,2,13.0,Foot Progression (R) (13.0); Hip Adduction (R) (3.6); Hip Rotation (R) (9.7),REMOVE stride from all variables
+WU,P014,pelvis,1,58,2,0,7.7,Pelvis Anterior Tilt (7.7); Pelvis Obliquity (6.0),inspect
+WU,P014,pelvis,8,58,2,0,5.6,Pelvis Anterior Tilt (5.6); Pelvis Obliquity (5.0),inspect
+WU,P014,pelvis,15,58,1,0,5.4,Pelvis Rotation (5.4),inspect
+WU,P014,pelvis,21,58,2,0,6.4,Pelvis Obliquity (3.3); Pelvis Rotation (6.4),inspect
+WU,P014,pelvis,28,58,2,0,6.4,Pelvis Anterior Tilt (6.4); Pelvis Obliquity (5.4),inspect
+WU,P014,pelvis,38,58,1,0,6.0,Pelvis Rotation (6.0),inspect
+WU,P014,pelvis,42,58,2,0,7.1,Pelvis Obliquity (3.2); Pelvis Rotation (7.1),inspect
+WU,P014,pelvis,52,58,2,1,17.3,Pelvis Obliquity (3.1); Pelvis Rotation (17.3),REMOVE stride from all variables
+WU,P015,left,1,58,5,2,8.3,Ankle Dorsiflexion (L) (6.4); Ankle Rotation (L) (6.9); Foot Progression (L) (6.7); Hip Flexion (L) (8.1); Knee Flexion (L) (8.3),REMOVE stride from all variables
+WU,P015,left,2,58,5,4,29.1,Ankle Dorsiflexion (L) (13.2); Ankle Rotation (L) (8.9); Foot Progression (L) (5.8); Hip Flexion (L) (23.1); Knee Flexion (L) (29.1),REMOVE stride from all variables
+WU,P015,left,5,58,1,0,6.4,Hip Flexion (L) (6.4),inspect
+WU,P015,left,12,58,2,1,12.2,Hip Flexion (L) (12.2); Hip Adduction (L) (7.6),remove from flagged variable(s) / inspect
+WU,P015,left,13,58,2,0,7.8,Hip Flexion (L) (7.8); Hip Adduction (L) (5.2),inspect
+WU,P015,left,15,58,1,1,8.4,Hip Flexion (L) (8.4),remove from flagged variable(s) / inspect
+WU,P015,left,20,58,2,1,12.3,Hip Flexion (L) (12.3); Hip Adduction (L) (7.3),remove from flagged variable(s) / inspect
+WU,P015,left,28,58,2,1,10.8,Hip Flexion (L) (10.8); Hip Adduction (L) (7.1),remove from flagged variable(s) / inspect
+WU,P015,left,48,58,1,0,6.8,Ankle Dorsiflexion (L) (6.8),inspect
+WU,P015,left,52,58,4,1,8.7,Ankle Dorsiflexion (L) (6.0); Ankle Rotation (L) (7.1); Hip Rotation (L) (8.7); Knee Varus (L) (4.8),REMOVE stride from all variables
+WU,P015,right,1,61,3,0,7.0,Ankle Inversion (R) (5.0); Hip Flexion (R) (7.0); Hip Rotation (R) (3.4),REMOVE stride from all variables
+WU,P015,right,2,61,3,0,6.9,Ankle Inversion (R) (3.7); Hip Flexion (R) (6.9); Hip Rotation (R) (3.8),REMOVE stride from all variables
+WU,P015,right,3,61,4,2,11.2,Hip Flexion (R) (8.3); Hip Adduction (R) (5.1); Hip Rotation (R) (3.4); Knee Flexion (R) (11.2),REMOVE stride from all variables
+WU,P015,right,6,61,2,0,4.6,Ankle Inversion (R) (4.6); Knee Varus (R) (3.7),inspect
+WU,P015,right,7,61,3,1,11.0,Hip Flexion (R) (11.0); Hip Adduction (R) (6.7); Hip Rotation (R) (4.2),REMOVE stride from all variables
+WU,P015,right,11,61,2,1,9.4,Hip Flexion (R) (9.4); Hip Adduction (R) (5.5),remove from flagged variable(s) / inspect
+WU,P015,right,15,61,2,1,10.2,Hip Flexion (R) (10.2); Hip Adduction (R) (6.4),remove from flagged variable(s) / inspect
+WU,P015,right,23,61,2,1,9.7,Hip Flexion (R) (9.7); Hip Adduction (R) (5.6),remove from flagged variable(s) / inspect
+WU,P015,right,31,61,5,1,10.8,Hip Flexion (R) (10.8); Hip Adduction (R) (6.0); Hip Rotation (R) (4.8); Knee Flexion (R) (7.6); Knee Varus (R) (3.4),REMOVE stride from all variables
+WU,P015,right,51,61,1,0,4.8,Hip Rotation (R) (4.8),inspect
+WU,P015,right,61,61,2,1,8.1,Ankle Rotation (R) (8.1); Hip Rotation (R) (4.2),remove from flagged variable(s) / inspect
+WU,P015,pelvis,3,61,3,0,7.9,Pelvis Anterior Tilt (4.1); Pelvis Obliquity (3.7); Pelvis Rotation (7.9),REMOVE stride from all variables
+WU,P015,pelvis,7,61,2,0,5.8,Pelvis Anterior Tilt (5.7); Pelvis Obliquity (5.8),inspect
+WU,P015,pelvis,11,61,2,0,5.8,Pelvis Anterior Tilt (5.8); Pelvis Obliquity (4.9),inspect
+WU,P015,pelvis,15,61,2,0,7.0,Pelvis Anterior Tilt (7.0); Pelvis Obliquity (5.9),inspect
+WU,P015,pelvis,23,61,2,0,6.0,Pelvis Anterior Tilt (6.0); Pelvis Obliquity (5.0),inspect
+WU,P015,pelvis,31,61,2,0,5.0,Pelvis Anterior Tilt (4.9); Pelvis Obliquity (5.0),inspect
+WU,P015,pelvis,61,61,1,0,3.1,Pelvis Anterior Tilt (3.1),inspect
+WU,P016,left,9,58,1,0,4.8,Hip Flexion (L) (4.8),inspect
+WU,P016,left,10,58,7,3,12.7,Ankle Dorsiflexion (L) (7.6); Ankle Inversion (L) (4.4); Ankle Rotation (L) (11.9); Foot Progression (L) (12.7); Hip Flexion (L) (4.9); Hip Rotation (L) (8.6); Knee Flexion (L) (7.1),REMOVE stride from all variables
+WU,P016,left,17,58,2,1,8.0,Hip Flexion (L) (7.1); Hip Adduction (L) (8.0),remove from flagged variable(s) / inspect
+WU,P016,left,21,58,1,0,4.7,Ankle Inversion (L) (4.7),inspect
+WU,P016,left,22,58,1,0,4.4,Ankle Inversion (L) (4.4),inspect
+WU,P016,left,26,58,1,0,4.7,Ankle Inversion (L) (4.7),inspect
+WU,P016,left,27,58,7,2,10.7,Ankle Inversion (L) (6.5); Ankle Rotation (L) (6.7); Foot Progression (L) (10.7); Hip Flexion (L) (4.5); Hip Adduction (L) (6.3); Hip Rotation (L) (8.4); Knee Varus (L) (5.6),REMOVE stride from all variables
+WU,P016,left,28,58,1,0,4.4,Ankle Inversion (L) (4.4),inspect
+WU,P016,left,45,58,3,0,7.1,Hip Flexion (L) (5.6); Hip Rotation (L) (7.1); Knee Varus (L) (4.1),REMOVE stride from all variables
+WU,P016,left,58,58,3,0,7.5,Ankle Dorsiflexion (L) (5.4); Ankle Rotation (L) (7.5); Hip Rotation (L) (6.9),REMOVE stride from all variables
+WU,P016,right,9,57,1,0,4.4,Ankle Dorsiflexion (R) (4.4),inspect
+WU,P016,right,26,57,3,1,8.4,Ankle Dorsiflexion (R) (6.2); Ankle Inversion (R) (3.8); Ankle Rotation (R) (8.4),REMOVE stride from all variables
+WU,P016,right,29,57,1,0,3.9,Ankle Inversion (R) (3.9),inspect
+WU,P016,right,43,57,1,0,4.5,Ankle Dorsiflexion (R) (4.5),inspect
+WU,P016,right,44,57,4,1,9.4,Ankle Dorsiflexion (R) (5.5); Ankle Rotation (R) (9.4); Hip Rotation (R) (7.9); Knee Flexion (R) (5.5),REMOVE stride from all variables
+WU,P016,right,57,57,4,2,12.5,Ankle Dorsiflexion (R) (4.9); Ankle Rotation (R) (11.6); Foot Progression (R) (12.5); Knee Flexion (R) (5.1),REMOVE stride from all variables
+WU,P016,pelvis,9,57,1,0,4.6,Pelvis Anterior Tilt (4.6),inspect
+WU,P016,pelvis,26,57,2,1,36.4,Pelvis Anterior Tilt (4.3); Pelvis Rotation (36.4),REMOVE stride from all variables
+WU,P016,pelvis,27,57,1,1,21.8,Pelvis Rotation (21.8),REMOVE stride from all variables
+WU,P016,pelvis,44,57,1,0,4.4,Pelvis Anterior Tilt (4.4),inspect
+WU,P017,left,1,66,1,0,4.1,Hip Flexion (L) (4.1),inspect
+WU,P017,left,5,66,2,0,5.1,Hip Flexion (L) (5.1); Hip Adduction (L) (4.8),inspect
+WU,P017,left,9,66,5,1,8.1,Ankle Dorsiflexion (L) (3.6); Ankle Rotation (L) (7.1); Foot Progression (L) (8.1); Hip Adduction (L) (6.4); Knee Flexion (L) (4.6),REMOVE stride from all variables
+WU,P017,left,22,66,4,0,7.3,Ankle Dorsiflexion (L) (7.3); Foot Progression (L) (5.7); Hip Flexion (L) (4.0); Knee Flexion (L) (4.6),REMOVE stride from all variables
+WU,P017,left,25,66,1,0,4.4,Ankle Dorsiflexion (L) (4.4),inspect
+WU,P017,right,1,66,1,0,4.3,Hip Rotation (R) (4.3),inspect
+WU,P017,right,9,66,4,0,7.1,Ankle Rotation (R) (5.0); Hip Flexion (R) (3.9); Hip Adduction (R) (5.5); Hip Rotation (R) (7.1),REMOVE stride from all variables
+WU,P017,right,22,66,1,0,6.3,Ankle Dorsiflexion (R) (6.3),inspect
+WU,P017,pelvis,9,66,2,1,13.6,Pelvis Obliquity (5.3); Pelvis Rotation (13.6),remove from flagged variable(s) / inspect
+WU,P017,pelvis,10,66,1,1,15.0,Pelvis Rotation (15.0),REMOVE stride from all variables
+WU,P017,pelvis,11,66,1,1,13.1,Pelvis Rotation (13.1),remove from flagged variable(s) / inspect
+WU,P017,pelvis,15,66,1,1,10.2,Pelvis Rotation (10.2),remove from flagged variable(s) / inspect
+WU,P018,right,4,12,3,1,8.0,Ankle Dorsiflexion (R) (4.2); Ankle Rotation (R) (8.0); Hip Rotation (R) (6.4),REMOVE stride from all variables
+WU,P018,right,8,12,1,0,5.2,Ankle Rotation (R) (5.2),inspect
+WU,P018,right,10,12,2,1,8.2,Ankle Dorsiflexion (R) (6.0); Ankle Rotation (R) (8.2),remove from flagged variable(s) / inspect
+WU,P018,right,11,12,1,0,5.7,Ankle Rotation (R) (5.7),inspect
+WU,P018,pelvis,10,12,2,1,18.4,Pelvis Obliquity (4.5); Pelvis Rotation (18.4),REMOVE stride from all variables
+WU,P019,left,10,49,1,0,4.6,Knee Flexion (L) (4.6),inspect
+WU,P019,left,28,49,5,1,8.9,Ankle Dorsiflexion (L) (4.8); Foot Progression (L) (8.9); Hip Flexion (L) (6.7); Hip Adduction (L) (5.7); Hip Rotation (L) (7.3),REMOVE stride from all variables
+WU,P019,left,29,49,8,4,20.7,Ankle Inversion (L) (3.3); Ankle Rotation (L) (12.1); Foot Progression (L) (20.7); Hip Flexion (L) (13.3); Hip Adduction (L) (7.6); Hip Rotation (L) (10.5); Knee Flexion (L) (5.6); Knee Varus (L) (4.8),REMOVE stride from all variables
+WU,P019,left,30,49,1,0,5.8,Foot Progression (L) (5.8),inspect
+WU,P019,right,9,49,1,0,3.2,Knee Varus (R) (3.2),inspect
+WU,P019,right,10,49,1,0,6.3,Hip Rotation (R) (6.3),inspect
+WU,P019,right,18,49,3,0,7.3,Ankle Rotation (R) (5.6); Hip Adduction (R) (3.5); Hip Rotation (R) (7.3),REMOVE stride from all variables
+WU,P019,right,19,49,1,0,5.0,Hip Rotation (R) (5.0),inspect
+WU,P019,right,22,49,2,0,5.8,Hip Adduction (R) (4.2); Hip Rotation (R) (5.8),inspect
+WU,P019,right,28,49,1,0,5.9,Hip Rotation (R) (5.9),inspect
+WU,P019,right,29,49,8,3,17.1,Ankle Inversion (R) (3.5); Ankle Rotation (R) (7.4); Foot Progression (R) (17.1); Hip Flexion (R) (5.9); Hip Adduction (R) (8.0); Hip Rotation (R) (13.5); Knee Flexion (R) (5.9); Knee Varus (R) (3.5),REMOVE stride from all variables
+WU,P019,right,30,49,4,1,13.8,Ankle Rotation (R) (6.6); Foot Progression (R) (13.8); Hip Adduction (R) (6.1); Hip Rotation (R) (7.9),REMOVE stride from all variables
+WU,P019,pelvis,18,49,1,0,3.9,Pelvis Obliquity (3.9),inspect
+WU,P019,pelvis,29,49,2,1,33.8,Pelvis Obliquity (6.2); Pelvis Rotation (33.8),REMOVE stride from all variables
+WU,P019,pelvis,30,49,2,1,32.3,Pelvis Obliquity (5.9); Pelvis Rotation (32.3),REMOVE stride from all variables
+WU,P021,left,1,46,1,0,6.1,Hip Flexion (L) (6.1),inspect
+WU,P021,left,12,46,2,1,11.4,Foot Progression (L) (11.4); Hip Rotation (L) (7.0),remove from flagged variable(s) / inspect
+WU,P021,left,18,46,4,2,15.6,Ankle Inversion (L) (4.6); Foot Progression (L) (15.6); Hip Adduction (L) (6.2); Hip Rotation (L) (10.3),REMOVE stride from all variables
+WU,P021,left,23,46,3,0,7.9,Hip Flexion (L) (6.6); Hip Rotation (L) (7.9); Knee Varus (L) (3.7),REMOVE stride from all variables
+WU,P021,left,35,46,2,0,8.0,Hip Rotation (L) (8.0); Knee Varus (L) (4.9),inspect
+WU,P021,left,40,46,1,0,6.3,Hip Flexion (L) (6.3),inspect
+WU,P021,left,41,46,4,2,8.3,Ankle Rotation (L) (8.1); Hip Flexion (L) (7.1); Hip Rotation (L) (8.3); Knee Varus (L) (5.4),REMOVE stride from all variables
+WU,P021,left,45,46,2,0,7.5,Ankle Rotation (L) (7.5); Foot Progression (L) (7.3),inspect
+WU,P021,right,11,46,1,1,8.1,Ankle Dorsiflexion (R) (8.1),remove from flagged variable(s) / inspect
+WU,P021,right,35,46,5,1,9.3,Ankle Rotation (R) (7.7); Hip Flexion (R) (6.0); Hip Adduction (R) (4.6); Hip Rotation (R) (9.3); Knee Varus (R) (5.2),REMOVE stride from all variables
+WU,P021,right,37,46,4,0,7.8,Ankle Dorsiflexion (R) (7.8); Ankle Rotation (R) (7.5); Foot Progression (R) (7.8); Hip Rotation (R) (6.0),REMOVE stride from all variables
+WU,P021,right,40,46,5,2,9.1,Ankle Dorsiflexion (R) (5.7); Foot Progression (R) (5.8); Hip Flexion (R) (9.1); Hip Rotation (R) (8.2); Knee Varus (R) (4.2),REMOVE stride from all variables
+WU,P021,right,41,46,7,3,13.1,Ankle Dorsiflexion (R) (5.3); Ankle Rotation (R) (8.9); Foot Progression (R) (9.1); Hip Flexion (R) (7.3); Hip Adduction (R) (4.1); Hip Rotation (R) (13.1); Knee Varus (R) (5.0),REMOVE stride from all variables
+WU,P021,right,46,46,2,1,8.2,Foot Progression (R) (8.2); Hip Adduction (R) (5.1),remove from flagged variable(s) / inspect
+WU,P021,pelvis,11,46,2,1,16.4,Pelvis Obliquity (4.8); Pelvis Rotation (16.4),REMOVE stride from all variables
+WU,P021,pelvis,35,46,1,0,6.9,Pelvis Anterior Tilt (6.9),inspect
+WU,P021,pelvis,39,46,1,0,4.4,Pelvis Anterior Tilt (4.4),inspect
+WU,P021,pelvis,40,46,1,0,6.9,Pelvis Anterior Tilt (6.9),inspect
+WU,P021,pelvis,41,46,2,0,7.9,Pelvis Anterior Tilt (7.9); Pelvis Obliquity (4.8),inspect
+WU,P021,pelvis,46,46,1,1,15.8,Pelvis Rotation (15.8),REMOVE stride from all variables
+WU,P022,left,11,56,4,0,5.7,Foot Progression (L) (5.7); Hip Flexion (L) (5.2); Hip Adduction (L) (3.5); Hip Rotation (L) (5.6),REMOVE stride from all variables
+WU,P022,left,18,56,4,0,6.8,Ankle Inversion (L) (3.2); Hip Adduction (L) (4.5); Hip Rotation (L) (6.3); Knee Flexion (L) (6.8),REMOVE stride from all variables
+WU,P022,left,35,56,1,0,3.6,Hip Adduction (L) (3.6),inspect
+WU,P022,left,36,56,1,0,5.7,Hip Rotation (L) (5.7),inspect
+WU,P022,left,40,56,1,0,6.1,Hip Flexion (L) (6.1),inspect
+WU,P022,left,46,56,6,0,6.4,Ankle Dorsiflexion (L) (4.6); Ankle Rotation (L) (6.4); Foot Progression (L) (5.1); Hip Adduction (L) (4.3); Hip Rotation (L) (4.5); Knee Varus (L) (3.6),REMOVE stride from all variables
+WU,P022,left,52,56,1,0,6.4,Ankle Dorsiflexion (L) (6.4),inspect
+WU,P022,right,1,56,1,0,3.0,Hip Adduction (R) (3.0),inspect
+WU,P022,right,11,56,1,0,3.2,Hip Adduction (R) (3.2),inspect
+WU,P022,right,18,56,1,0,3.9,Hip Adduction (R) (3.9),inspect
+WU,P022,right,27,56,1,0,5.3,Hip Rotation (R) (5.3),inspect
+WU,P022,right,28,56,1,0,3.6,Hip Adduction (R) (3.6),inspect
+WU,P022,right,35,56,2,0,7.2,Foot Progression (R) (4.2); Hip Rotation (R) (7.2),inspect
+WU,P022,right,46,56,2,1,8.3,Ankle Dorsiflexion (R) (5.4); Hip Rotation (R) (8.3),remove from flagged variable(s) / inspect
+WU,P022,right,52,56,2,0,5.1,Ankle Dorsiflexion (R) (4.7); Hip Rotation (R) (5.1),inspect
+WU,P022,right,56,56,4,1,10.4,Ankle Rotation (R) (4.1); Foot Progression (R) (5.4); Hip Rotation (R) (10.4); Knee Varus (R) (3.5),REMOVE stride from all variables
+WU,P022,pelvis,21,53,1,0,6.3,Pelvis Rotation (6.3),inspect
+WU,P022,pelvis,53,53,1,0,3.6,Pelvis Obliquity (3.6),inspect
+WU,P023,left,11,16,1,0,4.4,Foot Progression (L) (4.4),inspect
+WU,P023,left,12,16,6,2,12.1,Ankle Inversion (L) (3.0); Ankle Rotation (L) (9.7); Foot Progression (L) (12.1); Hip Flexion (L) (6.0); Hip Adduction (L) (5.9); Knee Flexion (L) (7.0),REMOVE stride from all variables
+WU,P023,left,13,16,2,0,6.2,Hip Adduction (L) (3.4); Hip Rotation (L) (6.2),inspect
+WU,P023,right,8,16,2,1,9.5,Ankle Rotation (R) (6.5); Foot Progression (R) (9.5),remove from flagged variable(s) / inspect
+WU,P023,right,12,16,4,2,19.8,Ankle Dorsiflexion (R) (3.7); Ankle Inversion (R) (4.1); Ankle Rotation (R) (14.9); Foot Progression (R) (19.8),REMOVE stride from all variables
+WU,P023,right,13,16,1,0,6.2,Hip Rotation (R) (6.2),inspect
+WU,P023,pelvis,8,16,1,1,20.0,Pelvis Rotation (20.0),REMOVE stride from all variables
+WU,P023,pelvis,11,16,1,1,18.8,Pelvis Rotation (18.8),REMOVE stride from all variables
+WU,P023,pelvis,12,16,3,3,55.5,Pelvis Anterior Tilt (17.7); Pelvis Obliquity (11.6); Pelvis Rotation (55.5),REMOVE stride from all variables
+WU,P024,left,9,48,6,3,20.2,Ankle Rotation (L) (11.0); Foot Progression (L) (20.2); Hip Flexion (L) (7.9); Hip Adduction (L) (7.3); Hip Rotation (L) (10.4); Knee Varus (L) (4.3),REMOVE stride from all variables
+WU,P024,left,37,48,1,0,4.7,Ankle Dorsiflexion (L) (4.7),inspect
+WU,P024,right,9,52,3,0,6.1,Foot Progression (R) (6.1); Hip Adduction (R) (4.2); Hip Rotation (R) (6.0),REMOVE stride from all variables
+WU,P024,right,45,52,1,0,5.1,Knee Flexion (R) (5.1),inspect
+WU,P024,pelvis,9,52,1,1,10.1,Pelvis Rotation (10.1),remove from flagged variable(s) / inspect
+WU,P024,pelvis,21,52,1,0,4.3,Pelvis Rotation (4.3),inspect
+WU,P025,left,1,38,8,2,12.2,Ankle Dorsiflexion (L) (10.3); Ankle Inversion (L) (4.1); Foot Progression (L) (7.8); Hip Flexion (L) (7.7); Hip Adduction (L) (5.1); Hip Rotation (L) (12.2); Knee Flexion (L) (5.3); Knee Varus (L) (3.2),REMOVE stride from all variables
+WU,P025,left,5,38,6,2,12.0,Ankle Dorsiflexion (L) (8.7); Foot Progression (L) (7.8); Hip Flexion (L) (6.3); Hip Adduction (L) (4.8); Hip Rotation (L) (12.0); Knee Flexion (L) (5.9),REMOVE stride from all variables
+WU,P025,left,17,38,1,0,3.0,Knee Flexion (L) (3.0),inspect
+WU,P025,left,20,38,2,0,4.8,Hip Rotation (L) (4.8); Knee Flexion (L) (3.1),inspect
+WU,P025,left,35,38,1,0,3.4,Knee Flexion (L) (3.4),inspect
+WU,P025,left,38,38,2,0,5.1,Foot Progression (L) (5.1); Hip Rotation (L) (3.3),inspect
+WU,P025,right,1,38,5,0,5.7,Ankle Dorsiflexion (R) (5.7); Foot Progression (R) (4.8); Hip Flexion (R) (5.1); Hip Rotation (R) (4.7); Knee Flexion (R) (5.2),REMOVE stride from all variables
+WU,P025,right,5,38,3,0,5.4,Foot Progression (R) (5.2); Hip Adduction (R) (5.4); Hip Rotation (R) (4.5),REMOVE stride from all variables
+WU,P025,right,11,38,2,0,5.3,Ankle Dorsiflexion (R) (4.6); Hip Rotation (R) (5.3),inspect
+WU,P025,right,32,38,3,0,5.3,Ankle Dorsiflexion (R) (5.2); Hip Flexion (R) (4.0); Knee Flexion (R) (5.3),REMOVE stride from all variables
+WU,P025,right,38,38,3,0,6.4,Ankle Dorsiflexion (R) (4.4); Foot Progression (R) (6.4); Hip Rotation (R) (3.2),REMOVE stride from all variables
+WU,P026,left,1,23,3,1,12.7,Hip Flexion (L) (12.7); Hip Adduction (L) (7.6); Knee Flexion (L) (7.4),REMOVE stride from all variables
+WU,P026,left,14,23,1,0,6.0,Foot Progression (L) (6.0),inspect
+WU,P026,left,15,23,3,0,7.2,Hip Flexion (L) (7.2); Hip Rotation (L) (5.7); Knee Varus (L) (3.7),REMOVE stride from all variables
+WU,P026,left,16,23,6,3,13.8,Ankle Inversion (L) (3.4); Ankle Rotation (L) (13.8); Foot Progression (L) (6.2); Hip Flexion (L) (9.0); Hip Rotation (L) (13.3); Knee Varus (L) (6.0),REMOVE stride from all variables
+WU,P026,left,21,23,1,0,7.0,Hip Adduction (L) (7.0),inspect
+WU,P026,right,1,23,3,1,11.5,Hip Flexion (R) (11.5); Hip Adduction (R) (6.3); Knee Flexion (R) (7.6),REMOVE stride from all variables
+WU,P026,right,16,23,6,1,9.7,Ankle Dorsiflexion (R) (5.2); Ankle Rotation (R) (6.9); Hip Flexion (R) (9.7); Hip Adduction (R) (4.2); Hip Rotation (R) (5.8); Knee Varus (R) (4.3),REMOVE stride from all variables
+WU,P026,right,21,23,3,0,5.9,Hip Flexion (R) (5.9); Hip Adduction (R) (5.5); Hip Rotation (R) (5.9),REMOVE stride from all variables
+WU,P026,pelvis,1,23,1,0,5.1,Pelvis Obliquity (5.1),inspect
+WU,P026,pelvis,16,23,2,1,8.6,Pelvis Anterior Tilt (8.6); Pelvis Obliquity (4.0),remove from flagged variable(s) / inspect
+WU,P026,pelvis,21,23,1,0,4.1,Pelvis Obliquity (4.1),inspect
+WU,P027,left,1,38,1,0,5.4,Hip Rotation (L) (5.4),inspect
+WU,P027,left,12,38,1,0,4.0,Hip Adduction (L) (4.0),inspect
+WU,P027,left,16,38,2,1,8.1,Foot Progression (L) (8.1); Hip Rotation (L) (6.5),remove from flagged variable(s) / inspect
+WU,P027,left,20,38,4,2,16.3,Ankle Rotation (L) (9.7); Foot Progression (L) (16.3); Hip Adduction (L) (5.0); Hip Rotation (L) (6.5),REMOVE stride from all variables
+WU,P027,left,29,38,1,0,6.3,Hip Rotation (L) (6.3),inspect
+WU,P027,left,38,38,5,2,10.1,Ankle Dorsiflexion (L) (4.5); Ankle Rotation (L) (6.6); Hip Flexion (L) (10.1); Hip Rotation (L) (8.3); Knee Varus (L) (6.0),REMOVE stride from all variables
+WU,P027,right,9,38,1,0,4.4,Hip Rotation (R) (4.4),inspect
+WU,P027,right,12,38,1,0,4.0,Hip Rotation (R) (4.0),inspect
+WU,P027,right,20,38,4,3,14.3,Ankle Rotation (R) (8.3); Foot Progression (R) (14.3); Hip Adduction (R) (5.4); Hip Rotation (R) (9.9),REMOVE stride from all variables
+WU,P027,right,25,38,3,0,7.8,Ankle Dorsiflexion (R) (4.0); Foot Progression (R) (7.3); Hip Rotation (R) (7.8),REMOVE stride from all variables
+WU,P027,right,34,38,3,1,8.2,Ankle Dorsiflexion (R) (3.9); Hip Flexion (R) (8.2); Hip Rotation (R) (7.7),REMOVE stride from all variables
+WU,P027,right,38,38,4,0,6.4,Ankle Dorsiflexion (R) (3.8); Hip Flexion (R) (5.6); Hip Rotation (R) (6.4); Knee Varus (R) (3.0),REMOVE stride from all variables
+WU,P027,pelvis,20,38,1,1,23.2,Pelvis Rotation (23.2),REMOVE stride from all variables
+WU,P027,pelvis,21,38,1,0,7.7,Pelvis Rotation (7.7),inspect
+WU,P027,pelvis,25,38,1,1,9.0,Pelvis Rotation (9.0),remove from flagged variable(s) / inspect
+WU,P027,pelvis,34,38,2,1,8.9,Pelvis Anterior Tilt (6.9); Pelvis Rotation (8.9),remove from flagged variable(s) / inspect
+WU,P027,pelvis,38,38,1,0,4.7,Pelvis Anterior Tilt (4.7),inspect
+WU,P028,left,1,26,7,5,35.0,Ankle Dorsiflexion (L) (13.7); Ankle Inversion (L) (6.2); Ankle Rotation (L) (14.3); Foot Progression (L) (11.7); Hip Flexion (L) (30.5); Knee Flexion (L) (35.0); Knee Varus (L) (3.1),REMOVE stride from all variables
+WU,P028,left,8,26,7,5,37.5,Ankle Dorsiflexion (L) (13.2); Ankle Inversion (L) (5.3); Ankle Rotation (L) (13.9); Foot Progression (L) (9.9); Hip Flexion (L) (29.1); Hip Rotation (L) (5.1); Knee Flexion (L) (37.5),REMOVE stride from all variables
+WU,P028,left,12,26,3,0,7.2,Ankle Dorsiflexion (L) (6.4); Hip Flexion (L) (7.2); Hip Adduction (L) (7.2),REMOVE stride from all variables
+WU,P028,right,4,26,1,0,5.2,Ankle Rotation (R) (5.2),inspect
+WU,P028,right,8,26,1,0,6.5,Hip Flexion (R) (6.5),inspect
+WU,P028,right,12,26,3,0,6.9,Ankle Dorsiflexion (R) (4.6); Hip Flexion (R) (6.5); Hip Adduction (R) (6.9),REMOVE stride from all variables
+WU,P028,right,24,26,2,0,5.3,Ankle Rotation (R) (5.3); Hip Adduction (R) (3.2),inspect
+WU,P028,pelvis,12,26,2,0,6.4,Pelvis Anterior Tilt (3.0); Pelvis Obliquity (6.4),inspect
+WU,P028,pelvis,16,26,1,1,12.0,Pelvis Rotation (12.0),remove from flagged variable(s) / inspect
+WU,P029,left,6,39,8,5,14.9,Ankle Dorsiflexion (L) (12.4); Ankle Inversion (L) (4.1); Ankle Rotation (L) (10.1); Foot Progression (L) (14.9); Hip Flexion (L) (10.4); Hip Rotation (L) (6.1); Knee Flexion (L) (12.9); Knee Varus (L) (3.9),REMOVE stride from all variables
+WU,P029,left,7,39,1,0,4.7,Hip Adduction (L) (4.7),inspect
+WU,P029,left,13,39,1,0,5.9,Hip Adduction (L) (5.9),inspect
+WU,P029,left,21,39,1,0,5.2,Hip Adduction (L) (5.2),inspect
+WU,P029,left,24,39,2,1,8.2,Hip Flexion (L) (5.8); Hip Adduction (L) (8.2),remove from flagged variable(s) / inspect
+WU,P029,left,27,39,2,0,7.5,Foot Progression (L) (5.8); Hip Adduction (L) (7.5),inspect
+WU,P029,left,30,39,1,0,5.5,Hip Adduction (L) (5.5),inspect
+WU,P029,left,36,39,1,0,6.9,Hip Adduction (L) (6.9),inspect
+WU,P029,right,1,39,1,0,4.0,Hip Rotation (R) (4.0),inspect
+WU,P029,right,6,39,4,0,7.7,Ankle Dorsiflexion (R) (7.7); Ankle Rotation (R) (6.7); Hip Flexion (R) (7.3); Hip Adduction (R) (5.1),REMOVE stride from all variables
+WU,P029,right,16,39,4,0,7.9,Ankle Dorsiflexion (R) (7.9); Ankle Rotation (R) (6.3); Hip Flexion (R) (5.7); Hip Adduction (R) (5.3),REMOVE stride from all variables
+WU,P029,right,17,39,4,1,8.2,Ankle Rotation (R) (4.7); Hip Flexion (R) (5.4); Hip Adduction (R) (8.2); Hip Rotation (R) (3.8),REMOVE stride from all variables
+WU,P029,right,24,39,1,0,5.4,Hip Adduction (R) (5.4),inspect
+WU,P029,right,39,39,5,0,7.6,Ankle Dorsiflexion (R) (5.3); Ankle Rotation (R) (7.6); Foot Progression (R) (5.8); Hip Flexion (R) (5.4); Knee Flexion (R) (5.6),REMOVE stride from all variables
+WU,P029,pelvis,6,35,1,0,6.0,Pelvis Anterior Tilt (6.0),inspect
+WU,P029,pelvis,12,35,1,0,3.1,Pelvis Anterior Tilt (3.1),inspect
+WU,P029,pelvis,16,35,1,0,5.0,Pelvis Anterior Tilt (5.0),inspect
+WU,P029,pelvis,17,35,2,0,7.4,Pelvis Anterior Tilt (3.1); Pelvis Obliquity (7.4),inspect
+WU,P029,pelvis,23,35,1,0,3.0,Pelvis Anterior Tilt (3.0),inspect
+WU,P029,pelvis,24,35,1,0,4.5,Pelvis Obliquity (4.5),inspect
+UOB,P005,left,14,14,1,0,5.1,Hip Adduction (L) (5.1),inspect
+UOB,P005,right,14,14,1,0,7.7,Knee Rotation (R) (7.7),inspect
+UOB,P005,pelvis,14,14,1,1,14.9,Pelvis Rotation (14.9),remove from flagged variable(s) / inspect
+UOB,P006,right,1,14,1,0,4.4,Ankle Dorsiflexion (R) (4.4),inspect
+UOB,P006,right,7,14,1,0,3.6,Ankle Dorsiflexion (R) (3.6),inspect
+UOB,P006,right,10,14,6,4,11.2,Ankle Dorsiflexion (R) (4.6); Ankle Rotation (R) (11.2); Foot Progression (R) (8.1); Hip Adduction (R) (8.7); Hip Rotation (R) (8.0); Knee Varus (R) (5.2),REMOVE stride from all variables
+UOB,P006,right,11,14,1,1,8.6,Hip Rotation (R) (8.6),remove from flagged variable(s) / inspect
+UOB,P007,left,10,13,1,0,4.3,Ankle Inversion (L) (4.3),inspect
+UOB,P007,left,11,13,1,0,4.3,Ankle Inversion (L) (4.3),inspect
+UOB,P007,left,12,13,1,0,6.8,Ankle Rotation (L) (6.8),inspect
+UOB,P007,right,1,13,1,0,4.7,Hip Rotation (R) (4.7),inspect
+UOB,P007,right,10,13,1,0,4.5,Hip Rotation (R) (4.5),inspect
+UOB,P007,right,12,13,2,0,4.9,Hip Rotation (R) (4.7); Knee Flexion (R) (4.9),inspect
+UOB,P008,left,15,15,2,1,15.3,Hip Rotation (L) (15.3); Knee Varus (L) (6.5),REMOVE stride from all variables
+UOB,P008,pelvis,1,15,1,0,3.6,Pelvis Anterior Tilt (3.6),inspect
+UOB,P009,left,8,11,1,1,10.5,Hip Rotation (L) (10.5),remove from flagged variable(s) / inspect
+UOB,P009,left,9,11,2,2,9.2,Knee Flexion (L) (8.3); Knee Varus (L) (9.2),remove from flagged variable(s) / inspect
+UOB,P009,left,10,11,1,0,3.6,Ankle Inversion (L) (3.6),inspect
+UOB,P009,left,11,11,1,0,3.9,Ankle Inversion (L) (3.9),inspect
+UOB,P009,right,1,11,2,2,9.6,Foot Progression (R) (8.3); Hip Rotation (R) (9.6),remove from flagged variable(s) / inspect
+UOB,P009,right,9,11,1,0,6.7,Knee Varus (R) (6.7),inspect
+UOB,P009,right,10,11,1,0,5.1,Knee Varus (R) (5.1),inspect
+UOB,P010,left,7,16,1,0,6.8,Ankle Rotation (L) (6.8),inspect
+UOB,P010,left,11,16,1,0,7.1,Ankle Rotation (L) (7.1),inspect
+UOB,P010,left,12,16,2,2,18.4,Ankle Rotation (L) (12.8); Foot Progression (L) (18.4),REMOVE stride from all variables
+UOB,P010,right,7,16,1,0,7.7,Knee Flexion (R) (7.7),inspect
+UOB,P010,right,13,16,1,0,8.0,Knee Flexion (R) (8.0),inspect
+UOB,P010,pelvis,7,16,1,1,17.4,Pelvis Rotation (17.4),REMOVE stride from all variables
+UOB,P010,pelvis,11,16,1,1,34.5,Pelvis Rotation (34.5),REMOVE stride from all variables
+UOB,P010,pelvis,13,16,2,1,60.2,Pelvis Obliquity (5.0); Pelvis Rotation (60.2),REMOVE stride from all variables
+UOB,P011,left,1,23,2,1,10.4,Ankle Dorsiflexion (L) (6.4); Hip Adduction (L) (10.4),remove from flagged variable(s) / inspect
+UOB,P011,left,2,23,1,0,7.2,Hip Adduction (L) (7.2),inspect
+UOB,P011,left,21,23,1,1,8.4,Foot Progression (L) (8.4),remove from flagged variable(s) / inspect
+UOB,P011,right,1,23,4,4,9.6,Hip Flexion (R) (9.6); Hip Adduction (R) (8.4); Hip Rotation (R) (8.8); Knee Flexion (R) (8.8),REMOVE stride from all variables
+UOB,P011,right,2,23,2,0,7.6,Hip Rotation (R) (6.2); Knee Flexion (R) (7.6),inspect
+UOB,P011,pelvis,1,23,1,1,10.4,Pelvis Obliquity (10.4),remove from flagged variable(s) / inspect
+UOB,P012,left,6,15,1,0,4.5,Knee Varus (L) (4.5),inspect
+UOB,P012,left,13,15,1,0,6.3,Ankle Inversion (L) (6.3),inspect
+UOB,P012,left,14,15,1,0,5.6,Ankle Inversion (L) (5.6),inspect
+UOB,P012,left,15,15,1,0,5.9,Ankle Inversion (L) (5.9),inspect
+UOB,P012,right,6,15,3,2,8.7,Ankle Rotation (R) (6.7); Hip Flexion (R) (8.1); Hip Rotation (R) (8.7),REMOVE stride from all variables
+UOB,P012,pelvis,3,15,1,1,11.6,Pelvis Rotation (11.6),remove from flagged variable(s) / inspect
+UOB,P012,pelvis,6,15,2,1,8.4,Pelvis Anterior Tilt (8.4); Pelvis Obliquity (5.3),remove from flagged variable(s) / inspect
+UOB,P013,left,8,18,1,0,7.4,Hip Rotation (L) (7.4),inspect
+UOB,P013,right,7,18,2,1,9.4,Ankle Rotation (R) (9.4); Knee Varus (R) (5.8),remove from flagged variable(s) / inspect
+UOB,P013,pelvis,7,16,2,1,18.8,Pelvis Anterior Tilt (4.3); Pelvis Rotation (18.8),REMOVE stride from all variables
+UOB,P014,left,8,19,1,1,10.4,Hip Flexion (L) (10.4),remove from flagged variable(s) / inspect
+UOB,P014,left,17,19,2,2,16.3,Ankle Rotation (L) (9.9); Foot Progression (L) (16.3),REMOVE stride from all variables
+UOB,P014,left,18,19,1,1,14.0,Foot Progression (L) (14.0),remove from flagged variable(s) / inspect
+UOB,P014,right,1,19,2,0,7.2,Ankle Dorsiflexion (R) (7.2); Knee Flexion (R) (6.7),inspect
+UOB,P014,right,18,19,1,1,10.2,Ankle Rotation (R) (10.2),remove from flagged variable(s) / inspect
+UOB,P014,pelvis,8,19,1,0,4.9,Pelvis Anterior Tilt (4.9),inspect
+UOB,P014,pelvis,16,19,1,1,30.0,Pelvis Rotation (30.0),REMOVE stride from all variables
+UOB,P014,pelvis,17,19,1,1,31.6,Pelvis Rotation (31.6),REMOVE stride from all variables
+UOB,P014,pelvis,18,19,1,1,41.6,Pelvis Rotation (41.6),REMOVE stride from all variables
+UOB,P015,left,7,15,4,0,7.4,Ankle Dorsiflexion (L) (4.4); Hip Flexion (L) (4.7); Hip Rotation (L) (7.4); Knee Varus (L) (5.7),REMOVE stride from all variables
+UOB,P015,left,14,15,1,0,3.9,Hip Flexion (L) (3.9),inspect
+UOB,P015,left,15,15,6,2,11.0,Ankle Dorsiflexion (L) (5.1); Ankle Rotation (L) (11.0); Hip Flexion (L) (7.6); Hip Rotation (L) (8.3); Knee Flexion (L) (6.2); Knee Varus (L) (5.5),REMOVE stride from all variables
+UOB,P015,right,17,17,1,0,6.8,Hip Flexion (R) (6.8),inspect
+UOB,P015,pelvis,17,17,2,1,8.7,Pelvis Anterior Tilt (4.1); Pelvis Rotation (8.7),remove from flagged variable(s) / inspect
+UOB,P016,left,8,19,1,1,8.9,Hip Rotation (L) (8.9),remove from flagged variable(s) / inspect
+UOB,P016,left,16,19,2,2,10.2,Ankle Rotation (L) (10.2); Foot Progression (L) (9.1),remove from flagged variable(s) / inspect
+UOB,P016,right,1,19,1,1,9.8,Foot Progression (R) (9.8),remove from flagged variable(s) / inspect
+UOB,P016,right,3,19,1,0,6.5,Ankle Inversion (R) (6.5),inspect
+UOB,P016,right,17,19,1,0,6.1,Hip Flexion (R) (6.1),inspect
+UOB,P016,pelvis,5,19,1,0,3.1,Pelvis Anterior Tilt (3.1),inspect
+UOB,P016,pelvis,17,19,1,0,4.5,Pelvis Anterior Tilt (4.5),inspect
+UOB,P017,left,12,16,1,0,3.3,Ankle Dorsiflexion (L) (3.3),inspect
+UOB,P017,left,13,16,1,0,4.2,Ankle Dorsiflexion (L) (4.2),inspect
+UOB,P017,left,14,16,1,0,5.4,Ankle Rotation (L) (5.4),inspect
+UOB,P017,left,15,16,1,0,3.6,Ankle Dorsiflexion (L) (3.6),inspect
+UOB,P017,right,14,16,2,0,4.3,Hip Flexion (R) (4.3); Knee Varus (R) (4.3),inspect
+UOB,P017,pelvis,15,16,1,1,9.2,Pelvis Rotation (9.2),remove from flagged variable(s) / inspect
+UOB,P018,left,3,14,1,0,5.4,Ankle Rotation (L) (5.4),inspect
+UOB,P018,left,10,14,1,0,6.9,Hip Flexion (L) (6.9),inspect
+UOB,P018,right,10,14,3,0,6.7,Ankle Rotation (R) (6.7); Hip Flexion (R) (5.8); Hip Rotation (R) (6.7),REMOVE stride from all variables
+UOB,P018,right,11,14,2,0,6.1,Hip Flexion (R) (6.1); Hip Rotation (R) (4.9),inspect
+UOB,P018,right,12,14,1,0,6.4,Foot Progression (R) (6.4),inspect
+UOB,P018,pelvis,10,14,1,0,6.4,Pelvis Anterior Tilt (6.4),inspect
+UOB,P019,left,9,12,1,0,3.4,Ankle Dorsiflexion (L) (3.4),inspect
+UOB,P019,right,11,12,1,1,9.3,Ankle Rotation (R) (9.3),remove from flagged variable(s) / inspect
+UOB,P021,left,6,19,1,0,7.9,Knee Flexion (L) (7.9),inspect
+UOB,P021,right,7,19,2,0,7.0,Ankle Dorsiflexion (R) (4.8); Knee Flexion (R) (7.0),inspect
+UOB,P021,pelvis,12,19,1,1,23.7,Pelvis Rotation (23.7),REMOVE stride from all variables
+UOB,P022,left,1,17,2,1,8.9,Hip Flexion (L) (7.9); Hip Adduction (L) (8.9),remove from flagged variable(s) / inspect
+UOB,P022,left,14,17,3,0,6.8,Foot Progression (L) (6.8); Hip Flexion (L) (4.8); Knee Varus (L) (5.1),REMOVE stride from all variables
+UOB,P022,right,1,17,3,0,7.2,Ankle Rotation (R) (6.1); Hip Flexion (R) (7.2); Hip Adduction (R) (6.9),REMOVE stride from all variables
+UOB,P022,right,8,17,2,0,5.4,Ankle Rotation (R) (5.4); Hip Adduction (R) (3.8),inspect
+UOB,P022,right,14,17,1,0,3.9,Hip Adduction (R) (3.9),inspect
+UOB,P022,pelvis,1,17,2,0,6.2,Pelvis Anterior Tilt (4.3); Pelvis Obliquity (6.2),inspect
+UOB,P022,pelvis,13,17,1,1,9.2,Pelvis Rotation (9.2),remove from flagged variable(s) / inspect
+UOB,P022,pelvis,15,17,1,0,7.0,Pelvis Rotation (7.0),inspect
+UOB,P022,pelvis,17,17,1,1,15.6,Pelvis Rotation (15.6),REMOVE stride from all variables
+UOB,P023,left,1,15,3,3,14.7,Ankle Rotation (L) (10.9); Hip Flexion (L) (14.7); Knee Flexion (L) (12.2),REMOVE stride from all variables
+UOB,P023,left,2,15,1,1,14.0,Ankle Rotation (L) (14.0),remove from flagged variable(s) / inspect
+UOB,P023,left,8,15,1,1,8.9,Knee Flexion (L) (8.9),remove from flagged variable(s) / inspect
+UOB,P023,right,1,15,1,1,10.2,Ankle Dorsiflexion (R) (10.2),remove from flagged variable(s) / inspect
+UOB,P023,right,2,15,3,2,13.7,Ankle Dorsiflexion (R) (8.6); Ankle Inversion (R) (6.3); Knee Flexion (R) (13.7),REMOVE stride from all variables
+UOB,P024,left,16,20,2,1,8.3,Hip Adduction (L) (8.3); Knee Flexion (L) (7.7),remove from flagged variable(s) / inspect
+UOB,P024,left,20,20,1,1,8.4,Knee Flexion (L) (8.4),remove from flagged variable(s) / inspect
+UOB,P024,right,8,20,1,0,5.8,Hip Rotation (R) (5.8),inspect
+UOB,P024,right,15,20,1,0,4.9,Hip Adduction (R) (4.9),inspect
+UOB,P024,right,16,20,2,2,9.7,Hip Adduction (R) (9.7); Knee Flexion (R) (9.5),remove from flagged variable(s) / inspect
+UOB,P024,right,17,20,1,0,4.3,Hip Rotation (R) (4.3),inspect
+UOB,P024,right,19,20,1,0,4.5,Knee Flexion (R) (4.5),inspect
+UOB,P025,left,1,15,1,0,5.9,Hip Flexion (L) (5.9),inspect
+UOB,P025,left,8,15,1,0,6.2,Knee Varus (L) (6.2),inspect
+UOB,P025,left,13,15,1,0,5.1,Ankle Inversion (L) (5.1),inspect
+UOB,P025,right,8,16,1,1,9.8,Hip Rotation (R) (9.8),remove from flagged variable(s) / inspect
+UOB,P025,right,15,16,1,0,4.9,Hip Adduction (R) (4.9),inspect
+UOB,P025,pelvis,2,16,1,0,5.2,Pelvis Anterior Tilt (5.2),inspect
+UOB,P025,pelvis,5,16,1,1,11.0,Pelvis Rotation (11.0),remove from flagged variable(s) / inspect
+UOB,P026,left,1,15,1,1,8.3,Hip Adduction (L) (8.3),remove from flagged variable(s) / inspect
+UOB,P026,left,5,15,1,0,7.5,Hip Flexion (L) (7.5),inspect
+UOB,P026,left,12,15,1,1,9.3,Hip Adduction (L) (9.3),remove from flagged variable(s) / inspect
+UOB,P026,right,12,15,1,1,8.9,Hip Rotation (R) (8.9),remove from flagged variable(s) / inspect
+UOB,P026,pelvis,15,15,1,0,7.1,Pelvis Obliquity (7.1),inspect
+UOB,P027,left,1,16,2,0,4.9,Ankle Dorsiflexion (L) (4.4); Hip Rotation (L) (4.9),inspect
+UOB,P027,left,4,16,1,0,4.3,Hip Rotation (L) (4.3),inspect
+UOB,P027,left,7,16,1,1,8.3,Foot Progression (L) (8.3),remove from flagged variable(s) / inspect
+UOB,P027,left,11,16,1,0,4.9,Ankle Inversion (L) (4.9),inspect
+UOB,P027,left,13,16,1,1,10.7,Hip Flexion (L) (10.7),remove from flagged variable(s) / inspect
+UOB,P027,left,14,16,1,0,4.1,Ankle Dorsiflexion (L) (4.1),inspect
+UOB,P027,left,15,16,1,0,4.7,Ankle Inversion (L) (4.7),inspect
+UOB,P027,right,7,16,1,0,6.2,Knee Flexion (R) (6.2),inspect
+UOB,P027,right,11,16,1,0,3.3,Knee Varus (R) (3.3),inspect
+UOB,P027,right,13,16,1,0,7.6,Hip Flexion (R) (7.6),inspect
+UOB,P027,pelvis,13,16,2,0,4.7,Pelvis Anterior Tilt (4.7); Pelvis Obliquity (4.3),inspect
+UOB,P028,left,1,14,1,1,9.7,Hip Adduction (L) (9.7),remove from flagged variable(s) / inspect
+UOB,P028,left,7,14,2,2,10.6,Ankle Inversion (L) (10.6); Hip Rotation (L) (10.4),remove from flagged variable(s) / inspect
+UOB,P028,right,5,14,1,1,12.9,Foot Progression (R) (12.9),remove from flagged variable(s) / inspect
+UOB,P028,pelvis,6,14,1,1,18.8,Pelvis Anterior Tilt (18.8),REMOVE stride from all variables
+UOB,P028,pelvis,7,14,1,1,18.3,Pelvis Anterior Tilt (18.3),REMOVE stride from all variables
+UOB,P029,left,13,16,1,1,8.4,Hip Flexion (L) (8.4),remove from flagged variable(s) / inspect
+UOB,P029,right,1,16,2,0,6.6,Ankle Dorsiflexion (R) (5.3); Hip Rotation (R) (6.6),inspect
+UOB,P029,right,13,16,1,0,7.5,Hip Flexion (R) (7.5),inspect
+UOB,P029,pelvis,13,16,1,0,5.1,Pelvis Anterior Tilt (5.1),inspect
+UOB,P029,pelvis,16,16,1,1,12.4,Pelvis Rotation (12.4),remove from flagged variable(s) / inspect
