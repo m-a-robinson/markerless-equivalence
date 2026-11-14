@@ -6,6 +6,8 @@
 python simulate_systems.py     # ~2 min; writes results/simulation/ and figures/simulation/
 ```
 
+The rationale, model equations and parameter values are in [`SIMULATION_METHODS.md`](SIMULATION_METHODS.md).
+
 With every error source switched off, both pipelines return the true angles to within 10⁻¹² degrees.
 
 ## What is simulated
