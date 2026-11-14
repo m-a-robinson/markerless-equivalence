@@ -18,3 +18,7 @@ python variance_structure.py      # ~5 min; writes results/ and figures/
 | `interjoint_coupling.csv` | pooled within-stride correlations between all variable pairs, MB vs ML |
 | `difference_variance_decomposition.csv` | Var(ML−MB) split into SD mismatch and decorrelation; equivalence under counterfactuals |
 | `event_timing.csv`, `timing_explained_bias.csv`, `registration_sensitivity.csv` | relative ML/MB gait-event timing and its effect |
+
+## Simulation
+
+`simulate_systems.py` measures one simulated ground-truth movement with a direct-kinematics (marker-based) pipeline and an inverse-kinematics (markerless-like) pipeline, then applies the same statistics. See [`SIMULATION.md`](SIMULATION.md).
