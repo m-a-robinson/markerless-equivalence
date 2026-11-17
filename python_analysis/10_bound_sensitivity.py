@@ -14,7 +14,7 @@ the bound, so it is computed once per variable and then judged against four alte
 Each node of the gait cycle is equivalent / inconclusive / not equivalent (same rule as the main analysis); results are the
 percentage of the 101 nodes.  The same outlier selection as the other analyses is used (``outlier_selection.csv``).
 
-Outputs: ``figures/bound_sensitivity.jpg`` (stacked bars, one panel per bound, variables sorted by % equivalent at +/-5 deg),
+Outputs: ``figures/bound_sensitivity.jpg`` (stacked bars, one panel per bound with +/-5 deg first and a dashed line before the alternatives, variables sorted by % equivalent at +/-5 deg; no mean row),
 ``results/table_bound_sensitivity.csv`` and ``.docx`` (bound in degrees and the three percentages for every scenario).
 
 Usage
@@ -29,6 +29,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
 from common import (ANALYSED, EQUIVALENT, FIGURES_DIR, INCONCLUSIVE, NOT_EQUIVALENT, RESULTS_DIR, SELECTION_FILE,
@@ -37,7 +38,7 @@ from common import (ANALYSED, EQUIVALENT, FIGURES_DIR, INCONCLUSIVE, NOT_EQUIVAL
 # Horsak et al. (2026), healthy adults, inter-session MDC95 (degrees), read from the forest plot - in the order of ANALYSED.
 MB_MDC = dict(PelTilt=4.6, PelObl=3.7, PelRot=3.4, HipFlex=6.7, HipAdd=4.8, HipRot=15.8, KneeFlex=4.8, KneeVar=8.3,
               FootProg=7.6, AnkDF=4.4, AnkInv=7.6, AnkRot=11.9)
-SCENARIOS = [('±2°', 'McGinley'), ('±5°', 'Primary'), ('ML MDC', 'Markerless MDC'), ('MB MDC', 'Marker-based MDC')]
+SCENARIOS = [('±5°', 'Primary'), ('±2°', 'McGinley'), ('ML MDC', 'Markerless MDC'), ('MB MDC', 'Marker-based MDC')]
 COLOURS = {EQUIVALENT: '#2ca25f', INCONCLUSIVE: '#f0a020', NOT_EQUIVALENT: '#d62728'}   # as in the equivalence figure
 ORDER = (EQUIVALENT, INCONCLUSIVE, NOT_EQUIVALENT)
 
@@ -57,7 +58,7 @@ def main():
     for k, var in enumerate(ANALYSED):
         mb, ml, subs = participant_means(ds, var.code, sel)
         lo, hi, _ = paired_ci(mb, ml, args.alpha_ci)
-        bounds = [2.0, 5.0, float(ds.mdc_bounds[k]), MB_MDC[var.code]]
+        bounds = [5.0, 2.0, float(ds.mdc_bounds[k]), MB_MDC[var.code]]
         r = dict(code=var.code, variable=var.title, n=len(subs))
         for (lab, _), b in zip(SCENARIOS, bounds):
             cls = classify_equivalence(lo, hi, b)
@@ -125,10 +126,10 @@ def main():
     # ---- figure ----
     fig, axes = plt.subplots(1, 4, figsize=(11, 5.2), sharey=True)
     fig.subplots_adjust(left=0.17, right=0.975, top=0.84, bottom=0.1, wspace=0.3)
-    y = np.arange(len(rows) + 1)[::-1]
-    names = [r['variable'] for r in rows] + ['Mean of the variables']
+    y = np.arange(len(rows))[::-1]
+    names = [r['variable'] for r in rows]
     for ax, (lab, sub) in zip(axes, SCENARIOS):
-        for yi, r in zip(y, rows + [dict(variable='Mean', **mean)]):
+        for yi, r in zip(y, rows):
             left = 0
             for c in ORDER:
                 ax.barh(yi, r[lab][c], left=left, color=COLOURS[c], height=0.72, lw=0)
@@ -137,16 +138,16 @@ def main():
                 left += r[lab][c]
             if not np.isnan(r[lab]['bound']):
                 ax.text(101, yi, f"{r[lab]['bound']:.1f}°", ha='left', va='center', fontsize=6.5, color='0.3')
-        ax.axhline(0.5, color='0.4', lw=0.8)
         ax.set_xlim(0, 100); ax.set_xticks([0, 50, 100]); ax.tick_params(axis="y", length=0); ax.tick_params(labelsize=7.5)
         ax.set_title(f'{lab}\n{sub}', fontsize=9, fontweight='bold')
         ax.set_xlabel('Gait cycle (%)', fontsize=8)
         for sp in ('top', 'right'):
             ax.spines[sp].set_visible(False)
     axes[0].set_yticks(y); axes[0].set_yticklabels(names, fontsize=8)
-    axes[0].get_yticklabels()[-1].set_fontweight('bold')
+    x0 = 0.5 * (axes[0].get_position().x1 + axes[1].get_position().x0)      # line separating the primary bound from the alternatives
+    fig.add_artist(Line2D([x0, x0], [0.08, 0.87], color='0.3', lw=1.2, ls='--', transform=fig.transFigure))
     fig.legend(handles=[Patch(color=COLOURS[c], label=l) for c, l in zip(ORDER, ('Equivalent', 'Inconclusive', 'Not equivalent'))],
-               loc='upper center', ncol=3, frameon=False, fontsize=8, bbox_to_anchor=(0.58, 0.985))
+               loc='upper center', ncol=3, frameon=False, fontsize=8, bbox_to_anchor=(0.55, 0.985))
     args.out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(args.out, dpi=args.dpi)
     print(f'Wrote {args.out}')
