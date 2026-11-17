@@ -121,3 +121,7 @@ SPM result is in `results/table_equivalence_vs_spm_5deg.*`.
   variables because MB is more variable between participants than ML.  The independence test and the
   regression-based LoA are not implemented in this folder.
 * Equivalence intervals are reported in gait-cycle % (node index 0-100).
+
+## Bound sensitivity (10)
+
+`10_bound_sensitivity.py` re-judges the same 90% CIs against ±2°, ±5°, the markerless MDC and the marker-based MDC (Horsak et al. 2026; values read from the published forest plot, listed in `MB_MDC` - verify). Writes `figures/bound_sensitivity.jpg` and `results/table_bound_sensitivity.csv/.docx`.
