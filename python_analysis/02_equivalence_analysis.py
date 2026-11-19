@@ -85,7 +85,7 @@ def main():
                          pct_equivalent=pct[EQUIVALENT], pct_not_equivalent=pct[NOT_EQUIVALENT],
                          pct_inconclusive=pct[INCONCLUSIVE], pct_spm_significant=100 * sig.mean(),
                          fully_equivalent=bool(np.all(cls == EQUIVALENT)),
-                         equivalent_intervals='; '.join(f'{a}-{b}' for a, b in runs(cls == EQUIVALENT)) or '-',
+                         equivalent_intervals='; '.join(f'{a}' if a == b else f'{a}-{b}' for a, b in runs(cls == EQUIVALENT)) or '-',
                          spm_alpha=alpha_spm, spm_threshold=zstar))
         print(f'{var.title:20s} n={len(subs):2d} bound={bound:5.2f}  E/NE/I = '
               f'{pct[EQUIVALENT]:3.0f}/{pct[NOT_EQUIVALENT]:3.0f}/{pct[INCONCLUSIVE]:3.0f} %   SPM sig. {100 * sig.mean():3.0f} %')

@@ -32,7 +32,7 @@ from pathlib import Path
 
 import numpy as np
 
-from common import EQUIVALENT, INCONCLUSIVE, NOT_EQUIVALENT, RESULTS_DIR
+from common import EQUIVALENT, INCONCLUSIVE, NOT_EQUIVALENT, RESULTS_DIR, runs
 
 OUTCOMES = [('Equivalent', EQUIVALENT), ('Inconclusive', INCONCLUSIVE), ('Not equivalent', NOT_EQUIVALENT)]
 
@@ -42,7 +42,8 @@ def build_rows(z, meta):
     rows = []
     for code, title, n, b in zip(meta['variables'], meta['titles'], meta['n'], meta['bounds']):
         cls, sig = z[f'{code}_cls'], z[f'{code}_spm_sig'].astype(bool)
-        r = dict(variable=title, n=int(n), bound=float(b), spm_total=100 * sig.mean())
+        r = dict(variable=title, n=int(n), bound=float(b), spm_total=100 * sig.mean(),
+                 regions='; '.join(f'{a}' if a == e else f'{a}–{e}' for a, e in runs(cls == EQUIVALENT)) or '–')
         for name, c in OUTCOMES:
             m = cls == c
             r[f'{name}_total'] = 100 * m.mean()
@@ -50,8 +51,8 @@ def build_rows(z, meta):
             r[f'{name}_sig'] = 100 * (m & sig).mean()
         rows.append(r)
     rows.sort(key=lambda r: -r['Equivalent_total'])
-    mean = {k: float(np.mean([r[k] for r in rows])) for k in rows[0] if k not in ('variable', 'n', 'bound')}
-    rows.append(dict(variable='Mean of the variables', n='', bound=rows[0]['bound'], **mean))
+    mean = {k: float(np.mean([r[k] for r in rows])) for k in rows[0] if k not in ('variable', 'n', 'bound', 'regions')}
+    rows.append(dict(variable='Mean of the variables', n='', bound=rows[0]['bound'], regions='', **mean))
     return rows
 
 
@@ -74,10 +75,10 @@ def main():
     with open(args.results_dir / f'table_equivalence_vs_spm_{args.tag}.csv', 'w', newline='') as f:
         w = csv.writer(f)
         w.writerow(['Variable', 'n'] + [f'{o}_{s}_pct' for o, _ in OUTCOMES for s in ('total', 'SPM_ns', 'SPM_sig')]
-                   + ['SPM_sig_total_pct'])
+                   + ['SPM_sig_total_pct', 'Equivalent_regions_pct_cycle'])
         for r in rows:
             w.writerow([r['variable'], r['n']] + [f"{r[f'{o}_{s}']:.1f}" for o, _ in OUTCOMES for s in ('total', 'ns', 'sig')]
-                       + [f"{r['spm_total']:.1f}"])
+                       + [f"{r['spm_total']:.1f}", r['regions']])
 
     alpha_spm = meta.get('alpha_spm', 0.05)
     nvar = len(meta['variables'])
@@ -87,13 +88,13 @@ def main():
                 f'(marker-based − markerless) inside {bound_txt}; not equivalent: CI entirely beyond a bound; inconclusive: CI '
                 f'crosses a bound. SPM: spm1d paired t-test, two-tailed, alpha = {alpha_txt}, with random-field-theory control across the gait cycle; '
                 f'n.s. = not significant, sig. = significant. '
-                f'Percentages are rounded, so rows may not sum to 100.')
+                f'Equivalent regions: gait-cycle points (%) where the outcome is equivalent. Percentages are rounded, so rows may not sum to 100.')
     print(f'Equivalence outcomes (% of the gait cycle) against the SPM result, bound {bound_txt}')
     head = f"{'Variable':22s}{'n':>3s} | {'Equivalent':>16s} | {'Inconclusive':>16s} | {'Not equivalent':>16s} | SPM sig."
     print(head); print(f"{'':25s} | {'tot  n.s.  sig.':>16s} | {'tot  n.s.  sig.':>16s} | {'tot  n.s.  sig.':>16s} |")
     for r in rows:
         cells = ' | '.join(f"{fmt(r[f'{o}_total']):>4s} {fmt(r[f'{o}_ns']):>4s} {fmt(r[f'{o}_sig']):>4s}   " for o, _ in OUTCOMES)
-        print(f"{r['variable']:22s}{str(r['n']):>3s} | {cells}| {fmt(r['spm_total']):>5s}")
+        print(f"{r['variable']:22s}{str(r['n']):>3s} | {cells}| {fmt(r['spm_total']):>5s}   {r['regions']}")
 
     try:
         import docx
@@ -107,11 +108,11 @@ def main():
     sec = d.sections[0]
     sec.orientation = WD_ORIENT.LANDSCAPE
     sec.page_width, sec.page_height = sec.page_height, sec.page_width
-    ncol = 2 + 9 + 1
+    ncol = 2 + 9 + 2
     t = d.add_table(rows=2, cols=ncol)
     t.style = 'Table Grid'
     h0, h1 = t.rows[0].cells, t.rows[1].cells
-    for j, label in ((0, 'Variable'), (1, 'n'), (ncol - 1, 'SPM significant (total)')):
+    for j, label in ((0, 'Variable'), (1, 'n'), (ncol - 2, 'SPM significant (total)'), (ncol - 1, 'Equivalent regions (% gait cycle)')):
         h0[j].merge(h1[j]); h0[j].text = label
     for g, (name, _) in enumerate(OUTCOMES):
         j = 2 + 3 * g
@@ -121,7 +122,7 @@ def main():
     for r in rows:
         cells = t.add_row().cells
         vals = [r['variable'], str(r['n'])] + [fmt(r[f'{o}_{s}']) for o, _ in OUTCOMES for s in ('total', 'ns', 'sig')] \
-               + [fmt(r['spm_total'])]
+               + [fmt(r['spm_total']), r['regions']]
         for c, v in zip(cells, vals):
             c.text = v
     for ri, row in enumerate(t.rows):
