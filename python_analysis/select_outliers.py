@@ -69,7 +69,9 @@ Examples
     python select_outliers.py --interactive                # answer questions group by group
 
 ``SUBJECT:TRIAL:VARIABLE`` accepts ``*`` for the trial and the variable, e.g. ``P011:*:*``.
-Variable codes: PelTilt PelObl PelRot HipFlex HipAdd HipRot KneeFlex KneeVar FootProg AnkDF AnkInv AnkRot.
+Variable codes: PelTilt PelObl PelRot HipFlex HipAdd HipRot KneeFlex KneeVar KneeRot AnkDF AnkInv FootProg (analysed), plus
+AnkRot (ankle rotation: screened and kept in the catalogue, no longer analysed).  Re-screening with knee rotation in place
+of ankle rotation flags the same 11 strides and the same P024 participant-level flag.
 """
 import argparse
 import csv
@@ -77,7 +79,10 @@ from pathlib import Path
 
 import numpy as np
 
-from common import DATA_FILE, SELECTION_FILE, VAR_BY_CODE, load_dataset
+from common import DATA_FILE, OTHER_FILES, SELECTION_FILE, VAR_BY_CODE, load_dataset
+
+CODE_ORDER = list(VAR_BY_CODE) + list(OTHER_FILES)     # analysed variables, then ankle rotation (screened, no longer analysed)
+TITLE = {**{c: v.title for c, v in VAR_BY_CODE.items()}, 'AnkRot': 'Ankle Rotation'}
 
 FLAGGED = """P011,4,AnkDF;AnkInv;AnkRot
 P013,1,HipRot;KneeVar
@@ -157,7 +162,7 @@ def read_selection(path):
 
 def write_selection(sel, path, scope):
     src = {(s, t, v): k for s, t, v, k in CATALOGUE}
-    rows = sorted(sel, key=lambda k: (k[0], list(VAR_BY_CODE).index(k[2]), 0 if k[1] == 'all' else k[1]))
+    rows = sorted(sel, key=lambda k: (k[0], CODE_ORDER.index(k[2]), 0 if k[1] == 'all' else k[1]))
     with open(path, 'w', newline='') as f:
         w = csv.writer(f)
         w.writerow(['subject', 'trial', 'variable', 'action', 'source', 'note', 'scope'])
@@ -175,9 +180,9 @@ def expand(token, subjects):
     except ValueError:
         raise SystemExit(f'bad cell {token!r}; use SUBJECT:TRIAL:VARIABLE')
     subs = subjects if s == '*' else [s]
-    vars_ = list(VAR_BY_CODE) if v == '*' else [v]
+    vars_ = CODE_ORDER if v == '*' else [v]
     for vv in vars_:
-        if vv not in VAR_BY_CODE:
+        if vv not in CODE_ORDER:
             raise SystemExit(f'unknown variable {vv!r}')
     keys = []
     for ss in subs:
@@ -211,7 +216,7 @@ def metrics(ds):
 def show(sel, ds=None, scope=None):
     m = metrics(ds) if ds is not None else {}
     print(f"{'subject':8s}{'trial':>6s}{'variable':>10s}  {'action':8s}{'peak dev. from cohort (deg)':>29s}{'RMS vs own median (deg)':>26s}")
-    for k in sorted(sel, key=lambda k: (k[0], list(VAR_BY_CODE).index(k[2]), 0 if k[1] == 'all' else k[1])):
+    for k in sorted(sel, key=lambda k: (k[0], CODE_ORDER.index(k[2]), 0 if k[1] == 'all' else k[1])):
         pk, rms = m.get(k, (None, None))
         print(f'{k[0]:8s}{k[1]!s:>6s}{k[2]:>10s}  {sel[k]:8s}' +
               (f'{pk:29.1f}{rms:26.1f}' if pk is not None else ''))
@@ -229,14 +234,14 @@ def ask(prompt):
 
 def interactive(sel):
     """Walk through each subject/variable group of the catalogue (Ctrl-D stops and keeps the answers so far)."""
-    groups = sorted({(s, v) for s, t, v, _ in CATALOGUE}, key=lambda g: (g[0], list(VAR_BY_CODE).index(g[1])))
+    groups = sorted({(s, v) for s, t, v, _ in CATALOGUE}, key=lambda g: (g[0], CODE_ORDER.index(g[1])))
     print('For each participant/variable: [k]eep all, [e]xclude all strides, [p]articipant (drop for this variable),'
           ' [s]elect strides one by one, Enter = leave unchanged.')
     for s, v in groups:
         keys = [k for k in sel if k[0] == s and k[2] == v]
         strides = sorted(k[1] for k in keys if k[1] != 'all')
         status = ', '.join(f"{k[1]}:{sel[k][0]}" for k in sorted(keys, key=lambda k: (0 if k[1] == 'all' else k[1])))
-        ans = ask(f'\n{s} {VAR_BY_CODE[v].title} ({v})  [{status}]\n  choice [k/e/p/s/Enter]: ')
+        ans = ask(f'\n{s} {TITLE[v]} ({v})  [{status}]\n  choice [k/e/p/s/Enter]: ')
         if ans is None:
             print('\n  input ended - keeping the answers given so far')
             break

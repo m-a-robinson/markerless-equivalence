@@ -32,7 +32,7 @@ from matplotlib.lines import Line2D
 from common import ANALYSED, FIGURES_DIR, SELECTION_FILE, load_dataset, load_selection, participant_means
 
 COLOURS = {'ml': '#ff0000', 'mb': '#0000ff'}              # as in the manuscript figure
-# y-limits of the manuscript figure, in the order of ``ANALYSED`` (pelvis, hip, knee, foot, ankle)
+# y-limits of the manuscript figure, in the order of ``ANALYSED`` (pelvis, hip, knee, ankle + foot progression)
 YLIM_MIN = [-10, -15, -30, -30, -30, -30, -10, -30, -30, -30, -30, -30]
 YLIM_MAX = [30, 15, 30, 60, 30, 30, 70, 30, 30, 30, 30, 30]
 BAND_ALPHA = 0.25

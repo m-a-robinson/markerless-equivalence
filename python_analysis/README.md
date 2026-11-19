@@ -75,7 +75,7 @@ The variance analysis needs identical strides in both systems and across variabl
 (it stops with an explanation otherwise).  The default `manuscript` selection therefore uses `scope = all`: P011
 stride 4, P013 strides 1 and 8 and P021 stride 3 are removed from every variable and both systems, and P024 is dropped
 entirely (n = 23 throughout).  Switch scope with `python select_outliers.py --scope variable` (per-variable, MB-only,
-as in the earlier analyses; n = 23 only for ankle dorsiflexion, ankle rotation and foot progression).
+as in the earlier analyses; n = 23 only for ankle dorsiflexion and foot progression).
 
 The `note` column and the docstring of `select_outliers.py` record the reason for each exclusion (evidence in
 `../flagged_trials_visual_check.jpg`).  Other presets: `as_published` (only P024 foot progression excluded, scope
@@ -83,6 +83,9 @@ The `note` column and the docstring of `select_outliers.py` record the reason fo
 After changing the selection rerun `02`-`06` and, if needed, `python ../variance_structure/variance_structure.py`.
 
 ## Default results (`manuscript` selection, scope all, +/-5 deg)
+
+The 12 variables follow the MATLAB `plt_order_r = [11,12,13,18,19,20,21,22,23,14,15,17]`: knee rotation (RKZ) replaced
+ankle rotation (RAZ), and foot progression is the last panel.
 
 Equivalence outcomes are % of the gait cycle (SPM significant at the corrected alpha 0.05/12); the LoA columns give the mean LoA width (deg) and the % of the cycle in
 each LoA outcome (acceptable / group level only / systematic bias).  The full cross-tabulation of the outcomes with the
@@ -98,10 +101,10 @@ SPM result is in `results/table_equivalence_vs_spm_5deg.*`.
 | Hip Rotation | 23 | 11 | 85 | 4 | 17 | 28.8 | 0 / 76 / 24 |
 | Knee Flexion | 23 | 76 | 24 | 0 | 29 | 11.4 | 1 / 89 / 10 |
 | Knee Varus | 23 | 77 | 23 | 0 | 19 | 12.9 | 22 / 74 / 4 |
-| Foot Progression | 23 | 0 | 83 | 17 | 100 | 11.2 | 0 / 40 / 60 |
+| Knee Rotation | 23 | 1 | 99 | 0 | 3 | 29.6 | 0 / 86 / 14 |
 | Ankle Dorsiflexion | 23 | 63 | 30 | 7 | 73 | 8.6 | 0 / 82 / 18 |
 | Ankle Inversion | 23 | 7 | 30 | 63 | 75 | 14.4 | 0 / 18 / 82 |
-| Ankle Rotation | 23 | 15 | 48 | 38 | 50 | 23.6 | 0 / 45 / 55 |
+| Foot Progression | 23 | 0 | 83 | 17 | 100 | 11.2 | 0 / 40 / 60 |
 
 ## Methods and caveats
 

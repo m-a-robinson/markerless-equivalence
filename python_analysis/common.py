@@ -53,12 +53,16 @@ ANALYSED = [
     Variable('HipRot', 'RHZ', 'Hip Rotation', 8),
     Variable('KneeFlex', 'RKX', 'Knee Flexion', 9),
     Variable('KneeVar', 'RKY', 'Knee Varus', 10),
-    Variable('FootProg', 'RFP', 'Foot Progression', None),
+    Variable('KneeRot', 'RKZ', 'Knee Rotation', 11),
     Variable('AnkDF', 'RAX', 'Ankle Dorsiflexion', 3),
     Variable('AnkInv', 'RAY', 'Ankle Inversion', 4),
-    Variable('AnkRot', 'RAZ', 'Ankle Rotation', 5),
+    Variable('FootProg', 'RFP', 'Foot Progression', None),
 ]
+# Plot order = MATLAB plt_order_r = [11,12,13,18,19,20,21,22,23,14,15,17] (1-based file index).  Knee rotation (RKZ)
+# replaced ankle rotation (RAZ, file 16, no longer analysed) and foot progression moved to the last panel.
 VAR_BY_CODE = {v.code: v for v in ANALYSED}
+# variables no longer analysed but still named in the outlier catalogue (``select_outliers.py``)
+OTHER_FILES = {'AnkRot': 'RAZ'}
 
 
 # --------------------------------------------------------------------------------------------------
@@ -79,7 +83,9 @@ class Dataset:
 
     def var_index(self, code: str) -> int:
         """Position of an analysed variable along the variable axis of ``mb`` / ``ml``."""
-        return int(self.analysed_index[[a.code for a in ANALYSED].index(code)])
+        if code in VAR_BY_CODE:
+            return int(self.analysed_index[[a.code for a in ANALYSED].index(code)])
+        return self.variable_files.index(OTHER_FILES[code])
 
 
 def load_dataset(path: Path = DATA_FILE) -> Dataset:

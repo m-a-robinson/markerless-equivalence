@@ -37,7 +37,7 @@ from common import (ANALYSED, EQUIVALENT, FIGURES_DIR, INCONCLUSIVE, NOT_EQUIVAL
 
 # Horsak et al. (2026), healthy adults, inter-session MDC95 (degrees), read from the forest plot - in the order of ANALYSED.
 MB_MDC = dict(PelTilt=4.6, PelObl=3.7, PelRot=3.4, HipFlex=6.7, HipAdd=4.8, HipRot=15.8, KneeFlex=4.8, KneeVar=8.3,
-              FootProg=7.6, AnkDF=4.4, AnkInv=7.6, AnkRot=11.9)
+              KneeRot=9.7, AnkDF=4.4, AnkInv=7.6, FootProg=7.6)
 SCENARIOS = [('±5°', 'Primary'), ('±2°', 'McGinley'), ('ML MDC', 'Markerless MDC'), ('MB MDC', 'Marker-based MDC')]
 COLOURS = {EQUIVALENT: '#2ca25f', INCONCLUSIVE: '#f0a020', NOT_EQUIVALENT: '#d62728'}   # as in the equivalence figure
 ORDER = (EQUIVALENT, INCONCLUSIVE, NOT_EQUIVALENT)
